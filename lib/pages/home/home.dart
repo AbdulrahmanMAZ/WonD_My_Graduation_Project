@@ -1,5 +1,7 @@
+import 'package:coffre_app/modules/user.dart';
 import 'package:coffre_app/pages/home/settings_forms.dart';
 import 'package:coffre_app/shared/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Coffe_List.dart';
 import 'package:coffre_app/modules/coffe.dart';
@@ -17,7 +19,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final CollectionReference coffes =
         FirebaseFirestore.instance.collection('coffes');
-
+    final user = Provider.of<User>(context);
     void _showAppSettings() {
       showModalBottomSheet(
           context: context,
@@ -69,7 +71,15 @@ class Home extends StatelessWidget {
           title: Text('Brew Crew'),
           backgroundColor: Colors.brown[400],
           elevation: 0.0,
-          actions: <Widget>[],
+          actions: <Widget>[
+            TextButton.icon(
+                onPressed: () async {
+                  DatabaseService()
+                      .RaiseRequest(user.displayName.toString(), user.uid);
+                },
+                icon: Icon(Icons.front_hand),
+                label: Text('Rquest Service'))
+          ],
         ),
         body: CoffeList(),
         floatingActionButton: FloatingActionButton(

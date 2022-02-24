@@ -22,6 +22,7 @@ class _SettingsFormState extends State<SettingsForm> {
   String? _currentSugars;
   int? _currentStrength;
   String? dropdownValue = '0';
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -88,20 +89,21 @@ class _SettingsFormState extends State<SettingsForm> {
                             _currentStrength = e.round();
                           });
                         }),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.black87),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          await DatabaseService(uid: userData.uid)
-                              .updateUserData(
-                                  _currentSugars ?? userData.sugars as String,
-                                  _currentName ?? userData.name as String,
-                                  _currentStrength ?? userData.strngth as int);
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: Text('Submit'),
-                    ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(primary: Colors.black87),
+                    //   onPressed: () async {
+                    //     if (_formKey.currentState!.validate()) {
+                    //       await DatabaseService(uid: userData.uid)
+                    //           .updateUserData(
+                    //               _currentSugars ?? userData.sugars as String,
+                    //               _currentName ?? userData.name as String,
+                    //               _currentStrength ?? userData.strngth as int);
+                    //     }
+                    //     Navigator.pop(context);
+                    //   }
+                    // ,
+                    //   child: Text('Submit'),
+                    // ),
                   ],
                 ));
           } else {

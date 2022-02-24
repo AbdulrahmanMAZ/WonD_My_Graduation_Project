@@ -45,12 +45,20 @@ class AuthSrrvice {
 
   // Register in with e-maili and passeord.
   Future RegisterWithEmailAndPassword(
-      String name, String email, String password) async {
+      String name, String email, String password, bool isWorker) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await DatabaseService(uid: user!.uid).updateUserData('0', name, 100);
+
+      user!.updateDisplayName(name);
+      // if (isWorker) {
+      //   DatabaseService()
+      //       .WorkersCollection
+      //       .doc()
+      //       .set({'Worker_ID': user.uid, 'Worker_email': email});
+      // }
+      await DatabaseService(uid: user.uid).updateUserData(name, isWorker);
       return user;
     } catch (e) {
       print(e.toString());

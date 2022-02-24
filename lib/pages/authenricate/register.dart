@@ -26,6 +26,7 @@ class _RegisterState extends State<Register> {
   String username = '';
   String error = '';
   bool loading = false;
+  bool isWorker = false;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +136,15 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 20,
                         ),
+                        CheckboxListTile(
+                          title: Text('Register as a worker'),
+                          value: this.isWorker,
+                          onChanged: (value) {
+                            setState(() {
+                              this.isWorker = value as bool;
+                            });
+                          },
+                        ),
 
                         // Register Button
                         ElevatedButton(
@@ -145,7 +155,7 @@ class _RegisterState extends State<Register> {
                               });
                               dynamic result =
                                   await _auth.RegisterWithEmailAndPassword(
-                                      username, email, password);
+                                      username, email, password, isWorker);
                               print(result);
                               if (result == null) {
                                 setState(() {

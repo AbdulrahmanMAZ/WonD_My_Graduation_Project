@@ -16,16 +16,18 @@ class BrewTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: Colors.brown[brew.strentgh],
+            backgroundColor: Colors.brown[200],
             radius: 25,
           ),
           title: Text(brew.name),
-          subtitle: Text("Takes ${brew.sugars} sugar's"),
+          subtitle: Text("Takes  sugar's"),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UserProfile(name: brew.name)),
+                  builder: (context) => UserProfile(
+                        name: brew.name,
+                      )),
             );
           },
         ),

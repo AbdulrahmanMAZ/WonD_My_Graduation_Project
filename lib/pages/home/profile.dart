@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class UserProfile extends StatefulWidget {
   final String? name;
-  UserProfile({this.name});
+  final int? strength;
+
+  UserProfile({this.name, this.strength});
 
   //const UserProfile({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _UserProfileState extends State<UserProfile> {
               height: 20,
             ),
             CircleAvatar(
-              backgroundColor: Colors.brown[200],
+              backgroundColor: Colors.brown[widget.strength as int],
               radius: 40,
             ),
           ],
