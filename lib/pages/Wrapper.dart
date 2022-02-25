@@ -19,12 +19,12 @@ class Wrapper extends StatelessWidget {
 
     //bool isWorker = brewCollection.doc(user!.uid).get('isWorker') as bool;
 
-    print(user?.displayName);
+    // print(user?.displayName);
     if (user == null) {
       return Autheticate();
     } else {
       return FutureBuilder<DocumentSnapshot>(
-        future: workers.doc(user?.uid).get(),
+        future: workers.doc(user.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {

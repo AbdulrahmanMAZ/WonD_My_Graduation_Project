@@ -1,4 +1,5 @@
 // import 'package:coffre_app/modules/user.dart';
+import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 // import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/settings_forms.dart';
@@ -19,7 +20,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference coffes =
+    final CollectionReference aaa =
         FirebaseFirestore.instance.collection('coffes');
     final usera = Provider.of<User>(context);
     void _showAppSettings() {
@@ -31,6 +32,7 @@ class Home extends StatelessWidget {
             );
           });
     }
+
     // FirebaseFirestore.instance
     //     .collection('coffes')
     //     .get()
@@ -40,9 +42,9 @@ class Home extends StatelessWidget {
     //     print(doc["strengh"]);
     //   });
     // });
-
-    return StreamProvider<List<user>?>.value(
-      value: DatabaseService().users,
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    return StreamProvider<List<Request>?>.value(
+      value: DatabaseService().requets,
       initialData: null,
       child: Scaffold(
         backgroundColor: Colors.brown[50],
@@ -83,7 +85,7 @@ class Home extends StatelessWidget {
                 label: Text('Rquest Service'))
           ],
         ),
-        body: CoffeList(),
+        body: UserList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {

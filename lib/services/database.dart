@@ -9,7 +9,7 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   // collection reference
-  final CollectionReference brewCollection =
+  final CollectionReference workersCollection =
       FirebaseFirestore.instance.collection('coffes');
 
   final CollectionReference RequestsCollection =
@@ -19,14 +19,14 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Collection of workers');
 
   Future<void> updateUserData(String name, bool isWorker) async {
-    return await brewCollection.doc(uid).set({
+    return await workersCollection.doc(uid).set({
       'name': name,
       'isWorker': isWorker,
     });
   }
 
   Future<void> RaiseRequest(String name, String Cust_ID) async {
-    return await RequestsCollection.doc().set({
+    return await RequestsCollection.doc(Cust_ID).set({
       'Cust_ID': Cust_ID,
       'name': name,
     });
@@ -39,10 +39,15 @@ class DatabaseService {
     }).toList();
   }
 
-  // brew list from snapshot
-  List<user> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  List<Request> _userRequestsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //print(doc.data);
+      return Request(name: doc.get('name'), Cust_ID: doc.get('Cust_ID'));
+    }).toList();
+  }
+
+  // brew list from snapshot
+  List<user> _workersListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
       return user(
           name: doc.get('name') ?? '', isWorker: doc.get('isWorker') ?? false);
     }).toList();
@@ -56,10 +61,10 @@ class DatabaseService {
         isWorker: snapshot.get('isWorker'));
   }
 
-  //get brews stream
-  Stream<List<user>?> get users {
+  //get users stream
+  Stream<List<user>> get users {
     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-    return brewCollection.snapshots().map(_brewListFromSnapshot);
+    return workersCollection.snapshots().map(_workersListFromSnapshot);
   }
 
   Stream<List<Request>> get requets {
@@ -69,7 +74,7 @@ class DatabaseService {
 
   //get user doc stream
   Stream<UserData> get userData {
-    return brewCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+    return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 
   // Stream<UserData> get userData {

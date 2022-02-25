@@ -1,15 +1,7 @@
 import 'package:coffre_app/modules/requests.dart';
-
 import 'package:coffre_app/pages/home/requests_list.dart';
-import 'package:coffre_app/pages/home/settings_forms.dart';
-import 'package:coffre_app/shared/loading.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'Users_List.dart';
-import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +13,7 @@ class request_home extends StatelessWidget {
   Widget build(BuildContext context) {
     final CollectionReference requests =
         FirebaseFirestore.instance.collection('requests');
-    final user = Provider.of<User>(context);
+    // final user = Provider.of<User>(context);
 
     return StreamProvider<List<Request>?>.value(
       value: DatabaseService().requets,

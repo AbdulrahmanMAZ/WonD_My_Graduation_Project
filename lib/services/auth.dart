@@ -60,7 +60,7 @@ class AuthSrrvice {
       await DatabaseService(uid: user.uid).updateUserData(name, isWorker);
       return user;
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       return null;
     }
   }

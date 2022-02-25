@@ -1,26 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/brew_tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:coffre_app/modules/User.dart';
 
-class CoffeList extends StatefulWidget {
+class UserList extends StatefulWidget {
   @override
-  _CoffeListState createState() => _CoffeListState();
+  _UserListState createState() => _UserListState();
 }
 
-class _CoffeListState extends State<CoffeList> {
+class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     //List<Widget> widgets = <Widget>[];
-
-    final users = Provider.of<List<user>?>(context) ?? [];
+    final usera = Provider.of<User>(context);
+    final _myRequests = Provider.of<List<Request>?>(context) ?? [];
 
     return ListView.builder(
-        itemCount: users.length,
+        itemCount: _myRequests.length,
         itemBuilder: (context, index) {
-          return BrewTile(User: users[index]);
+          //print(users[index].);
+          if (_myRequests[index].Cust_ID == usera.uid && index < 1) {
+            return BrewTile(userRequest: _myRequests[index]);
+          }
+          return Text('');
         });
   }
 }
