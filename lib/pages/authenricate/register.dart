@@ -1,4 +1,3 @@
-import 'package:coffre_app/modules/user.dart';
 import 'package:coffre_app/pages/authenricate/authenticate.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';

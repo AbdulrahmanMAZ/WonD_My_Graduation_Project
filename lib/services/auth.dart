@@ -1,4 +1,3 @@
-import 'package:coffre_app/modules/user.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -1,4 +1,3 @@
-import 'package:coffre_app/modules/user.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/home/home.dart';
 import 'package:coffre_app/services/auth.dart';

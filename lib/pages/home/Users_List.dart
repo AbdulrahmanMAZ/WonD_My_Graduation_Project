@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/brew_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:coffre_app/modules/coffe.dart';
+import 'package:coffre_app/modules/User.dart';
 
 class CoffeList extends StatefulWidget {
   @override
@@ -14,12 +15,12 @@ class _CoffeListState extends State<CoffeList> {
   Widget build(BuildContext context) {
     //List<Widget> widgets = <Widget>[];
 
-    final brews = Provider.of<List<Coffe>?>(context) ?? [];
+    final users = Provider.of<List<user>?>(context) ?? [];
 
     return ListView.builder(
-        itemCount: brews.length,
+        itemCount: users.length,
         itemBuilder: (context, index) {
-          return BrewTile(brew: brews[index]);
+          return BrewTile(User: users[index]);
         });
   }
 }
@@ -28,11 +29,11 @@ class _CoffeListState extends State<CoffeList> {
 
 
     // if (brews != null) {
-    //   for (var coffe in brews.docs) {
-    //     if (coffe.get('name') == 'Abdulrahman') {
-    //       print(coffe.get('name'));
-    //       print(coffe.get('sugars'));
-    //       print(coffe.get('strentgh'));
+    //   for (var User in brews.docs) {
+    //     if (User.get('name') == 'Abdulrahman') {
+    //       print(User.get('name'));
+    //       print(User.get('sugars'));
+    //       print(User.get('strentgh'));
          
     //     }
     //   }

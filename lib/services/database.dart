@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffre_app/modules/coffe.dart';
+//import 'package:coffre_app/modules/User.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/modules/user.dart';
+//import 'package:coffre_app/modules/user.dart';
 
 class DatabaseService {
   final String? uid;
@@ -39,10 +40,10 @@ class DatabaseService {
   }
 
   // brew list from snapshot
-  List<Coffe> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  List<user> _brewListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       //print(doc.data);
-      return Coffe(
+      return user(
           name: doc.get('name') ?? '', isWorker: doc.get('isWorker') ?? false);
     }).toList();
   }
@@ -52,11 +53,11 @@ class DatabaseService {
     return UserData(
         uid: uid,
         name: snapshot.get('name'),
-        strngth: snapshot.get('isWorker'));
+        isWorker: snapshot.get('isWorker'));
   }
 
   //get brews stream
-  Stream<List<Coffe>> get brews {
+  Stream<List<user>?> get users {
     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
     return brewCollection.snapshots().map(_brewListFromSnapshot);
   }

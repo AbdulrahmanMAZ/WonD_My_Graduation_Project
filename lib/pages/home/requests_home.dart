@@ -1,12 +1,12 @@
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/modules/user.dart';
+
 import 'package:coffre_app/pages/home/requests_list.dart';
 import 'package:coffre_app/pages/home/settings_forms.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'Coffe_List.dart';
-import 'package:coffre_app/modules/coffe.dart';
+import 'Users_List.dart';
+import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 

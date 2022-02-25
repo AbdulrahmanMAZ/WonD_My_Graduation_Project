@@ -3,6 +3,7 @@ import 'package:coffre_app/pages/authenricate/authenticate.dart';
 import 'package:coffre_app/pages/home/home.dart';
 import 'package:coffre_app/pages/home/requests_home.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,7 @@ class Wrapper extends StatelessWidget {
             }
           }
 
-          return Text("loading");
+          return Loading();
         },
       );
     }
