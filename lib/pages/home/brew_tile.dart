@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/profile.dart';
 import 'package:coffre_app/services/database.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class BrewTile extends StatelessWidget {
   final Request userRequest;
@@ -13,6 +15,8 @@ class BrewTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userStream = Provider.of<User>(context);
+    var date = DateTime.fromMillisecondsSinceEpoch(userRequest.t);
+    var h24 = DateFormat('dd/MM/yyyy, hh:mm a').format(date);
     return Padding(
       padding: EdgeInsets.only(
         top: 8,
@@ -36,7 +40,7 @@ class BrewTile extends StatelessWidget {
             radius: 25,
           ),
           title: Text(userRequest.name),
-          subtitle: Text("Takes  sugar's"),
+          subtitle: Text(h24),
           onTap: () {
             Navigator.push(
               context,

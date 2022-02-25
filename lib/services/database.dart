@@ -25,23 +25,27 @@ class DatabaseService {
     });
   }
 
-  Future<void> RaiseRequest(String name, String Cust_ID) async {
-    return await RequestsCollection.doc(Cust_ID).set({
-      'Cust_ID': Cust_ID,
-      'name': name,
-    });
+  Future<void> RaiseRequest(String name, String Cust_ID, int t) async {
+    return await RequestsCollection.doc(Cust_ID)
+        .set({'Cust_ID': Cust_ID, 'name': name, 'time': t});
   }
 
   List<Request> _requestsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       //print(doc.data);
-      return Request(name: doc.get('name'), Cust_ID: doc.get('Cust_ID'));
+      return Request(
+          name: doc.get('name'),
+          Cust_ID: doc.get('Cust_ID'),
+          t: doc.get('time'));
     }).toList();
   }
 
   List<Request> _userRequestsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Request(name: doc.get('name'), Cust_ID: doc.get('Cust_ID'));
+      return Request(
+          name: doc.get('name'),
+          Cust_ID: doc.get('Cust_ID'),
+          t: doc.get('time'));
     }).toList();
   }
 
