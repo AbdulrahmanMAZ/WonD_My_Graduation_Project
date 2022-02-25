@@ -9,5 +9,6 @@ class UserData {
   final String? uid;
   final String? name;
   final bool? isWorker;
-  UserData({this.isWorker, this.name, this.uid});
+  final String? profession;
+  UserData({this.isWorker, this.name, this.uid, this.profession});
 }

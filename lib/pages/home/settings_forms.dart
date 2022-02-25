@@ -18,11 +18,16 @@ class SettingsForm extends StatefulWidget {
 
 class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> sugars = ['0', '1', '2', '3', '4'];
+  final List<String> professions = [
+    'Hairdresser',
+    'Mechanic',
+    'Electrician',
+    'plumber'
+  ];
 
   String? _currentName;
-  String? _currentSugars;
-  int? _currentStrength;
+  String? _currentProfession;
+  bool? _isWorker;
   String? dropdownValue = '0';
 
   @override
@@ -48,6 +53,7 @@ class _SettingsFormState extends State<SettingsForm> {
                       height: 20,
                     ),
                     TextFormField(
+                      enabled: false,
                       initialValue: userData!.name,
                       decoration: textInputDecoration.copyWith(
                           hintText: 'Enter Your Name'),
@@ -62,19 +68,19 @@ class _SettingsFormState extends State<SettingsForm> {
                     ),
 
                     //Drop Down.
-                    // DropdownButtonFormField(
-                    //   value: _currentSugars ?? userData.sugars,
-                    //   //  icon: Icon(Icons.arrow_downward),
-                    //   items: sugars.map((String e) {
-                    //     return DropdownMenuItem(
-                    //         value: e, child: Text('$e sugars'));
-                    //   }).toList(),
-                    //   onChanged: (String? newValue) {
-                    //     setState(() {
-                    //       _currentSugars = newValue;
-                    //     });
-                    //   },
-                    // ),
+                    DropdownButtonFormField(
+                      value: _currentProfession ?? userData.profession,
+                      //  icon: Icon(Icons.arrow_downward),
+                      items: professions.map((String e) {
+                        return DropdownMenuItem(
+                            value: e, child: Text('$e sugars'));
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _currentProfession = newValue;
+                        });
+                      },
+                    ),
                     //Slider
                     // Slider(
                     //     min: 100,

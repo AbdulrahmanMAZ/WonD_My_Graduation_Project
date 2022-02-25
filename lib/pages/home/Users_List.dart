@@ -1,6 +1,6 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/pages/home/brew_tile.dart';
+import 'package:coffre_app/pages/home/Cust_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,10 +21,10 @@ class _UserListState extends State<UserList> {
         itemCount: _myRequests.length,
         itemBuilder: (context, index) {
           //print(users[index].);
-          if (_myRequests[index].Cust_ID == usera.uid && index < 1) {
+          if (_myRequests[index].Cust_ID == usera.uid && index <= 1) {
             return BrewTile(userRequest: _myRequests[index]);
           }
-          return Text('fff');
+          return Text('');
         });
   }
 }

@@ -1,5 +1,5 @@
 import 'package:coffre_app/pages/Wrapper.dart';
-import 'package:coffre_app/pages/home/home.dart';
+import 'package:coffre_app/pages/home/cust_home.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

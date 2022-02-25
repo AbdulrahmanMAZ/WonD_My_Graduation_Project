@@ -72,12 +72,13 @@ class Home extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
-          title: Text('Brew Crew'),
+          title: Text('Your requests'),
           backgroundColor: Colors.brown[400],
           elevation: 0.0,
           actions: <Widget>[
             TextButton.icon(
-                onPressed: () async {
+                onPressed: () {
+                  //_showAppSettings();
                   DatabaseService().RaiseRequest(usera.displayName.toString(),
                       usera.uid, DateTime.now().millisecondsSinceEpoch);
                 },
@@ -88,9 +89,7 @@ class Home extends StatelessWidget {
         body: UserList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
-          onPressed: () {
-            _showAppSettings();
-          },
+          onPressed: () {},
         )
         //  FutureBuilder<DocumentSnapshot>(
         //     future: coffes.doc(_auth.inputData()).get(),
