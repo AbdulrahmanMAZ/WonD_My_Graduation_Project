@@ -33,15 +33,6 @@ class Home extends StatelessWidget {
           });
     }
 
-    // FirebaseFirestore.instance
-    //     .collection('coffes')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) {
-    //     print(doc["name"]);
-    //     print(doc["strengh"]);
-    //   });
-    // });
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     return StreamProvider<List<Request>?>.value(
       value: DatabaseService().requets,
@@ -78,9 +69,7 @@ class Home extends StatelessWidget {
           actions: <Widget>[
             TextButton.icon(
                 onPressed: () {
-                  //_showAppSettings();
-                  DatabaseService().RaiseRequest(usera.displayName.toString(),
-                      usera.uid, DateTime.now().millisecondsSinceEpoch);
+                  _showAppSettings();
                 },
                 icon: Icon(Icons.front_hand),
                 label: Text('Rquest Service'))

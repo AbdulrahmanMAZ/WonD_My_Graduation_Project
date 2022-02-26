@@ -10,7 +10,12 @@ class Register extends StatefulWidget {
 
   final Function toggleView;
   Register({required this.toggleView});
-
+  final List<String> professions = [
+    'Hairdresser',
+    'Mechanic',
+    'Electrician',
+    'plumber'
+  ];
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -19,12 +24,13 @@ class _RegisterState extends State<Register> {
   AuthSrrvice _auth = AuthSrrvice();
   bool _passwordVisible = true;
   final _formKey = GlobalKey<FormState>();
-
+  String? _currentProfession = 'Customer';
   String email = '';
   String password = '';
   String username = '';
   String error = '';
   bool loading = false;
+
   bool isWorker = false;
 
   @override
@@ -144,6 +150,25 @@ class _RegisterState extends State<Register> {
                             });
                           },
                         ),
+                        Visibility(
+                          visible: isWorker,
+                          child: DropdownButtonFormField(
+                            value: widget.professions[0],
+                            //  icon: Icon(Icons.arrow_downward),
+                            items: widget.professions.map((String e) {
+                              return DropdownMenuItem(
+                                  value: e, child: Text('$e '));
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _currentProfession = newValue as String;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
 
                         // Register Button
                         ElevatedButton(
@@ -154,7 +179,11 @@ class _RegisterState extends State<Register> {
                               });
                               dynamic result =
                                   await _auth.RegisterWithEmailAndPassword(
-                                      username, email, password, isWorker);
+                                      username,
+                                      email,
+                                      password,
+                                      isWorker,
+                                      _currentProfession as String);
                               print(result);
                               if (result == null) {
                                 setState(() {

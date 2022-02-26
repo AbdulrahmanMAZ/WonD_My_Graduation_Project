@@ -8,9 +8,9 @@ import 'package:coffre_app/modules/users.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class BrewTile extends StatelessWidget {
+class custTile extends StatelessWidget {
   final Request userRequest;
-  BrewTile({required this.userRequest});
+  custTile({required this.userRequest});
 
   @override
   Widget build(BuildContext context) {

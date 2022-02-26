@@ -42,7 +42,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    Text('Update your brew settings',
+                    Text('Service settings',
                         style: GoogleFonts.nothingYouCouldDo(
                             textStyle: TextStyle(
                                 color: Colors.black38,
@@ -69,11 +69,10 @@ class _SettingsFormState extends State<SettingsForm> {
 
                     //Drop Down.
                     DropdownButtonFormField(
-                      value: _currentProfession ?? userData.profession,
+                      // value: _currentProfession ?? userData.profession,
                       //  icon: Icon(Icons.arrow_downward),
                       items: professions.map((String e) {
-                        return DropdownMenuItem(
-                            value: e, child: Text('$e sugars'));
+                        return DropdownMenuItem(value: e, child: Text('$e'));
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
@@ -97,21 +96,23 @@ class _SettingsFormState extends State<SettingsForm> {
                     //         _currentStrength = e.round();
                     //       });
                     //     }),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(primary: Colors.black87),
-                    //   onPressed: () async {
-                    //     if (_formKey.currentState!.validate()) {
-                    //       await DatabaseService(uid: userData.uid)
-                    //           .updateUserData(
-                    //               _currentSugars ?? userData.sugars as String,
-                    //               _currentName ?? userData.name as String,
-                    //               _currentStrength ?? userData.strngth as int);
-                    //     }
-                    //     Navigator.pop(context);
-                    //   }
-                    // ,
-                    //   child: Text('Submit'),
-                    // ),
+
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.black87),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        if (_formKey.currentState!.validate()) {
+                          await DatabaseService().RaiseRequest(
+                              user.displayName.toString(),
+                              user.uid,
+                              DateTime.now().millisecondsSinceEpoch,
+                              _currentProfession);
+
+                          // Navigator.pop(context);
+                        }
+                      },
+                      child: Text('Submit'),
+                    ),
                   ],
                 ));
           } else {

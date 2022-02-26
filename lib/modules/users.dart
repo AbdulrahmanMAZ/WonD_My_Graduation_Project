@@ -1,8 +1,8 @@
 class user {
   final String name;
   final bool isWorker;
-
-  user({required this.name, required this.isWorker});
+  final String? profession;
+  user({required this.name, required this.isWorker, this.profession});
 }
 
 class UserData {

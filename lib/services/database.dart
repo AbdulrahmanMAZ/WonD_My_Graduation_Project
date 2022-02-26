@@ -18,16 +18,47 @@ class DatabaseService {
   final CollectionReference WorkersCollection =
       FirebaseFirestore.instance.collection('Collection of workers');
 
-  Future<void> updateUserData(String name, bool isWorker) async {
-    return await workersCollection.doc(uid).set({
-      'name': name,
-      'isWorker': isWorker,
-    });
+  Future<void> updateUserData(
+      String name, bool isWorker, String profession) async {
+    return await workersCollection
+        .doc(uid)
+        .set({'name': name, 'isWorker': isWorker, 'profession': profession});
   }
 
-  Future<void> RaiseRequest(String name, String Cust_ID, int t) async {
-    return await RequestsCollection.doc(Cust_ID)
-        .set({'Cust_ID': Cust_ID, 'name': name, 'time': t});
+  // Future<String?> getProfession(String uid) async {
+  //   var collection = FirebaseFirestore.instance.collection('coffes');
+  //   var docSnapshot = await collection.doc(uid).get();
+  //   if (docSnapshot.exists) {
+  //     Map<String, dynamic> data = docSnapshot.data()!;
+
+  //     // You can then retrieve the value from the Map like this:
+  //     var name = await data['name'];
+  //     return name.toString();
+  //   }
+  // }
+  // getProfession(String userID) async {
+  //   DocumentReference documentReference = workersCollection.doc(userID);
+  //   DocumentSnapshot documentSnapshot = documentReference.snapshots();
+  //   String? specie;
+  //   await documentReference.get().then((snapshot) async {
+  //     specie = await snapshot.get('profession');
+  //   });
+  //   return specie;
+  // }
+
+// getSpecie(String petId) async{
+//     Future<DocumentSnapshot> snapshot = await workersCollection.doc(petId).get();
+//     return snapshot.then((value) => Pet.fromSnapshot(value).specie);
+//   }
+
+  Future<void> RaiseRequest(
+      String name, String Cust_ID, int t, profession) async {
+    return await RequestsCollection.doc(Cust_ID).set({
+      'Cust_ID': Cust_ID,
+      'name': name,
+      'time': t,
+      'profession': profession
+    });
   }
 
   List<Request> _requestsListFromSnapshot(QuerySnapshot snapshot) {
@@ -36,16 +67,29 @@ class DatabaseService {
       return Request(
           name: doc.get('name'),
           Cust_ID: doc.get('Cust_ID'),
-          t: doc.get('time'));
+          t: doc.get('time'),
+          profession: doc.get('profession'));
     }).toList();
   }
+
+  // Request _requestSnapshot(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     //print(doc.data);
+  //     return Request(
+  //         name: doc.get('name'),
+  //         Cust_ID: doc.get('Cust_ID'),
+  //         t: doc.get('time'),
+  //         profession: doc.get('profession'));
+  //   }).toList();
+  // }
 
   List<Request> _userRequestsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Request(
           name: doc.get('name'),
           Cust_ID: doc.get('Cust_ID'),
-          t: doc.get('time'));
+          t: doc.get('time'),
+          profession: doc.get('profession'));
     }).toList();
   }
 
@@ -62,7 +106,8 @@ class DatabaseService {
     return UserData(
         uid: uid,
         name: snapshot.get('name'),
-        isWorker: snapshot.get('isWorker'));
+        isWorker: snapshot.get('isWorker'),
+        profession: snapshot.get('profession'));
   }
 
   //get users stream
