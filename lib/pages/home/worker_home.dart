@@ -1,5 +1,7 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/requests_list.dart';
+import 'package:coffre_app/pages/home/settings_forms.dart';
+import 'package:coffre_app/pages/home/worker_settings.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +13,16 @@ class request_home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showAppSettings() {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              child: WorkerSettingsForm(),
+            );
+          });
+    }
+
     final CollectionReference requests =
         FirebaseFirestore.instance.collection('requests');
     // final user = Provider.of<User>(context);
@@ -60,7 +72,9 @@ class request_home extends StatelessWidget {
         body: RequestsList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () {
+            _showAppSettings();
+          },
         ),
       ),
     );

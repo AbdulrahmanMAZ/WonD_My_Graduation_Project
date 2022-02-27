@@ -15,8 +15,8 @@ class DatabaseService {
   final CollectionReference RequestsCollection =
       FirebaseFirestore.instance.collection('requests');
 
-  final CollectionReference WorkersCollection =
-      FirebaseFirestore.instance.collection('Collection of workers');
+  // final CollectionReference WorkersCollection =
+  //     FirebaseFirestore.instance.collection('Collection of workers');
 
   Future<void> updateUserData(
       String name, bool isWorker, String profession) async {
@@ -59,6 +59,12 @@ class DatabaseService {
       'time': t,
       'profession': profession
     });
+  }
+
+  Future<void> UpdateWorker(String name, String Cust_ID, profession) async {
+    return await workersCollection
+        .doc(Cust_ID)
+        .set({'name': name, 'profession': profession, 'isWorker': true});
   }
 
   List<Request> _requestsListFromSnapshot(QuerySnapshot snapshot) {

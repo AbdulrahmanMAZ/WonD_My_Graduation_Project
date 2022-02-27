@@ -108,7 +108,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 ),
                 Container(
                   child: Text(
-                    'An email has been sent to your email, click the link to verify',
+                    'An email has been sent to this email ${FirebaseAuth.instance.currentUser!.email}, click the link to verify',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w900,

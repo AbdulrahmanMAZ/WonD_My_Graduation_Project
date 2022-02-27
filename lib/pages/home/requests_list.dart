@@ -5,6 +5,7 @@ import 'package:coffre_app/pages/home/cust_home.dart';
 
 import 'package:coffre_app/pages/home/requests.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,20 +31,25 @@ class _RequestsListState extends State<RequestsList> {
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
-            while (noRequests) {
+
+            List<Request> a = requests;
+            //while (noRequests) {
+            for (var item in a) {}
+            if (a.length >= 1)
               return ListView.builder(
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
                     if (userData!.profession == requests[index].profession) {
                       return requets_tile(request: requests[index]);
                     }
+
                     noRequests = false;
-                    print(noRequests);
-                    return Text('data');
+                    //print();
+                    return Text('');
                   });
-            }
+            //}
           }
-          return Center(child: Text('You Do Not Have Requests'));
+          return Loading();
         }));
   }
 }
