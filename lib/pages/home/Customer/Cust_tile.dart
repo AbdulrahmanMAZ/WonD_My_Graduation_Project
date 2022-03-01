@@ -33,13 +33,19 @@ class custTile extends StatelessWidget {
                     .then((_) => print('Deleted'))
                     .catchError((error) => print('Delete failed: $error'));
               },
-              icon: Icon(Icons.delete),
-              label: Text('Delete Iteam')),
+              icon: Icon(
+                Icons.delete,
+                size: 20,
+              ),
+              label: Text(
+                '',
+                style: TextStyle(fontSize: 1),
+              )),
           leading: CircleAvatar(
             backgroundColor: Colors.brown[200],
             radius: 25,
           ),
-          title: Text(userRequest.name),
+          title: Text(userRequest.profession),
           subtitle: Text(h24),
           onTap: () {
             Navigator.push(

@@ -1,21 +1,16 @@
-// import 'package:coffre_app/modules/user.dart';
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/modules/users.dart';
-// import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/pages/home/settings_forms.dart';
-import 'package:coffre_app/shared/loading.dart';
+import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
+import 'package:coffre_app/pages/home/Worker/Users_List.dart';
+import 'package:coffre_app/shared/appbar.dart';
+import 'package:coffre_app/shared/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'Users_List.dart';
-// import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
+class Cust_Order extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
@@ -38,43 +33,25 @@ class Home extends StatelessWidget {
       value: DatabaseService().requets,
       initialData: null,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              Container(
-                height: 50,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.blue,
-                  ),
-                  child: Text('Drawer Header'),
-                ),
-              ),
-              TextButton.icon(
-                icon: Icon(Icons.person),
-                label: Text('logout'),
-                onPressed: () async {
-                  await _auth.SignOut();
-                },
-              ),
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          title: Text('Your requests'),
-          backgroundColor: Colors.brown[400],
-          elevation: 0.0,
-          actions: <Widget>[
-            TextButton.icon(
-                onPressed: () {
-                  _showAppSettings();
-                },
-                icon: Icon(Icons.front_hand),
-                label: Text('Rquest Service'))
-          ],
-        ),
+        drawer: CustDrawer(username: usera.displayName as String),
+        appBar: MyCustomAppBar(name: 'My Orders', widget: []),
+
+        //  AppBar(
+        //   title: Text('Your requests'),
+        //   backgroundColor: Colors.brown[400],
+        //   elevation: 0.0,
+        //   shadowColor: Colors.black,
+        //   actions: <Widget>[
+        //     TextButton.icon(
+        //         onPressed: () {
+        //           _showAppSettings();
+        //         },
+        //         icon: Icon(Icons.front_hand),
+        //         label: Text('Rquest Service'))
+        //   ],
+        // ),
         body: UserList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),

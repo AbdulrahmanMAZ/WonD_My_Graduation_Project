@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/pages/home/cust_home.dart';
+import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 
-import 'package:coffre_app/pages/home/requests.dart';
+import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +40,7 @@ class _RequestsListState extends State<RequestsList> {
                   itemCount: requests.length,
                   itemBuilder: (context, index) {
                     if (userData!.profession == requests[index].profession) {
-                      return requets_tile(request: requests[index]);
+                      return worker_requets_tile(request: requests[index]);
                     }
 
                     noRequests = false;

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffre_app/pages/home/cust_home.dart';
-import 'package:coffre_app/pages/home/worker_home.dart';
+import 'package:coffre_app/pages/home/Worker/worker_home.dart';
+import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -83,9 +83,9 @@ class _VerifyEmailState extends State<VerifyEmail> {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
               if (data['isWorker'] == true) {
-                return request_home();
+                return worker_home();
               } else {
-                return Home();
+                return Cust_Home();
               }
             }
 

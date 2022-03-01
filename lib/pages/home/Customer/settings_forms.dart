@@ -68,17 +68,20 @@ class _SettingsFormState extends State<SettingsForm> {
                     ),
 
                     //Drop Down.
-                    DropdownButtonFormField(
-                      // value: _currentProfession ?? userData.profession,
-                      //  icon: Icon(Icons.arrow_downward),
-                      items: professions.map((String e) {
-                        return DropdownMenuItem(value: e, child: Text('$e'));
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _currentProfession = newValue;
-                        });
-                      },
+                    Expanded(
+                      flex: 1,
+                      child: DropdownButtonFormField(
+                        // value: _currentProfession ?? userData.profession,
+                        //  icon: Icon(Icons.arrow_downward),
+                        items: professions.map((String e) {
+                          return DropdownMenuItem(value: e, child: Text('$e'));
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _currentProfession = newValue;
+                          });
+                        },
+                      ),
                     ),
                     //Slider
                     // Slider(

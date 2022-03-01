@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/pages/authenricate/authenticate.dart';
 import 'package:coffre_app/pages/authenricate/email_veriifiy.dart';
-import 'package:coffre_app/pages/home/cust_home.dart';
-import 'package:coffre_app/pages/home/worker_home.dart';
-import 'package:coffre_app/services/database.dart';
-import 'package:coffre_app/shared/loading.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

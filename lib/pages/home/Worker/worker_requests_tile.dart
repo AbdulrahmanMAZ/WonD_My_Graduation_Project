@@ -2,9 +2,10 @@ import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/profile.dart';
 import 'package:flutter/material.dart';
 
-class requets_tile extends StatelessWidget {
+class worker_requets_tile extends StatelessWidget {
   final Request request;
-  const requets_tile({Key? key, required this.request}) : super(key: key);
+  const worker_requets_tile({Key? key, required this.request})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

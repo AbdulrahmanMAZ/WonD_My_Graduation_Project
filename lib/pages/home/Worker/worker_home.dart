@@ -1,14 +1,15 @@
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/pages/home/requests_list.dart';
-import 'package:coffre_app/pages/home/settings_forms.dart';
-import 'package:coffre_app/pages/home/worker_settings.dart';
+import 'package:coffre_app/pages/home/Worker/requests_list.dart';
+import 'package:coffre_app/pages/home/Worker/worker_settings.dart';
+
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/shared/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class request_home extends StatelessWidget {
+class worker_home extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
@@ -31,6 +32,7 @@ class request_home extends StatelessWidget {
       value: DatabaseService().requets,
       initialData: null,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
         drawer: Drawer(
           child: ListView(
@@ -55,20 +57,18 @@ class request_home extends StatelessWidget {
             ],
           ),
         ),
-        appBar: AppBar(
-          title: Text('You are a worker'),
-          backgroundColor: Colors.brown[400],
-          elevation: 0.0,
-          actions: <Widget>[
-            // TextButton.icon(
-            // onPressed: () async {
-            // DatabaseService()
-            //     .RaiseRequest(user.displayName.toString(), user.uid);
-            // },
-            // icon: Icon(Icons.front_hand),
-            // label: Text('Rquest Service'))
-          ],
+        appBar: MyCustomAppBar(
+          name: 'Nearby Customers',
+          widget: [],
         ),
+        // TextButton.icon(
+        // onPressed: () async {
+        // DatabaseService()
+        //     .RaiseRequest(user.displayName.toString(), user.uid);
+        // },
+        // icon: Icon(Icons.front_hand),
+        // label: Text('Rquest Service'))
+
         body: RequestsList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),

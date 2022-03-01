@@ -1,6 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/pages/home/Cust_tile.dart';
+import 'package:coffre_app/pages/home/Customer/Cust_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
