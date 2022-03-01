@@ -29,13 +29,23 @@ class Cust_Home extends StatelessWidget {
     }
 
     int timestamp = DateTime.now().millisecondsSinceEpoch;
-    return StreamProvider<List<Request>?>.value(
-      value: DatabaseService().requets,
+    return StreamProvider<User?>.value(
       initialData: null,
+      value: AuthSrrvice().user,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
-        drawer: CustDrawer(username: usera.displayName as String),
+
+        drawer: CustDrawer(
+          username: usera.displayName as String,
+          logout: TextButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('logout'),
+            onPressed: () async {
+              await _auth.SignOut();
+            },
+          ),
+        ),
         appBar: MyCustomAppBar(name: 'Your Requests', widget: [
           TextButton.icon(
             onPressed: () {

@@ -18,8 +18,8 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name as String),
-      ),
+          //title: Text(widget.name as String),
+          ),
       body: Center(
         child: Column(
           children: <Widget>[

@@ -13,11 +13,11 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     //List<Widget> widgets = <Widget>[];
-    final usera = Provider.of<User>(context);
+    final usera = Provider.of<User?>(context);
     final _myRequests = Provider.of<List<Request>?>(context) ?? [];
     List a = [];
     for (var item in _myRequests) {
-      if (item.Cust_ID == usera.uid) a.add(item);
+      if (item.Cust_ID == usera?.uid) a.add(item);
     }
     return ListView.builder(
         itemCount: a.length,

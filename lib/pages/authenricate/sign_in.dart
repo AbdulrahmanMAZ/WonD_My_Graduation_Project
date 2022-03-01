@@ -10,8 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
 
-  final Function toggleVeiw;
-  SignIn({required this.toggleVeiw});
+  final Function? toggleVeiw;
+  SignIn({this.toggleVeiw});
 
   @override
   _SignInState createState() => _SignInState();
@@ -49,7 +49,7 @@ class _SignInState extends State<SignIn> {
               actions: <Widget>[
                 TextButton.icon(
                     onPressed: () {
-                      widget.toggleVeiw();
+                      widget.toggleVeiw!();
                     },
                     icon: Icon(Icons.login_rounded),
                     label: Text("Register"))

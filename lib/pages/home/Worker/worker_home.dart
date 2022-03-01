@@ -1,11 +1,13 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/Worker/requests_list.dart';
+import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
 import 'package:coffre_app/pages/home/Worker/worker_settings.dart';
 
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/shared/appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,7 @@ class worker_home extends StatelessWidget {
 
     final CollectionReference requests =
         FirebaseFirestore.instance.collection('requests');
-    // final user = Provider.of<User>(context);
+    final user = Provider.of<User>(context);
 
     return StreamProvider<List<Request>?>.value(
       value: DatabaseService().requets,
@@ -34,27 +36,14 @@ class worker_home extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              Container(
-                height: 50,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.blue,
-                  ),
-                  child: Text('Drawer Header'),
-                ),
-              ),
-              TextButton.icon(
-                icon: Icon(Icons.person),
-                label: Text('logout'),
-                onPressed: () async {
-                  await _auth.SignOut();
-                },
-              ),
-            ],
+        drawer: worker_drawer(
+          username: user.displayName,
+          logout: TextButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('logout'),
+            onPressed: () async {
+              await _auth.SignOut();
+            },
           ),
         ),
         appBar: MyCustomAppBar(
@@ -69,7 +58,6 @@ class worker_home extends StatelessWidget {
         // icon: Icon(Icons.front_hand),
         // label: Text('Rquest Service'))
 
-        body: RequestsList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {

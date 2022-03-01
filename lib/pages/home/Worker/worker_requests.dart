@@ -2,6 +2,8 @@ import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Worker/Users_List.dart';
+import 'package:coffre_app/pages/home/Worker/requests_list.dart';
+import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Cust_Order extends StatelessWidget {
+class worker_requests extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
@@ -28,7 +30,7 @@ class Cust_Order extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
-        drawer: CustDrawer(
+        drawer: worker_drawer(
           username: usera?.displayName,
           logout: TextButton.icon(
             icon: Icon(Icons.person),
@@ -64,7 +66,7 @@ class Cust_Order extends StatelessWidget {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: UserList(),
+        body: RequestsList(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {},

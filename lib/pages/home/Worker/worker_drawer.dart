@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
+
+import 'package:coffre_app/pages/home/Worker/worker_home.dart';
+import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CustDrawer extends StatelessWidget {
+class worker_drawer extends StatelessWidget {
   final String? username;
   final Widget logout;
-  CustDrawer({Key? key, required this.username, required this.logout})
+  worker_drawer({Key? key, required this.username, required this.logout})
       : super(key: key);
   final AuthSrrvice _auth = AuthSrrvice();
 
@@ -38,7 +40,7 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.pushNamed(context, '/cust_home');
+                Navigator.pushNamed(context, '/worker_home');
               },
             ),
             TextButton.icon(
@@ -46,7 +48,7 @@ class CustDrawer extends StatelessWidget {
               label: Text('My orders'),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Cust_Order()));
+                    MaterialPageRoute(builder: (context) => worker_requests()));
               },
             ),
             logout,

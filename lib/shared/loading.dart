@@ -14,7 +14,7 @@ class Loading extends StatelessWidget {
       // )),
       color: Color.fromARGB(31, 82, 58, 58),
       child: Center(
-        child: SpinKitSpinningLines(
+        child: SpinKitCubeGrid(
           color: Color.fromARGB(255, 76, 70, 151),
           size: 50,
         ),
