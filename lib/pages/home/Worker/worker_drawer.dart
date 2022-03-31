@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,15 +38,23 @@ class worker_drawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.pushNamed(context, '/worker_home');
+                try {
+                  //Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => worker_requests()));
+                  //Navigator.of(context, rootNavigator: true).pop(context);
+                } catch (e) {}
               },
             ),
             TextButton.icon(
               icon: Icon(Icons.person),
               label: Text('My orders'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => worker_requests()));
+                //Navigator.of(context, rootNavigator: true).pop(context);
               },
             ),
             logout,

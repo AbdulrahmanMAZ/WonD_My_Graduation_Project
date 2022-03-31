@@ -21,7 +21,7 @@ class _RequestsListState extends State<RequestsList> {
   @override
   Widget build(BuildContext context) {
     //UserData? userData = user as UserData;
-    final requests = Provider.of<List<Request>?>(context) ?? [];
+    final custRequests = Provider.of<List<Request>?>(context) ?? [];
     final user = Provider.of<User>(context);
 
     //GETTING THE DATA OF THE WORKER
@@ -30,17 +30,18 @@ class _RequestsListState extends State<RequestsList> {
         stream: DatabaseService(uid: user.uid).userData,
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
-            UserData? userData = snapshot.data;
+            UserData? workerData = snapshot.data;
 
-            List<Request> a = requests;
+            List<Request> a = custRequests;
             //while (noRequests) {
-            for (var item in a) {}
+            //  for (var item in a) {}
             if (a.length >= 1)
               return ListView.builder(
-                  itemCount: requests.length,
+                  itemCount: custRequests.length,
                   itemBuilder: (context, index) {
-                    if (userData!.profession == requests[index].profession) {
-                      return worker_requets_tile(request: requests[index]);
+                    if (workerData!.profession ==
+                        custRequests[index].profession) {
+                      return worker_requets_tile(request: custRequests[index]);
                     }
 
                     noRequests = false;

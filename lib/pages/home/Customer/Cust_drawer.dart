@@ -38,7 +38,8 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.pushNamed(context, '/cust_home');
+                Navigator.popAndPushNamed(context, '/cust_home');
+                //Navigator.popAndPushNamed(context, routeName)
               },
             ),
             TextButton.icon(

@@ -1,7 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/pages/authenricate/sign_in.dart';
-import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
-import 'package:coffre_app/pages/home/Worker/Users_List.dart';
+import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';

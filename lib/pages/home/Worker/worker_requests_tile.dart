@@ -1,4 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/home/Worker/veiwCustomerRequest.dart';
 import 'package:coffre_app/pages/home/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,10 @@ class worker_requets_tile extends StatelessWidget {
           ),
           title: Text(request.name),
           subtitle: Text("Need a Service"),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/veiwCustomerRequest',
+                arguments: {'Cust_ID': request.Cust_ID});
+          },
         ),
       ),
     );

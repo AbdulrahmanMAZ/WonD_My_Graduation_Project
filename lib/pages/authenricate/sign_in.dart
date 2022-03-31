@@ -112,12 +112,14 @@ class _SignInState extends State<SignIn> {
                               loading = true;
                               error = '';
                             });
+
                             dynamic result =
                                 await _auth.SignInWithEmailAndPassword(
                                     email, password);
 
                             if (result == null) {
                               setState(() {
+                                print('object');
                                 error = 'User Does not exist!';
                                 loading = false;
                               });

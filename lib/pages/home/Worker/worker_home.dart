@@ -28,7 +28,7 @@ class worker_home extends StatelessWidget {
 
     final CollectionReference requests =
         FirebaseFirestore.instance.collection('requests');
-    final user = Provider.of<User>(context);
+    final user = Provider?.of<User>(context);
 
     return StreamProvider<List<Request>?>.value(
       value: DatabaseService().requets,
@@ -42,10 +42,15 @@ class worker_home extends StatelessWidget {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
+              //Navigator.pop(context);
+
+              // print(Provider.of(context));
               await _auth.SignOut();
+              //Navigator.pop(context);
             },
           ),
         ),
+
         appBar: MyCustomAppBar(
           name: 'Nearby Customers',
           widget: [],
