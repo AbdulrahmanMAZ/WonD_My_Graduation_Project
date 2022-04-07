@@ -44,6 +44,10 @@ dependencies:
   video_player: ^2.2.18
   intl: ^0.17.0
   geolocator: ^8.2.0
+  firebase_storage: ^10.2.10
+  firebase_storage_web: ^3.2.11
+  uuid: ^3.0.6
+  file_picker: ^4.5.1
 
 dev_dependencies:
   flutter_test:

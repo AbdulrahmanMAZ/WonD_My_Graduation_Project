@@ -2,12 +2,16 @@
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/loading.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:coffre_app/modules/users.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../services/storage.dart';
 
 class SettingsForm extends StatefulWidget {
   const SettingsForm({Key? key}) : super(key: key);
@@ -32,6 +36,9 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
+    final Storage storage = Storage();
+    var Path;
+    var FileName;
     final user = Provider.of<User>(context);
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user.uid).userData,
@@ -83,6 +90,32 @@ class _SettingsFormState extends State<SettingsForm> {
                         },
                       ),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                            allowMultiple: false,
+                            type: FileType.custom,
+                            allowedExtensions: ['png', 'jpg']);
+                        if (result == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('No Image is There'),
+                            ),
+                          );
+                          return null;
+                        }
+                        Path = result.files.single.path!;
+                        FileName = result.files.single.name;
+                        print(Path + ' -- ' + FileName);
+                      },
+                      child: Text('pick Image'),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     //Slider
                     // Slider(
                     //     min: 100,
@@ -103,14 +136,19 @@ class _SettingsFormState extends State<SettingsForm> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.black87),
                       onPressed: () async {
+                        final UUID = Uuid().v1();
                         Navigator.pop(context);
                         if (_formKey.currentState!.validate()) {
                           await DatabaseService().RaiseRequest(
                               user.displayName.toString(),
                               user.uid,
                               DateTime.now().millisecondsSinceEpoch,
-                              _currentProfession);
-
+                              _currentProfession,
+                              UUID);
+                          print(Path);
+                          storage
+                              .uploudFile(Path, UUID)
+                              .then((value) => print('Uplouded'));
                           // Navigator.pop(context);
                         }
                       },

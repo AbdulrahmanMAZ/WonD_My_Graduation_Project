@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
+import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,14 @@ class CustDrawer extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Cust_Order()));
+              },
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Make an Order'),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OrderPage()));
               },
             ),
             logout,

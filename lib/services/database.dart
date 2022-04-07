@@ -52,12 +52,13 @@ class DatabaseService {
 //   }
 
   Future<void> RaiseRequest(
-      String name, String Cust_ID, int t, profession) async {
+      String name, String Cust_ID, int t, profession, imageNmae) async {
     return await RequestsCollection.doc(Cust_ID).set({
       'Cust_ID': Cust_ID,
       'name': name,
       'time': t,
-      'profession': profession
+      'profession': profession,
+      'problemimage': imageNmae
     });
   }
 
