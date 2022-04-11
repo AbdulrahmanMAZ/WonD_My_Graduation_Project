@@ -14,6 +14,8 @@ class DatabaseService {
 
   final CollectionReference RequestsCollection =
       FirebaseFirestore.instance.collection('requests');
+  final CollectionReference AcceptenceCollection =
+      FirebaseFirestore.instance.collection('Accepted_requests');
 
   // final CollectionReference WorkersCollection =
   //     FirebaseFirestore.instance.collection('Collection of workers');
@@ -23,6 +25,12 @@ class DatabaseService {
     return await workersCollection
         .doc(uid)
         .set({'name': name, 'isWorker': isWorker, 'profession': profession});
+  }
+
+  Future<void> updateUserLocation(lat, long) async {
+    return await workersCollection
+        .doc(uid)
+        .update({'latitude': lat, 'longitude': long});
   }
 
   // Future<String?> getProfession(String uid) async {
@@ -51,14 +59,29 @@ class DatabaseService {
 //     return snapshot.then((value) => Pet.fromSnapshot(value).specie);
 //   }
 
-  Future<void> RaiseRequest(
-      String name, String Cust_ID, int t, profession, imageNmae) async {
+  Future<void> RaiseRequest(String name, String Cust_ID, int t, profession,
+      imageName, Description, lat, long) async {
     return await RequestsCollection.doc(Cust_ID).set({
       'Cust_ID': Cust_ID,
       'name': name,
       'time': t,
       'profession': profession,
-      'problemimage': imageNmae
+      'problemimage': imageName,
+      'probleDescription ': Description,
+      'latitude': lat,
+      'longitude': long
+    });
+  }
+
+  Future<void> AcceptRequest(String Cust_name, String Worker_Name,
+      String Cust_ID, int t, Worker_ID, Price) async {
+    return await AcceptenceCollection.doc(Worker_ID).set({
+      'Cust_ID': Cust_ID,
+      'Worker_ID': Cust_ID,
+      'Cust_name': Cust_name,
+      'time': t,
+      'Worker_Name': Worker_Name,
+      'Price': Price
     });
   }
 
@@ -75,7 +98,11 @@ class DatabaseService {
           name: doc.get('name'),
           Cust_ID: doc.get('Cust_ID'),
           t: doc.get('time'),
-          profession: doc.get('profession'));
+          profession: doc.get('profession'),
+          imageName: doc.get('problemimage'),
+          Description: doc.get('probleDescription '),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude'));
     }).toList();
   }
 
@@ -96,7 +123,11 @@ class DatabaseService {
           name: doc.get('name'),
           Cust_ID: doc.get('Cust_ID'),
           t: doc.get('time'),
-          profession: doc.get('profession'));
+          profession: doc.get('profession'),
+          imageName: doc.get('problemimage'),
+          Description: doc.get('probleDescription '),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude'));
     }).toList();
   }
 
@@ -114,7 +145,18 @@ class DatabaseService {
         uid: uid,
         name: snapshot.get('name'),
         isWorker: snapshot.get('isWorker'),
-        profession: snapshot.get('profession'));
+        profession: snapshot.get('profession'),
+        latitude: snapshot.get('latitude'),
+        longitude: snapshot.get('longitude'));
+  }
+
+  UserData _userDataFromSnapshot2(DocumentSnapshot snapshot) {
+    return UserData(
+      uid: uid,
+      name: snapshot.get('name'),
+      isWorker: snapshot.get('isWorker'),
+      profession: snapshot.get('profession'),
+    );
   }
 
   //get users stream
@@ -131,6 +173,10 @@ class DatabaseService {
   //get user doc stream
   Stream<UserData> get userData {
     return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Stream<UserData> get userData2 {
+    return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot2);
   }
 
   // Stream<UserData> get userData {

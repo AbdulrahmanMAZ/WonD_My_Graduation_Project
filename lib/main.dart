@@ -3,6 +3,7 @@ import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
+import 'package:coffre_app/pages/home/Worker/show_request.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           '/worker_home': (context) => worker_home(),
           '/worker_requests': (context) => worker_requests(),
           '/cust_ordering': (context) => OrderPage(),
+          '/Show_Request': (context) => ShowRequest(),
         },
         home: Wrapper(),
       ),

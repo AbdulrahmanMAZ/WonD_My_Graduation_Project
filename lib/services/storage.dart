@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/cupertino.dart';
 
 class Storage {
   final firebase_storage.FirebaseStorage storage =
@@ -17,8 +18,14 @@ class Storage {
   }
 
   Future<String> downloadURL(String imageName) async {
-    String downloadURL =
-        await storage.ref('Orders_Images/$imageName').getDownloadURL();
+    late String downloadURL;
+    try {
+      downloadURL =
+          await storage.ref('Orders_Images/$imageName').getDownloadURL();
+    } catch (e) {
+      print(e);
+      downloadURL = 'No photo found';
+    }
     return downloadURL;
   }
 }

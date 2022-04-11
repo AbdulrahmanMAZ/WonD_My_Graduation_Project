@@ -14,7 +14,7 @@ import 'package:uuid/uuid.dart';
 import '../../../services/storage.dart';
 
 class SettingsForm extends StatefulWidget {
-  const SettingsForm({Key? key}) : super(key: key);
+  const SettingsForm({Key? key, latitude, longitude}) : super(key: key);
 
   @override
   _SettingsFormState createState() => _SettingsFormState();
@@ -33,9 +33,11 @@ class _SettingsFormState extends State<SettingsForm> {
   String? _currentProfession;
   bool? _isWorker;
   String? dropdownValue = '0';
+  String? Description;
 
   @override
   Widget build(BuildContext context) {
+    var t;
     final Storage storage = Storage();
     var Path;
     var FileName;
@@ -116,6 +118,15 @@ class _SettingsFormState extends State<SettingsForm> {
                     SizedBox(
                       height: 20,
                     ),
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Description of the problem',
+                          hintText: 'Enter Your problem Description'),
+                      onChanged: (val) => setState(() {
+                        Description = val;
+                      }),
+                    ),
                     //Slider
                     // Slider(
                     //     min: 100,
@@ -144,7 +155,10 @@ class _SettingsFormState extends State<SettingsForm> {
                               user.uid,
                               DateTime.now().millisecondsSinceEpoch,
                               _currentProfession,
-                              UUID);
+                              UUID,
+                              Description,
+                              userData.latitude,
+                              userData.longitude);
                           print(Path);
                           storage
                               .uploudFile(Path, UUID)

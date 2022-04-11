@@ -33,8 +33,10 @@ class _WorkerSettingsFormState extends State<WorkerSettingsForm> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    print(user.uid);
+
     return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user.uid).userData,
+        stream: DatabaseService(uid: user.uid).userData2,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;

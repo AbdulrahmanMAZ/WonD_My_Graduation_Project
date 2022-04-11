@@ -2,7 +2,14 @@ class user {
   final String name;
   final bool isWorker;
   final String? profession;
-  user({required this.name, required this.isWorker, this.profession});
+  final double? latitude;
+  final double? longitude;
+  user(
+      {required this.name,
+      required this.isWorker,
+      this.profession,
+      this.latitude,
+      this.longitude});
 }
 
 class UserData {
@@ -10,5 +17,13 @@ class UserData {
   final String? name;
   final bool? isWorker;
   final String? profession;
-  UserData({this.isWorker, this.name, this.uid, this.profession});
+  final double? latitude;
+  final double? longitude;
+  UserData(
+      {this.isWorker,
+      this.name,
+      this.uid,
+      this.profession,
+      this.latitude,
+      this.longitude});
 }

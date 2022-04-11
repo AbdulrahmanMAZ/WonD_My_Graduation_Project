@@ -8,9 +8,23 @@ import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
-class Cust_Home extends StatelessWidget {
+class Cust_Home extends StatefulWidget {
+  @override
+  State<Cust_Home> createState() => _Cust_HomeState();
+}
+
+class _Cust_HomeState extends State<Cust_Home> {
+  Location location = new Location();
+
+  PermissionStatus _permissionGranted = PermissionStatus.denied;
+
+  bool? _isServiceEnabled;
+  // PermissionStatus _permissionGranted;
+  LocationData? _locationData;
+  bool _isListenLocation = false, isGetLocation = false;
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
@@ -18,6 +32,7 @@ class Cust_Home extends StatelessWidget {
     final CollectionReference aaa =
         FirebaseFirestore.instance.collection('coffes');
     final usera = Provider.of<User>(context);
+    final DatabaseService _db = DatabaseService(uid: usera.uid);
     void _showAppSettings() {
       showModalBottomSheet(
           context: context,
@@ -48,8 +63,27 @@ class Cust_Home extends StatelessWidget {
         ),
         appBar: MyCustomAppBar(name: 'Your Requests', widget: [
           TextButton.icon(
-            onPressed: () {
-              _showAppSettings();
+            onPressed: () async {
+              _isServiceEnabled = await location.serviceEnabled();
+              if (!_isServiceEnabled!) {
+                _isServiceEnabled = await location.requestService();
+                if (_isServiceEnabled!) return;
+              }
+
+              _permissionGranted = await location.hasPermission();
+              if (_permissionGranted == PermissionStatus.granted) {
+                _locationData = await location.getLocation();
+                _db.updateUserLocation(
+                    _locationData!.latitude, _locationData!.longitude);
+                return _showAppSettings();
+              }
+              if (_permissionGranted == PermissionStatus.denied) {
+                print(_permissionGranted);
+                _permissionGranted = await location.requestPermission();
+                if (_permissionGranted == PermissionStatus.granted) {
+                  return _showAppSettings();
+                }
+              }
             },
             icon: Icon(Icons.abc),
             label: Text('Rquest Service'),

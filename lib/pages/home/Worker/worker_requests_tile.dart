@@ -9,20 +9,35 @@ class worker_requets_tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 8,
-      ),
+    return Center(
       child: Card(
-        margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.brown,
-            radius: 25,
-          ),
-          title: Text(request.name),
-          subtitle: Text("Need a Service"),
-          onTap: () {},
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.album),
+              title: Text(request.name),
+              subtitle: Text(request.Description),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                TextButton(
+                  child: const Text('Accept Request'),
+                  onPressed: () {/* ... */},
+                ),
+                const SizedBox(width: 8),
+                TextButton(
+                  child: const Text('Show details'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/Show_Request',
+                        arguments: request);
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ],
         ),
       ),
     );
