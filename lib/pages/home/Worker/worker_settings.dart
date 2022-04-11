@@ -32,11 +32,11 @@ class _WorkerSettingsFormState extends State<WorkerSettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    print(user.uid);
+    final user = Provider.of<User?>(context);
+    print(user?.uid);
 
     return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user.uid).userData2,
+        stream: DatabaseService(uid: user?.uid).userData2,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
@@ -105,10 +105,10 @@ class _WorkerSettingsFormState extends State<WorkerSettingsForm> {
                         Navigator.pop(context);
                         if (_formKey.currentState!.validate()) {
                           await DatabaseService().UpdateWorker(
-                              user.displayName.toString(),
-                              user.uid,
+                              user?.displayName as String,
+                              user?.uid as String,
                               _currentProfession);
-                          print(user.uid);
+                          print(user?.uid);
                           // Navigator.pop(context);
                         }
                       },

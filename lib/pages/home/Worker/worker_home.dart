@@ -28,7 +28,7 @@ class worker_home extends StatelessWidget {
 
     final CollectionReference requests =
         FirebaseFirestore.instance.collection('requests');
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User?>(context);
 
     return StreamProvider<List<Request>?>.value(
       value: DatabaseService().requets,
@@ -37,7 +37,7 @@ class worker_home extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
         drawer: worker_drawer(
-          username: user.displayName,
+          username: user?.displayName,
           logout: TextButton.icon(
             icon: Icon(Icons.person),
             label: Text('logout'),

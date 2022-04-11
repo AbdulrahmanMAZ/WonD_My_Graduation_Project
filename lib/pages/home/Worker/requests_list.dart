@@ -25,12 +25,12 @@ class _RequestsListState extends State<RequestsList> {
   Widget build(BuildContext context) {
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User?>(context);
 
     //GETTING THE DATA OF THE WORKER
     bool noRequests = true;
     return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user.uid).userData2,
+        stream: DatabaseService(uid: user?.uid).userData2,
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;

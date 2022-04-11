@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
+import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,14 +40,15 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.pushNamed(context, '/cust_home');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Cust_Home()));
               },
             ),
             TextButton.icon(
               icon: Icon(Icons.person),
               label: Text('My orders'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Cust_Order()));
               },
             ),

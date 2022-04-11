@@ -1,4 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Worker/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
@@ -31,8 +32,8 @@ class _Cust_HomeState extends State<Cust_Home> {
   Widget build(BuildContext context) {
     final CollectionReference aaa =
         FirebaseFirestore.instance.collection('coffes');
-    final usera = Provider.of<User>(context);
-    final DatabaseService _db = DatabaseService(uid: usera.uid);
+    final usera = Provider.of<User?>(context);
+    final DatabaseService _db = DatabaseService(uid: usera?.uid);
     void _showAppSettings() {
       showModalBottomSheet(
           context: context,
@@ -52,12 +53,16 @@ class _Cust_HomeState extends State<Cust_Home> {
         backgroundColor: Colors.brown[50],
 
         drawer: CustDrawer(
-          username: usera.displayName as String,
+          username: usera?.displayName as String?,
           logout: TextButton.icon(
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
               await _auth.SignOut();
+              Navigator.pushReplacementNamed(context, '/login');
+
+              // Navigator.pushReplacement(
+              //     context, MaterialPageRoute(builder: (context) => SignIn()));
             },
           ),
         ),

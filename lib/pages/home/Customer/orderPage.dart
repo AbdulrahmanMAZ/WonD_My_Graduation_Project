@@ -35,54 +35,57 @@ class _OrderPageState extends State<OrderPage>
     var Path;
     var FileName;
 
-    return SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            TextButton(
-              onPressed: () async {
-                final result = await FilePicker.platform.pickFiles(
-                    allowMultiple: false,
-                    type: FileType.custom,
-                    allowedExtensions: ['png', 'jpg']);
-                if (result == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('No Image is There'),
-                    ),
-                  );
-                  return null;
-                }
-                Path = result.files.single.path!;
-                FileName = result.files.single.name;
+    return Scaffold(
+      appBar: AppBar(title: Text('gfdgd')),
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              TextButton(
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                      allowMultiple: false,
+                      type: FileType.custom,
+                      allowedExtensions: ['png', 'jpg']);
+                  if (result == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('No Image is There'),
+                      ),
+                    );
+                    return null;
+                  }
+                  Path = result.files.single.path!;
+                  FileName = result.files.single.name;
 
-                // storage
-                //     .uploudFile(path, fileName)
-                //     .then((value) => print('Uplouded'));
+                  // storage
+                  //     .uploudFile(path, fileName)
+                  //     .then((value) => print('Uplouded'));
 
-                // String path = "Cust_orders_images/" + Uuid().v1() + ".png";
-                // Reference custimagesRef = storge.ref(path);
-                //  StorageMetadata a =
-              },
-              child: Text('pick Image'),
-            ),
-            TextButton(
-              onPressed: () async {
-                storage
-                    .uploudFile(Path, Uuid().v1())
-                    .then((value) => print('Uplouded'));
-                // print(Path);
-                // print(FileName);
-                // print(path);
-                // print(fileName);
+                  // String path = "Cust_orders_images/" + Uuid().v1() + ".png";
+                  // Reference custimagesRef = storge.ref(path);
+                  //  StorageMetadata a =
+                },
+                child: Text('pick Image'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  storage
+                      .uploudFile(Path, Uuid().v1())
+                      .then((value) => print('Uplouded'));
+                  // print(Path);
+                  // print(FileName);
+                  // print(path);
+                  // print(fileName);
 
-                // String path = "Cust_orders_images/" + Uuid().v1() + ".png";
-                // Reference custimagesRef = storge.ref(path);
-                //  StorageMetadata a =
-              },
-              child: Text('Uploud Image'),
-            ),
-          ],
+                  // String path = "Cust_orders_images/" + Uuid().v1() + ".png";
+                  // Reference custimagesRef = storge.ref(path);
+                  //  StorageMetadata a =
+                },
+                child: Text('Uploud Image'),
+              ),
+            ],
+          ),
         ),
       ),
     );
