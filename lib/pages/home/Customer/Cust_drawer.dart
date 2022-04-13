@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
+import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/services/auth.dart';
@@ -54,10 +56,10 @@ class CustDrawer extends StatelessWidget {
             ),
             TextButton.icon(
               icon: Icon(Icons.person),
-              label: Text('Make an Order'),
+              label: Text('Workers accepts'),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => OrderPage()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Accepted_Orders()));
               },
             ),
             logout,

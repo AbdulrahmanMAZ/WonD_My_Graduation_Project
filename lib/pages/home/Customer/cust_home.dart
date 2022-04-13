@@ -1,7 +1,8 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
-import 'package:coffre_app/pages/home/Worker/Users_List.dart';
+import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -109,10 +110,84 @@ class _Cust_HomeState extends State<Cust_Home> {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: Container(
-          color: Colors.amber,
-          child: Center(child: Text('Home Page')),
-        ),
+        body: Wrap(children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+              onTap: () {
+                return _showAppSettings();
+              },
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      "images/fix fesh.jpg",
+                      color: Color.fromARGB(255, 136, 135, 135),
+                      colorBlendMode: BlendMode.darken,
+                      //alignment: ,
+                      fit: BoxFit.cover,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Electrion",
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+            width: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+              onTap: () {
+                return _showAppSettings();
+              },
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      "images/fix fesh.jpg",
+                      color: Colors.black,
+                      colorBlendMode: BlendMode.darken,
+                      //alignment: ,
+                      fit: BoxFit.cover,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Electrion",
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ]),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {},

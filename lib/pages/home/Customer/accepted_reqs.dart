@@ -1,9 +1,8 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
+import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
-import 'package:coffre_app/pages/home/Worker/requests_list.dart';
-import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class worker_requests extends StatelessWidget {
+class Accepted_Orders extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
@@ -24,13 +23,13 @@ class worker_requests extends StatelessWidget {
     final usera = Provider.of<User?>(context);
 
     int timestamp = DateTime.now().millisecondsSinceEpoch;
-    return StreamProvider<List<Request>?>.value(
-      value: DatabaseService().requets,
+    return StreamProvider<List<AcceptedRequest>?>.value(
+      value: DatabaseService().Acceptedrequets,
       initialData: null,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.brown[50],
-        drawer: worker_drawer(
+        drawer: CustDrawer(
           username: usera?.displayName,
           logout: TextButton.icon(
             icon: Icon(Icons.person),
@@ -50,7 +49,7 @@ class worker_requests extends StatelessWidget {
           ),
         ),
 
-        appBar: MyCustomAppBar(name: 'My Orders', widget: []),
+        appBar: MyCustomAppBar(name: 'Accepted Requests', widget: []),
 
         //  AppBar(
         //   title: Text('Your requests'),
@@ -66,11 +65,14 @@ class worker_requests extends StatelessWidget {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: RequestsList(),
+        body: AcceptedRequestsList(),
+
+        //TO DO: make several sorting methods
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.settings),
+          child: Icon(Icons.sort),
           onPressed: () {},
         )
+
         //  FutureBuilder<DocumentSnapshot>(
         //     future: coffes.doc(_auth.inputData()).get(),
         //     builder:

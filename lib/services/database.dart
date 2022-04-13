@@ -14,11 +14,17 @@ class DatabaseService {
 
   final CollectionReference RequestsCollection =
       FirebaseFirestore.instance.collection('requests');
+
   final CollectionReference AcceptenceCollection =
       FirebaseFirestore.instance.collection('Accepted_requests');
 
+  final CollectionReference WorkignOnCollection =
+      FirebaseFirestore.instance.collection('Working_on_Service');
+
   // final CollectionReference WorkersCollection =
   //     FirebaseFirestore.instance.collection('Collection of workers');
+  // DocumentReference DocRef = workersCollection.doc(uid);
+  // DocumentSnapshot doc = await DocRef.get();
 
   Future<void> updateUserData(
       String name, bool isWorker, String profession) async {
@@ -73,14 +79,26 @@ class DatabaseService {
     });
   }
 
-  Future<void> AcceptRequest(String Cust_name, String Worker_Name,
-      String Cust_ID, int t, Worker_ID, Price) async {
+  Future<void> AcceptRequest(String Cust_name, String Cust_ID,
+      String Worker_Name, Worker_ID, int t, Price) async {
     return await AcceptenceCollection.doc(Worker_ID).set({
       'Cust_ID': Cust_ID,
-      'Worker_ID': Cust_ID,
       'Cust_name': Cust_name,
-      'time': t,
+      'Worker_ID': Worker_ID,
       'Worker_Name': Worker_Name,
+      'time': t,
+      'Price': Price
+    });
+  }
+
+  Future<void> WorkingOnIt(String Cust_name, String Cust_ID, String Worker_Name,
+      Worker_ID, int t, Price) async {
+    return await WorkignOnCollection.doc(Worker_ID).set({
+      'Cust_ID': Cust_ID,
+      'Cust_name': Cust_name,
+      'Worker_ID': Worker_ID,
+      'Worker_Name': Worker_Name,
+      'time': t,
       'Price': Price
     });
   }
@@ -103,6 +121,21 @@ class DatabaseService {
           Description: doc.get('probleDescription '),
           latitude: doc.get('latitude'),
           longitude: doc.get('longitude'));
+    }).toList();
+  }
+
+  List<AcceptedRequest> _AcceptedrequestsListFromSnapshot(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      //print(doc.data);
+      return AcceptedRequest(
+        Cust_ID: doc.get('Cust_ID'),
+        Cust_name: doc.get('Cust_name'),
+        worker_ID: doc.get('Worker_ID'),
+        worker_name: doc.get('Worker_Name'),
+        t: doc.get('time'),
+        price: doc.get('Price'),
+      );
     }).toList();
   }
 
@@ -159,6 +192,16 @@ class DatabaseService {
     );
   }
 
+  UserData _userDataFromSnapshot3(DocumentSnapshot snapshot) {
+    return UserData(
+        uid: uid,
+        name: snapshot.get('name'),
+        isWorker: snapshot.get('isWorker'),
+        profession: snapshot.get('profession'),
+        latitude: snapshot.get('latitude'),
+        longitude: snapshot.get('longitude'));
+  }
+
   //get users stream
   Stream<List<user>> get users {
     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -170,6 +213,12 @@ class DatabaseService {
     return RequestsCollection.snapshots().map(_requestsListFromSnapshot);
   }
 
+  Stream<List<AcceptedRequest>> get Acceptedrequets {
+    //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+    return AcceptenceCollection.snapshots()
+        .map(_AcceptedrequestsListFromSnapshot);
+  }
+
   //get user doc stream
   Stream<UserData> get userData {
     return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
@@ -177,6 +226,10 @@ class DatabaseService {
 
   Stream<UserData> get userData2 {
     return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot2);
+  }
+
+  Stream<UserData> get userData3 {
+    return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot3);
   }
 
   // Stream<UserData> get userData {

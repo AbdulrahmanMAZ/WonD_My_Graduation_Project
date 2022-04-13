@@ -14,7 +14,12 @@ import 'package:uuid/uuid.dart';
 import '../../../services/storage.dart';
 
 class SettingsForm extends StatefulWidget {
-  const SettingsForm({Key? key, latitude, longitude}) : super(key: key);
+  //final String profession;
+  const SettingsForm({
+    Key? key,
+    latitude,
+    longitude,
+  }) : super(key: key);
 
   @override
   _SettingsFormState createState() => _SettingsFormState();
@@ -22,6 +27,7 @@ class SettingsForm extends StatefulWidget {
 
 class _SettingsFormState extends State<SettingsForm> {
   final _formKey = GlobalKey<FormState>();
+
   final List<String> professions = [
     'Hairdresser',
     'Mechanic',

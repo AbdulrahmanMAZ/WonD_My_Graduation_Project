@@ -20,3 +20,21 @@ class Request {
       required this.latitude,
       required this.longitude});
 }
+
+class AcceptedRequest {
+  final String Cust_name;
+  final String Cust_ID;
+  final String worker_name;
+  final String worker_ID;
+  final int t;
+  final String price;
+
+  AcceptedRequest({
+    required this.Cust_ID,
+    required this.Cust_name,
+    required this.worker_ID,
+    required this.worker_name,
+    required this.t,
+    required this.price,
+  });
+}
