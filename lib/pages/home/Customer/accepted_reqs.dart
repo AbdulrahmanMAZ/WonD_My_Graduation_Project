@@ -35,12 +35,11 @@ class Accepted_Orders extends StatelessWidget {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
-              Navigator.of(context).pop();
               await _auth.SignOut();
-              Navigator.of(context).pop();
+
               // Navigator.of(context).pop();
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //     '/login', (Route<dynamic> route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
               // await _auth.SignOut();
               // Navigator.of(context).popAndPushNamed('/login');
               // Navigator.of(context).pushNamedAndRemoveUntil(

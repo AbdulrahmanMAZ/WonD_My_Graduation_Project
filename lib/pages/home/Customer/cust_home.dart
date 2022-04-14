@@ -1,6 +1,8 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
+import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
+import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
@@ -35,14 +37,21 @@ class _Cust_HomeState extends State<Cust_Home> {
         FirebaseFirestore.instance.collection('coffes');
     final usera = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: usera?.uid);
-    void _showAppSettings() {
+    void _showAppSettings(profession) {
       showModalBottomSheet(
           context: context,
           builder: (context) {
             return Container(
-              child: SettingsForm(),
+              child: SettingsForm(profession: profession),
             );
           });
+    }
+
+    final _myAcceptedRequests =
+        Provider.of<List<AcceptedRequest>?>(context) ?? [];
+    List<AcceptedRequest> Workers_Who_Accepted = [];
+    for (var item in _myAcceptedRequests) {
+      if (item.Cust_ID == usera?.uid) Workers_Who_Accepted.add(item);
     }
 
     int timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -60,40 +69,90 @@ class _Cust_HomeState extends State<Cust_Home> {
             label: Text('logout'),
             onPressed: () async {
               await _auth.SignOut();
-              Navigator.pushReplacementNamed(context, '/login');
+              // Navigator.of(context).pop();
+              // Navigator.pushReplacementNamed(context, '/login');
 
               // Navigator.pushReplacement(
               //     context, MaterialPageRoute(builder: (context) => SignIn()));
             },
           ),
         ),
-        appBar: MyCustomAppBar(name: 'Your Requests', widget: [
-          TextButton.icon(
-            onPressed: () async {
-              _isServiceEnabled = await location.serviceEnabled();
-              if (!_isServiceEnabled!) {
-                _isServiceEnabled = await location.requestService();
-                if (_isServiceEnabled!) return;
-              }
 
-              _permissionGranted = await location.hasPermission();
-              if (_permissionGranted == PermissionStatus.granted) {
-                _locationData = await location.getLocation();
-                _db.updateUserLocation(
-                    _locationData!.latitude, _locationData!.longitude);
-                return _showAppSettings();
-              }
-              if (_permissionGranted == PermissionStatus.denied) {
-                print(_permissionGranted);
-                _permissionGranted = await location.requestPermission();
-                if (_permissionGranted == PermissionStatus.granted) {
-                  return _showAppSettings();
-                }
-              }
-            },
-            icon: Icon(Icons.abc),
-            label: Text('Rquest Service'),
-          ),
+        appBar: MyCustomAppBar(name: 'Your Requests', widget: [
+          IconButton(
+              icon: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Icon(
+                    Icons.handyman,
+                  ),
+                  if (Workers_Who_Accepted.isNotEmpty)
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        height: 16,
+                        width: 16,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Center(
+                          child: Container(
+                            height: 15,
+                            width: 15,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                            child: Center(
+                              child: Text(
+                                Workers_Who_Accepted.length.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              onPressed: () => {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Accepted_Orders()))
+                  })
+
+          // TextButton.icon(
+
+          //   onPressed: () async {
+          // _isServiceEnabled = await location.serviceEnabled();
+          // if (!_isServiceEnabled!) {
+          //   _isServiceEnabled = await location.requestService();
+          //   if (_isServiceEnabled!) return;
+          // }
+
+          // _permissionGranted = await location.hasPermission();
+          // if (_permissionGranted == PermissionStatus.granted) {
+          //   _locationData = await location.getLocation();
+          //   _db.updateUserLocation(
+          //       _locationData!.latitude, _locationData!.longitude);
+          //   return _showAppSettings();
+          // }
+          // if (_permissionGranted == PermissionStatus.denied) {
+          //   print(_permissionGranted);
+          //   _permissionGranted = await location.requestPermission();
+          //   if (_permissionGranted == PermissionStatus.granted) {
+          //     return _showAppSettings();
+          //   }
+          // }
+          //   },
+          //   icon: Icon(Icons.handyman),
+          //   label: Text('Rquests'),
+          // ),
         ]),
 
         //  AppBar(
@@ -115,7 +174,7 @@ class _Cust_HomeState extends State<Cust_Home> {
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
               onTap: () {
-                return _showAppSettings();
+                return _showAppSettings("Electrician");
               },
               child: Container(
                 height: 150,
@@ -155,7 +214,7 @@ class _Cust_HomeState extends State<Cust_Home> {
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
               onTap: () {
-                return _showAppSettings();
+                return _showAppSettings('plumber');
               },
               child: Container(
                 height: 150,
@@ -167,8 +226,8 @@ class _Cust_HomeState extends State<Cust_Home> {
                   fit: StackFit.expand,
                   children: [
                     Image.asset(
-                      "images/fix fesh.jpg",
-                      color: Colors.black,
+                      "images/brken sink.jpg",
+                      color: Color.fromARGB(255, 211, 210, 210),
                       colorBlendMode: BlendMode.darken,
                       //alignment: ,
                       fit: BoxFit.cover,
@@ -176,7 +235,7 @@ class _Cust_HomeState extends State<Cust_Home> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Electrion",
+                        "plumbing",
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                               color: Colors.white,
                             ),
@@ -188,10 +247,10 @@ class _Cust_HomeState extends State<Cust_Home> {
             ),
           ),
         ]),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.settings),
-          onPressed: () {},
-        )
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.settings),
+        //   onPressed: () {},
+        // )
         //  FutureBuilder<DocumentSnapshot>(
         //     future: coffes.doc(_auth.inputData()).get(),
         //     builder:
@@ -211,8 +270,6 @@ class _Cust_HomeState extends State<Cust_Home> {
         //       }
         //       return Loading();
         //     })
-
-        ,
       ),
     );
   }

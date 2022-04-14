@@ -43,13 +43,31 @@ class _worker_homeState extends State<worker_home> {
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
-
             // _markers.add(Marker(
             //     markerId: MarkerId('SomeId'),
             //     position: LatLng(userData?.latitude as double,
             //         userData?.longitude as double),
             //     infoWindow: InfoWindow(title: userData?.name)));
             List<Request> a = requests;
+            for (Request item in a) {
+              // for (int i = 0; i >= a.length; i++)
+              print(
+                  '${item.profession}=================================================================================================');
+
+              if (userData!.profession == item.profession) {
+                _markers.add(Marker(
+                  markerId: MarkerId('${item.name}'),
+                  position: LatLng(item.latitude, item.longitude),
+                  infoWindow: InfoWindow(title: item.Description),
+                  onTap: () {
+                    // print('${item.name}');
+                    Navigator.pushNamed(context, '/Show_Request',
+                        arguments: item);
+                  },
+                ));
+                // print(item.latitude);
+              }
+            }
             // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
             //while (noRequests) {
             return Scaffold(
@@ -69,17 +87,30 @@ class _worker_homeState extends State<worker_home> {
                 name: 'Nearby Customers',
                 widget: [],
               ),
-              body: Center(
-                child: Container(
-                  child: GoogleMap(
-                    mapType: MapType.normal,
-                    markers: Set<Marker>.of(_markers),
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(userData?.latitude as double,
-                            userData?.longitude as double),
-                        zoom: 14),
+              body: Scaffold(
+                body: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 410,
+                            height: 300,
+                            child: GoogleMap(
+                              mapType: MapType.normal,
+                              markers: Set<Marker>.of(_markers),
+                              myLocationButtonEnabled: false,
+                              zoomControlsEnabled: false,
+                              initialCameraPosition: CameraPosition(
+                                  target: LatLng(userData?.latitude as double,
+                                      userData?.longitude as double),
+                                  zoom: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

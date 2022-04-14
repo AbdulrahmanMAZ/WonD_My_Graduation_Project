@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
@@ -170,8 +171,13 @@ class _ShowRequestState extends State<ShowRequest>
                         user?.displayName as String,
                         user?.uid,
                         DateTime.now().millisecondsSinceEpoch,
-                        price);
+                        price,
+                        0);
                     Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => accept_tracker()));
                   },
                   style: ElevatedButton.styleFrom(
                     // minimumSize: Size(200, 100),

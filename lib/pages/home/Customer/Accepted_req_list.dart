@@ -19,7 +19,10 @@ class _AcceptedRequestsListState extends State<AcceptedRequestsList> {
         Provider.of<List<AcceptedRequest>?>(context) ?? [];
     List<AcceptedRequest> Workers_Who_Accepted = [];
     for (var item in _myAcceptedRequests) {
-      if (item.Cust_ID == usera?.uid) Workers_Who_Accepted.add(item);
+      if (item.Cust_ID == usera?.uid) {
+        if (item.Status == 0) Workers_Who_Accepted.add(item);
+      }
+      ;
     }
 
     Workers_Who_Accepted.sort(

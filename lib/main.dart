@@ -1,3 +1,4 @@
+import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
@@ -13,6 +14,7 @@ import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 // import 'package:coffre_app/pages/home/cust_home.dart';
 import 'package:coffre_app/pages/home/profile.dart';
 import 'package:coffre_app/services/auth.dart';
+import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
-      initialData: null,
-      value: AuthSrrvice().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(
+            initialData: null, value: AuthSrrvice().user),
+        StreamProvider<List<WorkingOnit>>.value(
+            initialData: [], value: DatabaseService().WorkingOnitStream),
+        StreamProvider<List<AcceptedRequest>>.value(
+            initialData: [], value: DatabaseService().Acceptedrequets),
+        StreamProvider<List<Request>>.value(
+            initialData: [], value: DatabaseService().requets),
+      ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         routes: {
           '/cust_orders': (context) => Cust_Order(),
           '/cust_home': (context) => Cust_Home(),

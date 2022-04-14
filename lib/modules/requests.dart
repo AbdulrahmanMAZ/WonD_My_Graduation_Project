@@ -28,13 +28,33 @@ class AcceptedRequest {
   final String worker_ID;
   final int t;
   final String price;
+  final int Status;
 
-  AcceptedRequest({
-    required this.Cust_ID,
-    required this.Cust_name,
-    required this.worker_ID,
-    required this.worker_name,
-    required this.t,
-    required this.price,
-  });
+  AcceptedRequest(
+      {required this.Cust_ID,
+      required this.Cust_name,
+      required this.worker_ID,
+      required this.worker_name,
+      required this.t,
+      required this.price,
+      required this.Status});
+}
+
+class WorkingOnit {
+  final String Cust_name;
+  final String Cust_ID;
+  final String worker_name;
+  final String worker_ID;
+  final int t;
+  final String price;
+  final int status;
+
+  WorkingOnit(
+      {required this.Cust_ID,
+      required this.Cust_name,
+      required this.worker_ID,
+      required this.worker_name,
+      required this.t,
+      required this.price,
+      required this.status});
 }

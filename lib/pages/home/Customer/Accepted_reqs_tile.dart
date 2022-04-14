@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/home/Customer/workingPage.dart';
 import 'package:coffre_app/pages/home/profile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,13 @@ class acceppted_Req_Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // void _showRequestStatus() {
+    //   Scaffold(
+    //       body: Container(
+    //     child: workingpage(),
+    //   ));
+    // }
+
     final _myAcceptedRequests =
         Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final userStream = Provider.of<User>(context);
@@ -43,18 +51,25 @@ class acceppted_Req_Tile extends StatelessWidget {
                               (error) => print('Delete failed: $error'));
                     }
                     if (item.worker_ID == acceptedRequest.worker_ID) {
-                      DatabaseService()
-                          .WorkingOnIt(
-                              item.Cust_name,
-                              item.Cust_ID,
-                              item.worker_name,
-                              item.worker_ID,
-                              DateTime.now().millisecondsSinceEpoch,
-                              item.price)
-                          .then((value) => DatabaseService()
-                              .AcceptenceCollection
-                              .doc(item.worker_ID)
-                              .delete());
+                      DatabaseService(uid: item.worker_ID)
+                          .updateRequestStatus(1);
+
+                      // DatabaseService().WorkingOnIt(
+                      //     item.Cust_name,
+                      //     item.Cust_ID,
+                      //     item.worker_name,
+                      //     item.worker_ID,
+                      //     DateTime.now().millisecondsSinceEpoch,
+                      //     item.price,
+                      //     1);
+                      // .then((value) => DatabaseService()
+                      //     .AcceptenceCollection
+                      //     .doc(item.worker_ID)
+                      //     .delete());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => workingpage(item)));
                     }
                   }
                 }

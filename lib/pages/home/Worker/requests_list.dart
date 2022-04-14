@@ -34,11 +34,12 @@ class _RequestsListState extends State<RequestsList> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user?.uid).userData,
         builder: ((context, snapshot) {
+          print(
+              '=================================================================================================');
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
 
             List<Request> a = requests;
-            //print(a.length);
             //while (noRequests) {
             if (a.length >= 1) {
               // print(a.length);
@@ -77,35 +78,35 @@ class _RequestsListState extends State<RequestsList> {
                 }
               }
               // print(_markers.length);
-              noRequests = false;
+              //noRequests = false;
               //print();
-              return Scaffold(
-                body: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 410,
-                            height: 300,
-                            child: GoogleMap(
-                              mapType: MapType.normal,
-                              markers: Set<Marker>.of(_markers),
-                              myLocationButtonEnabled: false,
-                              zoomControlsEnabled: false,
-                              initialCameraPosition: CameraPosition(
-                                  target: LatLng(userData?.latitude as double,
-                                      userData?.longitude as double),
-                                  zoom: 14),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
+              // return Scaffold(
+              //   body: SingleChildScrollView(
+              //     child: ConstrainedBox(
+              //       constraints: BoxConstraints(),
+              //       child: IntrinsicHeight(
+              //         child: Column(
+              //           children: [
+              //             SizedBox(
+              //               width: 410,
+              //               height: 300,
+              //               child: GoogleMap(
+              //                 mapType: MapType.normal,
+              //                 markers: Set<Marker>.of(_markers),
+              //                 myLocationButtonEnabled: false,
+              //                 zoomControlsEnabled: false,
+              //                 initialCameraPosition: CameraPosition(
+              //                     target: LatLng(userData?.latitude as double,
+              //                         userData?.longitude as double),
+              //                     zoom: 14),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // );
             } else {
               return Text('You have no orders!');
             }

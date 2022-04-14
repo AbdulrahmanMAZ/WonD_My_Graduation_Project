@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/modules/requests.dart';
 //import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/modules/requests.dart';
@@ -37,6 +38,10 @@ class DatabaseService {
     return await workersCollection
         .doc(uid)
         .update({'latitude': lat, 'longitude': long});
+  }
+
+  Future<void> updateRequestStatus(Status) async {
+    return await AcceptenceCollection.doc(uid).update({'Status': Status});
   }
 
   // Future<String?> getProfession(String uid) async {
@@ -80,26 +85,28 @@ class DatabaseService {
   }
 
   Future<void> AcceptRequest(String Cust_name, String Cust_ID,
-      String Worker_Name, Worker_ID, int t, Price) async {
+      String Worker_Name, Worker_ID, int t, Price, Status) async {
     return await AcceptenceCollection.doc(Worker_ID).set({
       'Cust_ID': Cust_ID,
       'Cust_name': Cust_name,
       'Worker_ID': Worker_ID,
       'Worker_Name': Worker_Name,
       'time': t,
-      'Price': Price
+      'Price': Price,
+      'Status': Status
     });
   }
 
   Future<void> WorkingOnIt(String Cust_name, String Cust_ID, String Worker_Name,
-      Worker_ID, int t, Price) async {
+      Worker_ID, int t, Price, status) async {
     return await WorkignOnCollection.doc(Worker_ID).set({
       'Cust_ID': Cust_ID,
       'Cust_name': Cust_name,
       'Worker_ID': Worker_ID,
       'Worker_Name': Worker_Name,
       'time': t,
-      'Price': Price
+      'Price': Price,
+      'Status': status
     });
   }
 
@@ -129,13 +136,27 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       //print(doc.data);
       return AcceptedRequest(
-        Cust_ID: doc.get('Cust_ID'),
-        Cust_name: doc.get('Cust_name'),
-        worker_ID: doc.get('Worker_ID'),
-        worker_name: doc.get('Worker_Name'),
-        t: doc.get('time'),
-        price: doc.get('Price'),
-      );
+          Cust_ID: doc.get('Cust_ID'),
+          Cust_name: doc.get('Cust_name'),
+          worker_ID: doc.get('Worker_ID'),
+          worker_name: doc.get('Worker_Name'),
+          t: doc.get('time'),
+          price: doc.get('Price'),
+          Status: doc.get('Status'));
+    }).toList();
+  }
+
+  List<WorkingOnit> _WorkingOnitListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      //print(doc.data);
+      return WorkingOnit(
+          Cust_ID: doc.get('Cust_ID'),
+          Cust_name: doc.get('Cust_name'),
+          worker_ID: doc.get('Worker_ID'),
+          worker_name: doc.get('Worker_Name'),
+          t: doc.get('time'),
+          price: doc.get('Price'),
+          status: doc.get('Status'));
     }).toList();
   }
 
@@ -217,6 +238,11 @@ class DatabaseService {
     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
     return AcceptenceCollection.snapshots()
         .map(_AcceptedrequestsListFromSnapshot);
+  }
+
+  Stream<List<WorkingOnit>> get WorkingOnitStream {
+    //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+    return WorkignOnCollection.snapshots().map(_WorkingOnitListFromSnapshot);
   }
 
   //get user doc stream
