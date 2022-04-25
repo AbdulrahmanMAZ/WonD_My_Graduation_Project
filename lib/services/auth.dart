@@ -38,7 +38,7 @@ class AuthSrrvice {
 
       return user!.uid;
     } catch (e) {
-      return e.toString() + 'dfsjklsadadkfsfkasdj';
+      return null;
     }
   }
 

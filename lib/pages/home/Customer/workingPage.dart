@@ -1,4 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +35,7 @@ class _workingpageState extends State<workingpage>
   @override
   Widget build(BuildContext context) {
     //  final requests = Provider.of<List<WorkingOnit>?>(context) ?? [];
-    final workinOnItrequests = Provider.of<List<WorkingOnit>?>(context) ?? [];
+    //final workinOnItrequests = Provider.of<List<WorkingOnit>?>(context) ?? [];
     final acceptedrequests = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final user = Provider.of<User?>(context);
 // user if == worker id
@@ -96,15 +97,20 @@ class _workingpageState extends State<workingpage>
                         return Text('gg');
                       },
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        DatabaseService(uid: item.worker_ID)
+                            .Ratethis(rating, item.Cust_ID);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Cust_Home()));
                       }),
                 ),
-                //  TextButton(onPressed: onPressed, child: child)
+                // TextButton(onPressed: (){, child: child)
               ],
             ),
           );
         }
-        if (item.Status == 0) {
+        if (item.Status == 1) {
           return Scaffold(
             appBar: AppBar(
               title: Text('Hello'),
@@ -118,7 +124,7 @@ class _workingpageState extends State<workingpage>
                   child: Padding(
                     padding: const EdgeInsets.all(26.0),
                     child: Text(
-                      'Waiting for  ${item.Cust_name}To accepts...',
+                      'Waiting for  ${item.worker_name} To finsh the job',
                       style: GoogleFonts.actor(
                           textStyle: TextStyle(
                               color: Colors.black38,

@@ -68,7 +68,7 @@ class _SignInState extends State<SignIn> {
                       TextFormField(
                           decoration: textInputDecoration,
                           validator: (val) =>
-                              val!.isEmpty ? 'enter a value' : null,
+                              val!.isEmpty ? 'Enter an E-Mail' : null,
                           onChanged: (val) {
                             setState(() {
                               email = val;
@@ -92,8 +92,9 @@ class _SignInState extends State<SignIn> {
                                 : Icons.visibility_off),
                           ),
                         ),
-                        validator: (val) =>
-                            val!.length < 8 ? 'enter a password' : null,
+                        validator: (val) => val!.length < 8
+                            ? 'Your password  must be longer than 8 letters'
+                            : null,
                         obscureText: _passwordVisible!,
                         onChanged: (val) {
                           setState(() {
@@ -118,10 +119,16 @@ class _SignInState extends State<SignIn> {
 
                             if (result == null) {
                               setState(() {
-                                error = 'User Does not exist!';
+                                error = 'Incorrect information';
                                 loading = false;
                               });
                             }
+                            //   if (result != null) {
+                            //     setState(() {
+                            //       error = 'Incorrect information';
+                            //       loading = false;
+                            //     });
+                            //   }
                           }
                         },
                         child: Text('Log In'),

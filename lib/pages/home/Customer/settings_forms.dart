@@ -1,4 +1,5 @@
 // import 'package:coffre_app/modules/user.dart';
+
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/loading.dart';
@@ -39,7 +40,7 @@ class _SettingsFormState extends State<SettingsForm> {
   String? Description;
   bool imageuploaded = false;
   var Path;
-  var FileName;
+  var FileName = "no_image_in_firebase.png";
 
   @override
   Widget build(BuildContext context) {
@@ -189,23 +190,36 @@ class _SettingsFormState extends State<SettingsForm> {
                             ElevatedButton.styleFrom(primary: Colors.black87),
                         onPressed: () async {
                           final UUID = Uuid().v1();
-                          Navigator.pop(context);
+
                           if (_formKey.currentState!.validate()) {
-                            await DatabaseService().RaiseRequest(
-                                user.displayName.toString(),
-                                user.uid,
-                                DateTime.now().millisecondsSinceEpoch,
-                                widget.profession,
-                                UUID,
-                                Description,
-                                userData.latitude,
-                                userData.longitude);
-                            print(Path);
-                            storage
-                                .uploudFile(Path, UUID)
-                                .then((value) => print('Uplouded'));
-                            // Navigator.pop(context);
+                            if (FileName == "no_image_in_firebase.png") {
+                              await DatabaseService().RaiseRequest(
+                                  user.displayName.toString(),
+                                  user.uid,
+                                  DateTime.now().millisecondsSinceEpoch,
+                                  widget.profession,
+                                  "no_image_in_firebase.png",
+                                  Description,
+                                  userData.latitude,
+                                  userData.longitude);
+                            }
+
+                            if (FileName != "no_image_in_firebase.png") {
+                              await DatabaseService().RaiseRequest(
+                                  user.displayName.toString(),
+                                  user.uid,
+                                  DateTime.now().millisecondsSinceEpoch,
+                                  widget.profession,
+                                  UUID,
+                                  Description,
+                                  userData.latitude,
+                                  userData.longitude);
+                              storage
+                                  .uploudFile(Path, UUID)
+                                  .then((value) => print('Uplouded'));
+                            }
                           }
+                          Navigator.pop(context);
                         },
                         child: Text('Submit'),
                       ),

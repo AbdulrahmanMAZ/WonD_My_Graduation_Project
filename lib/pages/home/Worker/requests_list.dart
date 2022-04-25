@@ -7,6 +7,7 @@ import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/services/methods.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,48 +35,73 @@ class _RequestsListState extends State<RequestsList> {
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user?.uid).userData,
         builder: ((context, snapshot) {
-          print(
-              '=================================================================================================');
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
 
             List<Request> a = requests;
+
+            List<Request> RealComingRequests = [];
+            for (Request item in a) {
+              if (userData!.profession == item.profession &&
+                  distance(userData.latitude, item.latitude, userData.longitude,
+                          item.longitude) <
+                      30) {
+                RealComingRequests.add(item);
+              }
+            }
+
+            RealComingRequests.sort((a, b) => double.parse(distance(
+                    userData!.latitude,
+                    a.latitude,
+                    userData.longitude,
+                    a.longitude))
+                .compareTo(double.parse(distance(userData.latitude, b.latitude,
+                    userData.longitude, b.longitude))));
+
             //while (noRequests) {
-            if (a.length >= 1) {
+            if (RealComingRequests.length >= 1) {
               // print(a.length);
-              for (Request item in a) {
+              for (Request item in RealComingRequests) {
                 // for (int i = 0; i >= a.length; i++)
 
-                if (userData!.profession == item.profession) {
-                  _markers.add(Marker(
-                    markerId: MarkerId('SomeId'),
-                    position: LatLng(item.latitude, item.longitude),
-                    infoWindow: InfoWindow(title: item.Description),
-                    onTap: () {
-                      print('');
-                    },
+                // if (userData!.profession == item.profession &&
+                //     distance(userData.latitude, item.latitude,
+                //             userData.longitude, item.longitude) <
+                //         30) {
+                //   print(distance(userData.latitude, item.latitude,
+                //       userData.longitude, item.longitude));
+                //   _markers.add(Marker(
+                //     markerId: MarkerId('SomeId'),
+                //     position: LatLng(item.latitude, item.longitude),
+                //     infoWindow: InfoWindow(title: item.Description),
+                //     onTap: () {
+                //       print('');
+                //     },
 
-                    // Navigator.pushNamed(context, '/Show_Request',
-                    //     arguments: item);
-                  ));
-                  // print(item.latitude);
-                }
+                //     // Navigator.pushNamed(context, '/Show_Request',
+                //     //     arguments: item);
+                //   ));
+                //   // print(item.latitude);
+                // }
               }
               // List<Request> a = requests;
-              print(a.length);
+              //print(a.length);
               //while (noRequests) {
-              if (a.length >= 1) {
-                for (var item in a) {
-                  return ListView.builder(
-                      itemCount: requests.length,
-                      itemBuilder: (context, index) {
-                        if (userData!.profession ==
-                            requests[index].profession) {
-                          return worker_requets_tile(request: requests[index]);
-                        }
-                        return Text('data');
-                      });
-                }
+              for (var item in RealComingRequests) {
+                return ListView.builder(
+                    itemCount: requests.length,
+                    itemBuilder: (context, index) {
+                      if (userData?.profession == requests[index].profession) {
+                        return worker_requets_tile(
+                            request: requests[index],
+                            distance: distance(
+                                userData?.latitude,
+                                item.latitude,
+                                userData?.longitude,
+                                item.longitude));
+                      }
+                      return Text('data');
+                    });
               }
               // print(_markers.length);
               //noRequests = false;

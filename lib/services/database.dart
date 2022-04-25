@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 //import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/modules/users.dart';
@@ -29,9 +30,13 @@ class DatabaseService {
 
   Future<void> updateUserData(
       String name, bool isWorker, String profession) async {
-    return await workersCollection
-        .doc(uid)
-        .set({'name': name, 'isWorker': isWorker, 'profession': profession});
+    return await workersCollection.doc(uid).set({
+      'name': name,
+      'isWorker': isWorker,
+      'profession': profession,
+      'latitude': 0.1,
+      'longitude': 0.1
+    });
   }
 
   Future<void> updateUserLocation(lat, long) async {
@@ -110,6 +115,14 @@ class DatabaseService {
     });
   }
 
+  Future<void> Ratethis(double Rate, String whorated) async {
+    return await workersCollection
+        .doc(uid)
+        .collection("Ratings")
+        .doc(whorated)
+        .set({'Rating': Rate});
+  }
+
   Future<void> UpdateWorker(String name, String Cust_ID, profession) async {
     return await workersCollection
         .doc(Cust_ID)
@@ -185,6 +198,14 @@ class DatabaseService {
     }).toList();
   }
 
+  List<Rate> _RatingListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Rate(
+        rate: doc.get('Rating'),
+      );
+    }).toList();
+  }
+
   // brew list from snapshot
   List<user> _workersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -248,6 +269,14 @@ class DatabaseService {
   //get user doc stream
   Stream<UserData> get userData {
     return workersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Stream<List<Rate>> get ratee {
+    return workersCollection
+        .doc(uid)
+        .collection('Ratings')
+        .snapshots()
+        .map(_RatingListFromSnapshot);
   }
 
   Stream<UserData> get userData2 {

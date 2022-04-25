@@ -50,10 +50,32 @@ class _Cust_HomeState extends State<Cust_Home> {
     final _myAcceptedRequests =
         Provider.of<List<AcceptedRequest>?>(context) ?? [];
     List<AcceptedRequest> Workers_Who_Accepted = [];
-    for (var item in _myAcceptedRequests) {
+    bool newItem = true;
+    for (AcceptedRequest item in _myAcceptedRequests) {
       if (item.Cust_ID == usera?.uid) Workers_Who_Accepted.add(item);
     }
+    Future SetLocation() async {
+      _isServiceEnabled = await location.serviceEnabled();
+      if (!_isServiceEnabled!) {
+        _isServiceEnabled = await location.requestService();
+        if (_isServiceEnabled!) return;
+      }
 
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.granted) {
+        _locationData = await location.getLocation();
+        _db.updateUserLocation(
+            _locationData!.latitude, _locationData!.longitude);
+      }
+      if (_permissionGranted == PermissionStatus.denied) {
+        print(_permissionGranted);
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted == PermissionStatus.granted) {}
+      }
+      // _db.updateUserLocation(16.905971167609255, 42.573032566335506);
+    }
+
+    SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     return StreamProvider<User?>.value(
       initialData: null,
@@ -69,6 +91,8 @@ class _Cust_HomeState extends State<Cust_Home> {
             label: Text('logout'),
             onPressed: () async {
               await _auth.SignOut();
+              // Navigator.pushReplacement(
+              //     context, MaterialPageRoute(builder: (context) => SignIn()));
               // Navigator.of(context).pop();
               // Navigator.pushReplacementNamed(context, '/login');
 
@@ -80,13 +104,21 @@ class _Cust_HomeState extends State<Cust_Home> {
 
         appBar: MyCustomAppBar(name: 'Your Requests', widget: [
           IconButton(
+              onPressed: () {
+                setState(() {
+                  SetLocation();
+                });
+              },
+              icon: Icon(Icons.location_pin)),
+          IconButton(
               icon: Stack(
                 alignment: Alignment.center,
                 children: [
                   const Icon(
                     Icons.handyman,
                   ),
-                  if (Workers_Who_Accepted.isNotEmpty)
+                  if (Workers_Who_Accepted.isNotEmpty &&
+                      Workers_Who_Accepted[0].Status == 0)
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(

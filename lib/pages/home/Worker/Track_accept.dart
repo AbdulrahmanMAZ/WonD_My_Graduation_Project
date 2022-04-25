@@ -66,7 +66,7 @@ class _accept_trackerState extends State<accept_tracker> {
                             fontSize: 20, fontWeight: FontWeight.bold),
                         backgroundColor: Colors.amber[200]),
                     onPressed: () {
-                      for (var item in workinOnItrequests) {
+                      for (var item in acceptedrequests) {
                         if (item.worker_ID == user?.uid) {}
                         DatabaseService()
                             .AcceptenceCollection

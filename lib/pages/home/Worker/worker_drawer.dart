@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
+import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
 
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
@@ -58,6 +59,14 @@ class worker_drawer extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => accept_tracker()));
+              },
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Profile'),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profile()));
               },
             ),
             logout,

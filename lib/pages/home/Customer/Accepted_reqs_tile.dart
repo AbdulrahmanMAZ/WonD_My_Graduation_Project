@@ -106,7 +106,7 @@ class acceppted_Req_Tile extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => UserProfile(
-                        name: acceptedRequest.price,
+                        req: acceptedRequest,
                       )),
             );
           },

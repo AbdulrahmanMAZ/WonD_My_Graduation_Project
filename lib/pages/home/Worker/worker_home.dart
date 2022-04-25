@@ -9,6 +9,7 @@ import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/services/methods.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,19 +26,44 @@ class worker_home extends StatefulWidget {
 }
 
 class _worker_homeState extends State<worker_home> {
+  Location location = new Location();
+
+  PermissionStatus _permissionGranted = PermissionStatus.denied;
+  bool? _isServiceEnabled;
+  //  PermissionStatus? _permissionGranted;
+  LocationData? _locationData;
   final AuthSrrvice _auth = AuthSrrvice();
   List<Marker> _markers = [];
+
   @override
   Widget build(BuildContext context) {
+    double _radius = 30000.0;
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
     final user = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: user?.uid);
     //GETTING THE DATA OF THE WORKER
     bool noRequests = true;
-    setState(() {
-      _db.updateUserLocation(16.905971167609255, 42.573032566335506);
-    });
+    Future SetLocation() async {
+      _isServiceEnabled = await location.serviceEnabled();
+      if (!_isServiceEnabled!) {
+        _isServiceEnabled = await location.requestService();
+        if (_isServiceEnabled!) return;
+      }
+
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.granted) {
+        _locationData = await location.getLocation();
+        _db.updateUserLocation(
+            _locationData!.latitude, _locationData!.longitude);
+      }
+      if (_permissionGranted == PermissionStatus.denied) {
+        print(_permissionGranted);
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted == PermissionStatus.granted) {}
+      }
+    }
+
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user?.uid).userData,
         builder: ((context, snapshot) {
@@ -51,10 +77,11 @@ class _worker_homeState extends State<worker_home> {
             List<Request> a = requests;
             for (Request item in a) {
               // for (int i = 0; i >= a.length; i++)
-              print(
-                  '${item.profession}=================================================================================================');
 
-              if (userData!.profession == item.profession) {
+              if (userData!.profession == item.profession &&
+                  distance(userData.latitude, item.latitude, userData.longitude,
+                          item.longitude) <
+                      30) {
                 _markers.add(Marker(
                   markerId: MarkerId('${item.name}'),
                   position: LatLng(item.latitude, item.longitude),
@@ -79,13 +106,24 @@ class _worker_homeState extends State<worker_home> {
                   icon: Icon(Icons.person),
                   label: Text('logout'),
                   onPressed: () async {
+                    Navigator.of(context).pop();
                     await _auth.SignOut();
                   },
                 ),
               ),
               appBar: MyCustomAppBar(
                 name: 'Nearby Customers',
-                widget: [],
+                widget: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          SetLocation();
+                        });
+                        //Future.delayed(Duration(seconds: 5));
+                        // setState(() {});
+                      },
+                      icon: Icon(Icons.location_pin))
+                ],
               ),
               body: Scaffold(
                 body: SingleChildScrollView(
@@ -98,14 +136,28 @@ class _worker_homeState extends State<worker_home> {
                             width: 410,
                             height: 300,
                             child: GoogleMap(
+                              //liteModeEnabled: true,
                               mapType: MapType.normal,
                               markers: Set<Marker>.of(_markers),
-                              myLocationButtonEnabled: false,
-                              zoomControlsEnabled: false,
+                              myLocationButtonEnabled: true,
+                              zoomControlsEnabled: true,
+                              zoomGesturesEnabled: true,
                               initialCameraPosition: CameraPosition(
                                   target: LatLng(userData?.latitude as double,
                                       userData?.longitude as double),
-                                  zoom: 14),
+                                  zoom: 9.5),
+                              scrollGesturesEnabled: false,
+                              minMaxZoomPreference: MinMaxZoomPreference(9, 11),
+                              circles: {
+                                Circle(
+                                    circleId:
+                                        CircleId(userData!.name as String),
+                                    center: LatLng(userData.latitude as double,
+                                        userData.longitude as double),
+                                    radius: _radius,
+                                    strokeWidth: 2,
+                                    strokeColor: Colors.red)
+                              },
                             ),
                           ),
                         ],

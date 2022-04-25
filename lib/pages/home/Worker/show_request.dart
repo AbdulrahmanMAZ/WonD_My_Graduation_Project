@@ -8,12 +8,14 @@ import 'package:coffre_app/services/storage.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ShowRequest extends StatefulWidget {
   // static const _initialCameraPosition =
   //     CameraPosition(target: LatLng(40, -120), zoom: 12);
+
   const ShowRequest({Key? key}) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class _ShowRequestState extends State<ShowRequest>
         infoWindow: InfoWindow(title: args.name)));
     final Storage storage = Storage();
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -151,6 +154,11 @@ class _ShowRequestState extends State<ShowRequest>
                         ),
                         const Spacer(),
                         TextField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]')),
+                            ],
                             onChanged: (value) => setState(() {
                                   this.price = value;
                                 }),

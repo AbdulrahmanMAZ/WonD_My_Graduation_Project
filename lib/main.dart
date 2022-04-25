@@ -1,3 +1,4 @@
+import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
@@ -41,6 +42,8 @@ class MyApp extends StatelessWidget {
             initialData: [], value: DatabaseService().Acceptedrequets),
         StreamProvider<List<Request>>.value(
             initialData: [], value: DatabaseService().requets),
+        StreamProvider<List<Rate>>.value(
+            initialData: [], value: DatabaseService().ratee),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

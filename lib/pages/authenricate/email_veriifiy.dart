@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/pages/authenricate/sign_in.dart';
+import 'package:coffre_app/pages/home/Customer/CustLocation.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
+import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
   bool isEmailVertfied = false;
   bool canResend = true;
   Timer? timer;
+  bool showLogIn = true;
+
+  void checkPage() {
+    setState(() {
+      showLogIn = !showLogIn;
+    });
+  }
 
   @override
   void initState() {
@@ -76,7 +86,25 @@ class _VerifyEmailState extends State<VerifyEmail> {
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
-              return Text("Document does not exist");
+              return Scaffold(
+                  appBar: AppBar(),
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Document does not exist"),
+                        TextButton(
+                            child: Text('Go To Sign In Page'),
+                            onPressed: () {
+                              AuthSrrvice().SignOut();
+                              // Navigator.pushReplacement(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => SignIn()));
+                            })
+                      ],
+                    ),
+                  ));
             }
 
             if (snapshot.connectionState == ConnectionState.done) {

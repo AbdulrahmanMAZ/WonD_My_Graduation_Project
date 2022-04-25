@@ -48,13 +48,13 @@ class custTile extends StatelessWidget {
           title: Text(userRequest.profession),
           subtitle: Text(h24),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => UserProfile(
-                        name: userRequest.name,
-                      )),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => UserProfile(
+            //             req: userRequest,
+            //           )),
+            // );
           },
         ),
       ),
