@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
                     avregeRating += item.rate;
                   }
                 }
-                return Text('${avregeRating}');
+                return Text('${avregeRating / userRate!.length}');
               } else {
                 return Loading();
               }

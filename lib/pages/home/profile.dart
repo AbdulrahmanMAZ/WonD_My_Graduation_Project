@@ -48,7 +48,7 @@ class _UserProfileState extends State<UserProfile> {
                       }
                     }
                     return Text(
-                      '${avregeRating}',
+                      '${avregeRating / userRate!.length}',
                       style: TextStyle(color: Colors.amber, fontSize: 50),
                     );
                   } else {
