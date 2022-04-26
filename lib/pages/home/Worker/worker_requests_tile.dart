@@ -31,11 +31,15 @@ class worker_requets_tile extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(' ${distance} KM     '),
-                TextButton(
-                  child: const Text('Accept Request'),
-                  onPressed: () {},
+                Text(
+                  ' ${distance} KM     ',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold),
                 ),
+                // TextButton(
+                //   child: const Text('Accept Request'),
+                //   onPressed: () {},
+                // ),
                 const SizedBox(width: 8),
                 TextButton(
                   child: const Text('Show details'),

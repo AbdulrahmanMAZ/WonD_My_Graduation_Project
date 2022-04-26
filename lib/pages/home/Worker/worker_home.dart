@@ -11,6 +11,7 @@ import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/methods.dart';
 import 'package:coffre_app/shared/appbar.dart';
+import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class _worker_homeState extends State<worker_home> {
       }
     }
 
+    SetLocation();
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user?.uid).userData,
         builder: ((context, snapshot) {
@@ -95,11 +97,16 @@ class _worker_homeState extends State<worker_home> {
                 // print(item.latitude);
               }
             }
+            _markers.add(Marker(
+                markerId: MarkerId(userData?.name as String),
+                position: LatLng(userData?.latitude as double,
+                    userData?.longitude as double),
+                icon: BitmapDescriptor.defaultMarkerWithHue(180)));
             // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
             //while (noRequests) {
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.brown[50],
+              backgroundColor: AppColors.Allbackgroundcolor,
               drawer: worker_drawer(
                 username: user?.displayName,
                 logout: TextButton.icon(
@@ -147,7 +154,7 @@ class _worker_homeState extends State<worker_home> {
                                       userData?.longitude as double),
                                   zoom: 9.5),
                               scrollGesturesEnabled: false,
-                              minMaxZoomPreference: MinMaxZoomPreference(9, 11),
+                              minMaxZoomPreference: MinMaxZoomPreference(9, 15),
                               circles: {
                                 Circle(
                                     circleId:

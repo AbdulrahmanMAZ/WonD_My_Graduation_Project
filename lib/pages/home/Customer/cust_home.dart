@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:coffre_app/shared/constant.dart';
 
 class Cust_Home extends StatefulWidget {
   @override
@@ -82,7 +83,7 @@ class _Cust_HomeState extends State<Cust_Home> {
       value: AuthSrrvice().user,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.brown[50],
+        backgroundColor: AppColors.Allbackgroundcolor,
 
         drawer: CustDrawer(
           username: usera?.displayName as String?,

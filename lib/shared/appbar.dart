@@ -14,7 +14,7 @@ class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(name),
-      backgroundColor: Color.fromARGB(255, 38, 70, 173),
+      backgroundColor: Color.fromARGB(221, 27, 90, 109),
       elevation: 12.0,
       shadowColor: Colors.black,
       actions: widget,

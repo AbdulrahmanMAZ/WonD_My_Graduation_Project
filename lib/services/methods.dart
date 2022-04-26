@@ -5,7 +5,7 @@ radians(double a) {
   return a * math.pi / 180;
 }
 
-distance(lat1, lat2, lon1, lon2) {
+double distance(lat1, lat2, lon1, lon2) {
   lon1 = radians(lon1);
   lon2 = radians(lon2);
   lat1 = radians(lat1);

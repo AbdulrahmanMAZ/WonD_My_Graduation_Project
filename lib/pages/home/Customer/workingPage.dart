@@ -1,6 +1,8 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/shared/appbar.dart';
+import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,11 @@ class _workingpageState extends State<workingpage>
       if (item.Cust_ID == user?.uid) {
         if (item.Status == 2) {
           return Scaffold(
+            appBar: MyCustomAppBar(
+              name: "Rating",
+              widget: [],
+            ),
+            backgroundColor: AppColors.Allbackgroundcolor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -112,10 +119,8 @@ class _workingpageState extends State<workingpage>
         }
         if (item.Status == 1) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Hello'),
-            ),
-            backgroundColor: Colors.grey,
+            appBar: MyCustomAppBar(name: "Working on It", widget: []),
+            backgroundColor: AppColors.Allbackgroundcolor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -142,9 +147,7 @@ class _workingpageState extends State<workingpage>
       }
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Hello'),
-      ),
+      appBar: MyCustomAppBar(name: 'No Oeders', widget: []),
       backgroundColor: Colors.grey,
       body: SafeArea(
           child: Center(

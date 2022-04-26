@@ -5,6 +5,8 @@ import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
+import 'package:coffre_app/shared/constant.dart';
+import 'package:coffre_app/shared/detail/detail_header.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,87 +54,128 @@ class _ShowRequestState extends State<ShowRequest>
         infoWindow: InfoWindow(title: args.name)));
     final Storage storage = Storage();
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(),
           child: IntrinsicHeight(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * .35,
-                  color: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: FutureBuilder(
-                          future: storage.downloadURL(args.imageName),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                snapshot.hasData) {
-                              return Container(
-                                child: Image.network(
-                                  snapshot.data!,
-                                  fit: BoxFit.cover,
-                                  color: Colors.grey,
-                                  colorBlendMode: BlendMode.multiply,
-                                ),
-                              );
-                            }
-                            return Loading();
-                          },
-                        ),
-
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: imagePreviews,
-                        // ),
-                      ),
-                      const SizedBox(height: 18),
-                    ],
-                  ),
-                ),
+                //DetailHeader(title: args.name),
+                const SizedBox(height: 15),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RichText(
-                          text: TextSpan(
-                              text: "Description of",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: " ${args.name}",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color.fromARGB(255, 236, 0, 0)),
-                                ),
-                                TextSpan(
-                                    text: " 's problem",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color.fromARGB(255, 0, 0, 0)))
-                              ]),
+                        Text(
+                          'Order Owner',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: Constants.appFont,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blacColor,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${args.name}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: Constants.appFont,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 58, 27, 131),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Description ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: Constants.appFont,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blacColor,
+                          ),
                         ),
                         const SizedBox(
-                          height: 4,
+                          height: 5,
                         ),
-                        const SizedBox(height: 12),
                         Text(
                           args.Description,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(height: 1.5),
+                          style: const TextStyle(
+                            color: Color.fromARGB(171, 0, 0, 0),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Photo ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: Constants.appFont,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blacColor,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * .35,
+                          color: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: FutureBuilder(
+                                  future: storage.downloadURL(args.imageName),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    if (snapshot.connectionState ==
+                                            ConnectionState.done &&
+                                        snapshot.hasData) {
+                                      return Container(
+                                        child: Image.network(
+                                          snapshot.data!,
+                                          fit: BoxFit.cover,
+                                          color: Colors.grey,
+                                          colorBlendMode: BlendMode.multiply,
+                                        ),
+                                      );
+                                    }
+                                    return Loading();
+                                  },
+                                ),
+
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: imagePreviews,
+                                // ),
+                              ),
+                              // const SizedBox(height: 18),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          "Location ",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: Constants.appFont,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blacColor,
+                          ),
                         ),
                         Center(
                           child: Container(

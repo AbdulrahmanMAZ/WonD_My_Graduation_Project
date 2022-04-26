@@ -7,6 +7,7 @@ import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/pages/home/Customer/workingPage.dart';
 import 'package:coffre_app/services/auth.dart';
+import 'package:coffre_app/shared/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,7 @@ class CustDrawer extends StatelessWidget {
       initialData: null,
       value: AuthSrrvice().user,
       child: Drawer(
+        backgroundColor: Color.fromARGB(64, 86, 123, 170),
         child: ListView(
           children: [
             Container(
@@ -60,7 +62,7 @@ class CustDrawer extends StatelessWidget {
               child: DrawerHeader(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Color.fromARGB(255, 38, 70, 173),
+                  color: Color.fromARGB(255, 142, 187, 245),
                 ),
                 child: Text('Welcome, $username'),
               ),

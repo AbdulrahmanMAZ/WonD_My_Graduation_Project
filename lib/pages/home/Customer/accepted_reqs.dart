@@ -5,6 +5,7 @@ import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
+import 'package:coffre_app/shared/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
@@ -28,7 +29,7 @@ class Accepted_Orders extends StatelessWidget {
       initialData: null,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.brown[50],
+        backgroundColor: AppColors.Allbackgroundcolor,
         drawer: CustDrawer(
           username: usera?.displayName,
           logout: TextButton.icon(

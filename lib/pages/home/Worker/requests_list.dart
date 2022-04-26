@@ -50,13 +50,10 @@ class _RequestsListState extends State<RequestsList> {
               }
             }
 
-            RealComingRequests.sort((a, b) => double.parse(distance(
-                    userData!.latitude,
-                    a.latitude,
-                    userData.longitude,
-                    a.longitude))
-                .compareTo(double.parse(distance(userData.latitude, b.latitude,
-                    userData.longitude, b.longitude))));
+            RealComingRequests.sort((a, b) => distance(userData!.latitude,
+                    a.latitude, userData.longitude, a.longitude)
+                .compareTo(distance(userData.latitude, b.latitude,
+                    userData.longitude, b.longitude)));
 
             //while (noRequests) {
             if (RealComingRequests.length >= 1) {
@@ -87,22 +84,23 @@ class _RequestsListState extends State<RequestsList> {
               // List<Request> a = requests;
               //print(a.length);
               //while (noRequests) {
-              for (var item in RealComingRequests) {
-                return ListView.builder(
-                    itemCount: requests.length,
-                    itemBuilder: (context, index) {
-                      if (userData?.profession == requests[index].profession) {
-                        return worker_requets_tile(
-                            request: requests[index],
-                            distance: distance(
-                                userData?.latitude,
-                                item.latitude,
-                                userData?.longitude,
-                                item.longitude));
-                      }
-                      return Text('data');
-                    });
-              }
+              // for (var item in RealComingRequests) {
+              return ListView.builder(
+                  itemCount: RealComingRequests.length,
+                  itemBuilder: (context, index) {
+                    if (userData?.profession ==
+                        RealComingRequests[index].profession) {
+                      return worker_requets_tile(
+                          request: RealComingRequests[index],
+                          distance: distance(
+                              userData?.latitude,
+                              RealComingRequests[index].latitude,
+                              userData?.longitude,
+                              RealComingRequests[index].longitude));
+                    }
+                    return Text('data');
+                  });
+              // }
               // print(_markers.length);
               //noRequests = false;
               //print();
