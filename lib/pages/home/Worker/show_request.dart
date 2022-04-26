@@ -6,7 +6,7 @@ import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
 import 'package:coffre_app/shared/constant.dart';
-import 'package:coffre_app/shared/detail/detail_header.dart';
+
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
