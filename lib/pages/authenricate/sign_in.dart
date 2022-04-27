@@ -95,6 +95,8 @@ class _SignInState extends State<SignIn> {
                           // E-Mail text field
                           const SizedBox(height: 15),
                           TextFormField(
+                              key: Key('username'),
+                              restorationId: '1',
                               decoration: textInputDecoration,
                               validator: (val) =>
                                   val!.isEmpty ? 'Enter an E-Mail' : null,
@@ -109,6 +111,7 @@ class _SignInState extends State<SignIn> {
 
                           //Password text field
                           TextFormField(
+                            key: Key('password'),
                             decoration: passwordInputDecoration.copyWith(
                               suffixIcon: IconButton(
                                 onPressed: () {
@@ -139,6 +142,7 @@ class _SignInState extends State<SignIn> {
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(10),
                             child: ElevatedButton(
+                              key: Key('submit'),
                               style: ElevatedButton.styleFrom(
                                 primary: AppColors.backgroundColor,
                                 elevation: 3,

@@ -40,13 +40,14 @@ class _UserProfileState extends State<UserProfile> {
                 stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    double avregeRating = 0;
+                    double avregeRating = 1;
                     List<Rate>? userRate = snapshot.data;
                     if (userRate != null) {
                       for (var item in userRate) {
                         avregeRating += item.rate;
                       }
                     }
+
                     return Text(
                       '${avregeRating / userRate!.length}',
                       style: TextStyle(color: Colors.amber, fontSize: 50),
