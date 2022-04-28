@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:coffre_app/shared/constant.dart';
+import 'package:permission_handler/permission_handler.dart'
+    as PermissionHandler;
 
 class Cust_Home extends StatefulWidget {
   @override
@@ -22,9 +24,13 @@ class Cust_Home extends StatefulWidget {
 }
 
 class _Cust_HomeState extends State<Cust_Home> {
-  Location location = new Location();
+  PermissionStatus? _permissionGranted;
+  void initState() {
+    super.initState();
+    PermissionHandler.Permission.location;
+  }
 
-  PermissionStatus _permissionGranted = PermissionStatus.denied;
+  Location location = new Location();
 
   bool? _isServiceEnabled;
   // PermissionStatus _permissionGranted;
@@ -55,28 +61,48 @@ class _Cust_HomeState extends State<Cust_Home> {
     for (AcceptedRequest item in _myAcceptedRequests) {
       if (item.Cust_ID == usera?.uid) Workers_Who_Accepted.add(item);
     }
-    Future SetLocation() async {
-      _isServiceEnabled = await location.serviceEnabled();
-      if (!_isServiceEnabled!) {
-        _isServiceEnabled = await location.requestService();
-        if (_isServiceEnabled!) return;
-      }
 
-      _permissionGranted = await location.hasPermission();
-      if (_permissionGranted == PermissionStatus.granted) {
+    Future SetLocation(a) async {
+      var _locationStatus = await PermissionHandler.Permission.location.status;
+      print(_locationStatus);
+
+      if (!_locationStatus.isGranted) {
+        await PermissionHandler.Permission.location.request();
+      }
+      if (await PermissionHandler.Permission.location.isGranted) {
         _locationData = await location.getLocation();
         _db.updateUserLocation(
             _locationData!.latitude, _locationData!.longitude);
+        _showAppSettings(a);
+      } else {
+        return showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(child: Text('Must allow permission'));
+            });
       }
-      if (_permissionGranted == PermissionStatus.denied) {
-        print(_permissionGranted);
-        _permissionGranted = await location.requestPermission();
-        if (_permissionGranted == PermissionStatus.granted) {}
-      }
-      // _db.updateUserLocation(16.905971167609255, 42.573032566335506);
     }
+    //   _isServiceEnabled = await location.serviceEnabled();
+    //   if (!_isServiceEnabled!) {
+    //     _isServiceEnabled = await location.requestService();
+    //     if (_isServiceEnabled!) return;
+    //   }
 
-    SetLocation();
+    //   _permissionGranted = await location.hasPermission();
+    //   if (_permissionGranted == PermissionStatus.granted) {
+    //     _locationData = await location.getLocation();
+    //     _db.updateUserLocation(
+    //         _locationData!.latitude, _locationData!.longitude);
+    //   }
+    //   if (_permissionGranted == PermissionStatus.denied) {
+    //     print(_permissionGranted);
+    //     // setState(() {});
+    //     _permissionGranted = await location.requestPermission();
+    //     if (_permissionGranted == PermissionStatus.granted) {}
+    //   }
+    //   // _db.updateUserLocation(16.905971167609255, 42.573032566335506);
+
+    // SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     return StreamProvider<User?>.value(
       initialData: null,
@@ -107,7 +133,7 @@ class _Cust_HomeState extends State<Cust_Home> {
           IconButton(
               onPressed: () {
                 setState(() {
-                  SetLocation();
+                  // SetLocation();
                 });
               },
               icon: Icon(Icons.location_pin)),
@@ -170,9 +196,9 @@ class _Cust_HomeState extends State<Cust_Home> {
 
           // _permissionGranted = await location.hasPermission();
           // if (_permissionGranted == PermissionStatus.granted) {
-          //   _locationData = await location.getLocation();
-          //   _db.updateUserLocation(
-          //       _locationData!.latitude, _locationData!.longitude);
+          // _locationData = await location.getLocation();
+          // _db.updateUserLocation(
+          //     _locationData!.latitude, _locationData!.longitude);
           //   return _showAppSettings();
           // }
           // if (_permissionGranted == PermissionStatus.denied) {
@@ -207,7 +233,9 @@ class _Cust_HomeState extends State<Cust_Home> {
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
               onTap: () {
-                return _showAppSettings("Electrician");
+                return setState(() {
+                  SetLocation("Electrician");
+                });
               },
               child: Container(
                 height: 150,
@@ -247,7 +275,9 @@ class _Cust_HomeState extends State<Cust_Home> {
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
               onTap: () {
-                return _showAppSettings('plumber');
+                return setState(() {
+                  SetLocation('plumber');
+                });
               },
               child: Container(
                 height: 150,

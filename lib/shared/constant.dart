@@ -40,19 +40,20 @@ InputDecoration textInputDecoration = InputDecoration(
   filled: true,
   // Color when it is clicked
   border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
       borderSide: const BorderSide(
-    color: AppColors.underlineColor,
-    width: 0.5,
-  )),
+        color: AppColors.underlineColor,
+        width: 0.5,
+      )),
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 105, 21, 216),
       width: 0.5,
     ),
   ),
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 255, 17, 0),
       width: 0.6,
@@ -73,7 +74,7 @@ InputDecoration textInputDecoration = InputDecoration(
     size: 22,
   ),
   disabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: AppColors.backgroundColor,
       width: 0.5,
@@ -81,6 +82,7 @@ InputDecoration textInputDecoration = InputDecoration(
   ),
   // Color when not in clicked
   enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(20),
     borderSide: BorderSide(
       color: AppColors.underlineColor,
       width: 0.5,
@@ -94,19 +96,20 @@ InputDecoration userInputDecoration = InputDecoration(
   filled: true,
   // Color when it is clicked
   border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
       borderSide: const BorderSide(
-    color: AppColors.underlineColor,
-    width: 0.5,
-  )),
+        color: AppColors.underlineColor,
+        width: 0.5,
+      )),
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 105, 21, 216),
       width: 0.5,
     ),
   ),
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 255, 17, 0),
       width: 0.6,
@@ -127,7 +130,7 @@ InputDecoration userInputDecoration = InputDecoration(
     size: 22,
   ),
   disabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: AppColors.backgroundColor,
       width: 0.5,
@@ -135,6 +138,7 @@ InputDecoration userInputDecoration = InputDecoration(
   ),
   // Color when not in clicked
   enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(20),
     borderSide: BorderSide(
       color: AppColors.underlineColor,
       width: 0.5,
@@ -148,19 +152,20 @@ InputDecoration passwordInputDecoration = InputDecoration(
   filled: true,
 
   border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
       borderSide: const BorderSide(
-    color: AppColors.underlineColor,
-    width: 0.5,
-  )),
+        color: AppColors.underlineColor,
+        width: 0.5,
+      )),
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 105, 21, 216),
       width: 0.5,
     ),
   ),
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(11),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: Color.fromARGB(255, 255, 17, 0),
       width: 0.6,
@@ -181,7 +186,7 @@ InputDecoration passwordInputDecoration = InputDecoration(
     size: 22,
   ),
   disabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(20),
     borderSide: const BorderSide(
       color: AppColors.backgroundColor,
       width: 0.5,
@@ -189,6 +194,7 @@ InputDecoration passwordInputDecoration = InputDecoration(
   ),
   // Color when not in clicked
   enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(20),
     borderSide: BorderSide(
       color: AppColors.underlineColor,
       width: 0.5,

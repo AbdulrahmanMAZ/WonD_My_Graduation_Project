@@ -42,10 +42,10 @@ class _RegisterState extends State<Register> {
               FocusScope.of(context).requestFocus(new FocusNode());
             },
             child: Scaffold(
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Color.fromARGB(255, 53, 8, 30),
               appBar: AppBar(
-                backgroundColor: Color.fromARGB(221, 112, 55, 88),
+                backgroundColor: Colors.transparent,
                 title: Text('Sign Up'),
                 actions: <Widget>[
                   TextButton.icon(
@@ -57,9 +57,11 @@ class _RegisterState extends State<Register> {
                 ],
               ),
               body: SingleChildScrollView(
+                padding: EdgeInsets.all(32),
+                reverse: true,
                 child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  // padding:
+                  //     EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                   child: Form(
                       key: _formKey,
                       child: Column(
@@ -234,13 +236,14 @@ class _RegisterState extends State<Register> {
                             padding: const EdgeInsets.all(10),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: AppColors.backgroundColor,
-                                elevation: 3,
-                                fixedSize: Size(
-                                  ScreenSettings.setScreenWidth(context, 0.85),
-                                  ScreenSettings.setScreenHeight(
-                                      context, 0.078),
+                                minimumSize: Size.fromHeight(50),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                primary: Color.fromARGB(139, 0, 0, 0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
+                                // elevation: 3,
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {

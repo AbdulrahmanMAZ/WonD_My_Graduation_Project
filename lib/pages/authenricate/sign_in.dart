@@ -41,15 +41,15 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return loading
         ? Loading()
-        : new GestureDetector(
+        : GestureDetector(
             onTap: () {
               FocusScope.of(context).requestFocus(new FocusNode());
             },
             child: Scaffold(
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Color.fromARGB(255, 53, 8, 30),
               appBar: AppBar(
-                backgroundColor: Color.fromARGB(221, 112, 55, 88),
+                backgroundColor: Colors.transparent,
                 title: Text('Log In'),
                 actions: <Widget>[
                   TextButton.icon(
@@ -60,150 +60,154 @@ class _SignInState extends State<SignIn> {
                       label: Text("Register"))
                 ],
               ),
-              body: SingleChildScrollView(
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                  child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Text(
-                            "Welcome",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontFamily: Constants.appFont,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.whiteColor,
+              body: Center(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(32),
+                  reverse: true,
+                  child: Container(
+                    // padding:
+                    //     EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 20.0,
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            "Nice to see you again,if you have an account you can login from here",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: Constants.appFont,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
+                            const Text(
+                              "Welcome",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontFamily: Constants.appFont,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.whiteColor,
+                              ),
                             ),
-                          ),
-                          // E-Mail text field
-                          const SizedBox(height: 15),
-                          TextFormField(
-                              key: Key('username'),
-                              restorationId: '1',
-                              decoration: textInputDecoration,
-                              validator: (val) =>
-                                  val!.isEmpty ? 'Enter an E-Mail' : null,
+                            const SizedBox(height: 8),
+                            const Text(
+                              "Nice to see you again,if you have an account you can login from here",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: Constants.appFont,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            // E-Mail text field
+                            const SizedBox(height: 15),
+                            TextFormField(
+                                key: Key('username'),
+                                restorationId: '1',
+                                decoration: textInputDecoration,
+                                validator: (val) =>
+                                    val!.isEmpty ? 'Enter an E-Mail' : null,
+                                onChanged: (val) {
+                                  setState(() {
+                                    email = val;
+                                  });
+                                }),
+                            SizedBox(
+                              height: 20,
+                            ),
+
+                            //Password text field
+                            TextFormField(
+                              key: Key('password'),
+                              decoration: passwordInputDecoration.copyWith(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible!;
+                                    });
+                                  },
+                                  icon: Icon(_passwordVisible!
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                ),
+                              ),
+                              validator: (val) => val!.length < 8
+                                  ? 'Your password  must be longer than 8 letters'
+                                  : null,
+                              obscureText: _passwordVisible!,
                               onChanged: (val) {
                                 setState(() {
-                                  email = val;
+                                  password = val;
                                 });
-                              }),
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          //Password text field
-                          TextFormField(
-                            key: Key('password'),
-                            decoration: passwordInputDecoration.copyWith(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible!;
-                                  });
-                                },
-                                icon: Icon(_passwordVisible!
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                              ),
-                            ),
-                            validator: (val) => val!.length < 8
-                                ? 'Your password  must be longer than 8 letters'
-                                : null,
-                            obscureText: _passwordVisible!,
-                            onChanged: (val) {
-                              setState(() {
-                                password = val;
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(10),
-                            child: ElevatedButton(
-                              key: Key('submit'),
-                              style: ElevatedButton.styleFrom(
-                                primary: AppColors.backgroundColor,
-                                elevation: 3,
-                                fixedSize: Size(
-                                  ScreenSettings.setScreenWidth(context, 0.85),
-                                  ScreenSettings.setScreenHeight(
-                                      context, 0.078),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    loading = true;
-                                    error = '';
-                                  });
-                                  dynamic result =
-                                      await _auth.SignInWithEmailAndPassword(
-                                          email, password);
-
-                                  if (result == null) {
-                                    setState(() {
-                                      error = 'Incorrect information';
-                                      loading = false;
-                                    });
-                                  }
-                                  //   if (result != null) {
-                                  //     setState(() {
-                                  //       error = 'Incorrect information';
-                                  //       loading = false;
-                                  //     });
-                                  //   }
-                                }
                               },
-                              child: Text(
-                                'Log In',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontFamily: Constants.appFont,
-                                  fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+
+                            Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                key: Key('submit'),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size.fromHeight(50),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  primary: Color.fromARGB(110, 0, 0, 0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                      error = '';
+                                    });
+                                    dynamic result =
+                                        await _auth.SignInWithEmailAndPassword(
+                                            email, password);
+
+                                    if (result == null) {
+                                      setState(() {
+                                        error = 'Incorrect information';
+                                        loading = false;
+                                      });
+                                    }
+                                    //   if (result != null) {
+                                    //     setState(() {
+                                    //       error = 'Incorrect information';
+                                    //       loading = false;
+                                    //     });
+                                    //   }
+                                  }
+                                },
+                                child: Text(
+                                  'Log In',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontFamily: Constants.appFont,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Text(error)
-                        ],
-                      )),
+                            Text(error)
+                          ],
+                        )),
 
-                  //     //Button for anonyoums
+                    //     //Button for anonyoums
 
-                  // child: ElevatedButton(
-                  //   onPressed: () async {
-                  //     dynamic result = await _auth.signINAnon();
-                  //     if (result == null) {
-                  //       print('Sorry you are not logged in');
-                  //     } else {
-                  //       print('You are looged in ');
-                  //       print(result);
-                  //     }
-                  //   },
-                  //   child: Text('Anonymuos Sign In'),
-                  // )
+                    // child: ElevatedButton(
+                    //   onPressed: () async {
+                    //     dynamic result = await _auth.signINAnon();
+                    //     if (result == null) {
+                    //       print('Sorry you are not logged in');
+                    //     } else {
+                    //       print('You are looged in ');
+                    //       print(result);
+                    //     }
+                    //   },
+                    //   child: Text('Anonymuos Sign In'),
+                    // )
+                  ),
                 ),
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/pages/home/Worker/show_request.dart';
+import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home_old.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           '/cust_ordering': (context) => OrderPage(),
           '/Show_Request': (context) => ShowRequest(),
           '/Accepted_Requests': (context) => Accepted_Orders(),
+          '/SetWorkerLocation': (context) => setLocationWorker(),
         },
         home: Wrapper(),
       ),

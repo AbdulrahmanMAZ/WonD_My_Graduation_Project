@@ -40,9 +40,15 @@ class DatabaseService {
   }
 
   Future<void> updateUserLocation(lat, long) async {
-    return await workersCollection
-        .doc(uid)
-        .update({'latitude': lat, 'longitude': long});
+    try {
+      var a = await workersCollection
+          .doc(uid)
+          .update({'latitude': lat, 'longitude': long});
+
+      return a;
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> updateRequestStatus(Status) async {
