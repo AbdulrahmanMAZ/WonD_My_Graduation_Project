@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049870809129",
+    "project_id": "worker-on-duty",
+    "storage_bucket": "worker-on-duty.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049870809129:android:5fbb9fe79c6866cfc70438",
+        "android_client_info": {
+          "package_name": "com.Myappisunique.worker_on_duty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049870809129-1rvhfucu5u3l312gu99uli2q1lbcmek9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpyByZF-baGjtpJUTXjv0NbGPOQ0zro9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049870809129-1rvhfucu5u3l312gu99uli2q1lbcmek9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -71,7 +71,7 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Cust_Home()));
               },
             ),

@@ -42,7 +42,11 @@ class worker_drawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
-                Navigator.pushNamed(context, '/worker_home');
+                // Navigator.pushReplacementNamed(context, '/worker_home');
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/worker_home', (Route<dynamic> route) => false);
+                Navigator.of(context).pushReplacementNamed('/worker_home');
               },
             ),
             TextButton.icon(

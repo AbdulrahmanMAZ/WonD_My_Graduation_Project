@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/CustLocation.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
@@ -19,6 +20,7 @@ class VerifyEmail extends StatefulWidget {
 }
 
 class _VerifyEmailState extends State<VerifyEmail> {
+  late Future<DocumentSnapshot<Object?>> userDATA;
   bool isEmailVertfied = false;
   bool canResend = true;
   Timer? timer;
@@ -33,6 +35,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   void initState() {
     // TODO: implement initState
+
+    this.userDATA = GiveMETHEFUCKINGUSER();
     super.initState();
 
     isEmailVertfied = FirebaseAuth.instance.currentUser!.emailVerified;
@@ -73,16 +77,23 @@ class _VerifyEmailState extends State<VerifyEmail> {
     }
   }
 
-  final CollectionReference workers =
-      FirebaseFirestore.instance.collection('coffes');
+  Future<DocumentSnapshot<Object?>> GiveMETHEFUCKINGUSER() {
+    final CollectionReference workers =
+        FirebaseFirestore.instance.collection('coffes');
+    Future<DocumentSnapshot<Object?>> a = workers.doc(widget.user).get();
+    return a;
+  }
+
   @override
   Widget build(BuildContext context) => isEmailVertfied
       ? FutureBuilder<DocumentSnapshot>(
-          future: workers.doc(widget.user).get(),
+          future: this.userDATA,
+          // initialData: null,
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return Scaffold(
+                  appBar: AppBar(), body: Text('${snapshot.error}'));
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
@@ -110,6 +121,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
+
               if (data['isWorker'] == true) {
                 return worker_home();
               } else {
@@ -117,7 +129,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
               }
             }
 
-            return Loading();
+            return Text(snapshot.connectionState.name);
           },
         )
       : Scaffold(

@@ -60,7 +60,8 @@ class _setLocationWorkerState extends State<setLocationWorker> {
               onPressed: () async {
                 _permissionGranted = await location.hasPermission();
                 if (_permissionGranted == PermissionStatus.granted) {
-                  Navigator.of(context).pushNamed('/worker_home');
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/worker_home', (Route<dynamic> route) => false);
                 }
                 // Future.delayed(Duration(seconds: 5));
                 // Navigator.of(context).pushNamedAndRemoveUntil(

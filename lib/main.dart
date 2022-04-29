@@ -1,5 +1,6 @@
 import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
@@ -7,8 +8,10 @@ import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
+import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/Worker/show_request.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
+import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home_old.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
@@ -19,10 +22,15 @@ import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
+  }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -33,6 +41,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
     return MultiProvider(
       providers: [
         StreamProvider<User?>.value(
@@ -58,6 +68,8 @@ class MyApp extends StatelessWidget {
           '/Show_Request': (context) => ShowRequest(),
           '/Accepted_Requests': (context) => Accepted_Orders(),
           '/SetWorkerLocation': (context) => setLocationWorker(),
+          '/accept_tracker': (context) => accept_tracker(),
+          '/Profile': (context) => Profile(),
         },
         home: Wrapper(),
       ),
