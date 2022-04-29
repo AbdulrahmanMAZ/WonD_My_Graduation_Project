@@ -3,9 +3,7 @@ import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/pages/home/Worker/requests_list.dart';
-import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
 import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
-import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,25 +13,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class worker_requests extends StatefulWidget {
-  @override
-  State<worker_requests> createState() => _worker_requestsState();
-}
-
-class _worker_requestsState extends State<worker_requests> {
+class worker_requests extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
-
-  int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    worker_home(),
-    Profile(),
-    worker_requests()
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,24 +67,6 @@ class _worker_requestsState extends State<worker_requests> {
         //   ],
         // ),
         body: RequestsList(),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex, //New
-          onTap: _onItemTapped,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.call),
-              label: 'Calls',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera),
-              label: 'Camera',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chats',
-            ),
-          ],
-        ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {},

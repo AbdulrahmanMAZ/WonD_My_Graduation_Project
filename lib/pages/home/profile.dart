@@ -1,8 +1,5 @@
 import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
-import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
-import 'package:coffre_app/pages/home/Worker/worker_home.dart';
-import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,18 +18,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    worker_home(),
-    Profile(),
-    worker_requests()
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
@@ -73,24 +58,6 @@ class _UserProfileState extends State<UserProfile> {
                 })
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex, //New
-        onTap: _onItemTapped,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Calls',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Camera',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chats',
-          ),
-        ],
       ),
     );
   }

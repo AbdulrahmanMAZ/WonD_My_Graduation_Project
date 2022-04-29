@@ -5,9 +5,7 @@ import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
-import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
 import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
-import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/auth.dart';
@@ -34,7 +32,6 @@ class worker_home extends StatefulWidget {
 }
 
 class _worker_homeState extends State<worker_home> {
-  int _selectedIndex = 0;
   late Stream<UserData> userDATA;
 
   Location location = new Location();
@@ -49,35 +46,18 @@ class _worker_homeState extends State<worker_home> {
   @override
   void initState() {
     super.initState();
-    this.userDATA = GiveMETHEFUCKINGUSER();
+    final DatabaseService _db = DatabaseService(uid: user);
+    final _userData = DatabaseService(uid: user).userData;
+    this.userDATA = _userData;
   }
-
-  Stream<UserData> GiveMETHEFUCKINGUSER() {
-    final CollectionReference workers =
-        FirebaseFirestore.instance.collection('coffes');
-    Stream<UserData> a = DatabaseService(uid: user).userData;
-    return a;
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  static List<Widget> _widgetOptions = <Widget>[
-    worker_home(),
-    Profile(),
-    worker_requests()
-  ];
 
   @override
   Widget build(BuildContext context) {
     double _radius = 30000.0;
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
-    final UUser = Provider.of<User?>(context);
-    final DatabaseService _db = DatabaseService(uid: this.user);
+    final user = Provider.of<User?>(context);
+    final DatabaseService _db = DatabaseService(uid: user?.uid);
     // final _userData = DatabaseService(uid: user?.uid).userData;
     //GETTING THE DATA OF THE WORKER
 
@@ -115,7 +95,7 @@ class _worker_homeState extends State<worker_home> {
       }
       // if (_permissionGranted == PermissionStatus.denied) {
       if (await PermssionHandler.Permission.location.isDenied) {
-        return setLocationWorker();
+        Navigator.pushNamed(context, '/SetWorkerLocation');
       }
       // }
       //Navigator.pop(context);
@@ -146,82 +126,82 @@ class _worker_homeState extends State<worker_home> {
       // }
     }
 
-    // SetLocation();
+    SetLocation();
     final AsyncMemoizer _memoizer = AsyncMemoizer();
-    if (_selectedIndex == 0) {
-      return StreamBuilder<UserData>(
-          stream: userDATA,
-          builder: ((context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Text('Waaaiting');
-              case ConnectionState.done:
-              default:
-                if (snapshot.hasError) {
-                  return Text('An error');
-                } else if (snapshot.hasData) {
-                  UserData? userData = snapshot.data;
-                  // _markers.add(Marker(
-                  //     markerId: MarkerId('SomeId'),
-                  //     position: LatLng(userData?.latitude as double,
-                  //         userData?.longitude as double),
-                  //     infoWindow: InfoWindow(title: userData?.name)));
-                  List<Request> a = requests;
-                  for (Request item in a) {
-                    // for (int i = 0; i >= a.length; i++)
+    return StreamBuilder<UserData>(
+        stream: userDATA,
+        builder: ((context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Text('Waaaiting');
+            case ConnectionState.done:
+            default:
+              if (snapshot.hasError) {
+                return Text('An error');
+              } else if (snapshot.hasData) {
+                UserData? userData = snapshot.data;
+                // _markers.add(Marker(
+                //     markerId: MarkerId('SomeId'),
+                //     position: LatLng(userData?.latitude as double,
+                //         userData?.longitude as double),
+                //     infoWindow: InfoWindow(title: userData?.name)));
+                List<Request> a = requests;
+                for (Request item in a) {
+                  // for (int i = 0; i >= a.length; i++)
 
-                    if (userData!.profession == item.profession &&
-                        distance(userData.latitude, item.latitude,
-                                userData.longitude, item.longitude) <
-                            30) {
-                      _markers.add(Marker(
-                        markerId: MarkerId('${item.name}'),
-                        position: LatLng(item.latitude, item.longitude),
-                        infoWindow: InfoWindow(title: item.Description),
-                        onTap: () {
-                          // print('${item.name}');
-                          Navigator.pushNamed(context, '/Show_Request',
-                              arguments: item);
-                        },
-                      ));
-                      // print(item.latitude);
-                    }
+                  if (userData!.profession == item.profession &&
+                      distance(userData.latitude, item.latitude,
+                              userData.longitude, item.longitude) <
+                          30) {
+                    _markers.add(Marker(
+                      markerId: MarkerId('${item.name}'),
+                      position: LatLng(item.latitude, item.longitude),
+                      infoWindow: InfoWindow(title: item.Description),
+                      onTap: () {
+                        // print('${item.name}');
+                        Navigator.pushNamed(context, '/Show_Request',
+                            arguments: item);
+                      },
+                    ));
+                    // print(item.latitude);
                   }
-                  _markers.add(Marker(
-                      markerId: MarkerId(userData?.name as String),
-                      position: LatLng(userData?.latitude as double,
-                          userData?.longitude as double),
-                      icon: BitmapDescriptor.defaultMarkerWithHue(180)));
-                  // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
-                  //while (noRequests) {
-                  return Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    backgroundColor: AppColors.Allbackgroundcolor,
-                    drawer: worker_drawer(
-                      username: UUser?.displayName,
-                      logout: TextButton.icon(
-                        icon: Icon(Icons.person),
-                        label: Text('logout'),
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-                          await _auth.SignOut();
-                        },
-                      ),
+                }
+                _markers.add(Marker(
+                    markerId: MarkerId(userData?.name as String),
+                    position: LatLng(userData?.latitude as double,
+                        userData?.longitude as double),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(180)));
+                // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
+                //while (noRequests) {
+                return Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  backgroundColor: AppColors.Allbackgroundcolor,
+                  drawer: worker_drawer(
+                    username: user?.displayName,
+                    logout: TextButton.icon(
+                      icon: Icon(Icons.person),
+                      label: Text('logout'),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await _auth.SignOut();
+                      },
                     ),
-                    appBar: MyCustomAppBar(
-                      name: 'Nearby Customers',
-                      widget: [
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                SetLocation();
-                              });
-                              //Future.delayed(Duration(seconds: 5));
-                              // setState(() {});
-                            },
-                            icon: Icon(Icons.location_pin))
-                      ],
-                    ),
+                  ),
+                  appBar: MyCustomAppBar(
+                    name: 'Nearby Customers',
+                    widget: [
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              SetLocation();
+                            });
+                            //Future.delayed(Duration(seconds: 5));
+                            // setState(() {});
+                          },
+                          icon: Icon(Icons.location_pin))
+                    ],
+                  ),
+                  body: Scaffold(
                     body: GoogleMap(
                       //liteModeEnabled: true,
                       mapType: MapType.normal,
@@ -229,7 +209,7 @@ class _worker_homeState extends State<worker_home> {
                       myLocationButtonEnabled: false,
                       zoomControlsEnabled: true,
                       zoomGesturesEnabled: true,
-                      // scrollGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
                       gestureRecognizers: Set()
                         ..add(Factory<PanGestureRecognizer>(
                             () => PanGestureRecognizer())),
@@ -249,136 +229,115 @@ class _worker_homeState extends State<worker_home> {
                             strokeColor: Colors.red)
                       },
                     ),
-                    bottomNavigationBar: BottomNavigationBar(
-                      currentIndex: _selectedIndex, //New
-                      onTap: _onItemTapped,
-                      items: <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.call),
-                          label: 'Calls',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.camera),
-                          label: 'Camera',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.chat),
-                          label: 'Chats',
-                        ),
-                      ],
-                    ),
-                  );
-                }
-            }
-            // if (!snapshot.hasData) {
-            //   // while data is loading:
+                  ),
+                );
+              }
+          }
+          // if (!snapshot.hasData) {
+          //   // while data is loading:
 
-            //   return Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
+          //   return Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
 
-            // if (snapshot.hasData) {
-            //   UserData? userData = snapshot.data;
-            //   // _markers.add(Marker(
-            //   //     markerId: MarkerId('SomeId'),
-            //   //     position: LatLng(userData?.latitude as double,
-            //   //         userData?.longitude as double),
-            //   //     infoWindow: InfoWindow(title: userData?.name)));
-            //   List<Request> a = requests;
-            //   for (Request item in a) {
-            //     // for (int i = 0; i >= a.length; i++)
+          // if (snapshot.hasData) {
+          //   UserData? userData = snapshot.data;
+          //   // _markers.add(Marker(
+          //   //     markerId: MarkerId('SomeId'),
+          //   //     position: LatLng(userData?.latitude as double,
+          //   //         userData?.longitude as double),
+          //   //     infoWindow: InfoWindow(title: userData?.name)));
+          //   List<Request> a = requests;
+          //   for (Request item in a) {
+          //     // for (int i = 0; i >= a.length; i++)
 
-            //     if (userData!.profession == item.profession &&
-            //         distance(userData.latitude, item.latitude, userData.longitude,
-            //                 item.longitude) <
-            //             30) {
-            //       _markers.add(Marker(
-            //         markerId: MarkerId('${item.name}'),
-            //         position: LatLng(item.latitude, item.longitude),
-            //         infoWindow: InfoWindow(title: item.Description),
-            //         onTap: () {
-            //           // print('${item.name}');
-            //           Navigator.pushNamed(context, '/Show_Request',
-            //               arguments: item);
-            //         },
-            //       ));
-            //       // print(item.latitude);
-            //     }
-            //   }
-            //   _markers.add(Marker(
-            //       markerId: MarkerId(userData?.name as String),
-            //       position: LatLng(userData?.latitude as double,
-            //           userData?.longitude as double),
-            //       icon: BitmapDescriptor.defaultMarkerWithHue(180)));
-            //   // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
-            //   //while (noRequests) {
-            //   return Scaffold(
-            //     resizeToAvoidBottomInset: false,
-            //     backgroundColor: AppColors.Allbackgroundcolor,
-            //     drawer: worker_drawer(
-            //       username: user?.displayName,
-            //       logout: TextButton.icon(
-            //         icon: Icon(Icons.person),
-            //         label: Text('logout'),
-            //         onPressed: () async {
-            //           Navigator.of(context).pop();
-            //           await _auth.SignOut();
-            //         },
-            //       ),
-            //     ),
-            //     appBar: MyCustomAppBar(
-            //       name: 'Nearby Customers',
-            //       widget: [
-            //         IconButton(
-            //             onPressed: () {
-            //               setState(() {
-            //                 SetLocation();
-            //               });
-            //               //Future.delayed(Duration(seconds: 5));
-            //               // setState(() {});
-            //             },
-            //             icon: Icon(Icons.location_pin))
-            //       ],
-            //     ),
-            //     body: Scaffold(
-            //       body: GoogleMap(
-            //         //liteModeEnabled: true,
-            //         mapType: MapType.normal,
-            //         markers: Set<Marker>.of(_markers),
-            //         myLocationButtonEnabled: false,
-            //         zoomControlsEnabled: true,
-            //         zoomGesturesEnabled: true,
-            //         scrollGesturesEnabled: true,
-            //         gestureRecognizers: Set()
-            //           ..add(Factory<PanGestureRecognizer>(
-            //               () => PanGestureRecognizer())),
-            //         initialCameraPosition: CameraPosition(
-            //             target: LatLng(userData?.latitude as double,
-            //                 userData?.longitude as double),
-            //             zoom: 9.5),
+          //     if (userData!.profession == item.profession &&
+          //         distance(userData.latitude, item.latitude, userData.longitude,
+          //                 item.longitude) <
+          //             30) {
+          //       _markers.add(Marker(
+          //         markerId: MarkerId('${item.name}'),
+          //         position: LatLng(item.latitude, item.longitude),
+          //         infoWindow: InfoWindow(title: item.Description),
+          //         onTap: () {
+          //           // print('${item.name}');
+          //           Navigator.pushNamed(context, '/Show_Request',
+          //               arguments: item);
+          //         },
+          //       ));
+          //       // print(item.latitude);
+          //     }
+          //   }
+          //   _markers.add(Marker(
+          //       markerId: MarkerId(userData?.name as String),
+          //       position: LatLng(userData?.latitude as double,
+          //           userData?.longitude as double),
+          //       icon: BitmapDescriptor.defaultMarkerWithHue(180)));
+          //   // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
+          //   //while (noRequests) {
+          //   return Scaffold(
+          //     resizeToAvoidBottomInset: false,
+          //     backgroundColor: AppColors.Allbackgroundcolor,
+          //     drawer: worker_drawer(
+          //       username: user?.displayName,
+          //       logout: TextButton.icon(
+          //         icon: Icon(Icons.person),
+          //         label: Text('logout'),
+          //         onPressed: () async {
+          //           Navigator.of(context).pop();
+          //           await _auth.SignOut();
+          //         },
+          //       ),
+          //     ),
+          //     appBar: MyCustomAppBar(
+          //       name: 'Nearby Customers',
+          //       widget: [
+          //         IconButton(
+          //             onPressed: () {
+          //               setState(() {
+          //                 SetLocation();
+          //               });
+          //               //Future.delayed(Duration(seconds: 5));
+          //               // setState(() {});
+          //             },
+          //             icon: Icon(Icons.location_pin))
+          //       ],
+          //     ),
+          //     body: Scaffold(
+          //       body: GoogleMap(
+          //         //liteModeEnabled: true,
+          //         mapType: MapType.normal,
+          //         markers: Set<Marker>.of(_markers),
+          //         myLocationButtonEnabled: false,
+          //         zoomControlsEnabled: true,
+          //         zoomGesturesEnabled: true,
+          //         scrollGesturesEnabled: true,
+          //         gestureRecognizers: Set()
+          //           ..add(Factory<PanGestureRecognizer>(
+          //               () => PanGestureRecognizer())),
+          //         initialCameraPosition: CameraPosition(
+          //             target: LatLng(userData?.latitude as double,
+          //                 userData?.longitude as double),
+          //             zoom: 9.5),
 
-            //         minMaxZoomPreference: MinMaxZoomPreference(13, 17),
-            //         circles: {
-            //           Circle(
-            //               circleId: CircleId(userData!.name as String),
-            //               center: LatLng(userData.latitude as double,
-            //                   userData.longitude as double),
-            //               radius: _radius,
-            //               strokeWidth: 2,
-            //               strokeColor: Colors.red)
-            //         },
-            //       ),
-            //     ),
-            //   );
-            //   //}
+          //         minMaxZoomPreference: MinMaxZoomPreference(13, 17),
+          //         circles: {
+          //           Circle(
+          //               circleId: CircleId(userData!.name as String),
+          //               center: LatLng(userData.latitude as double,
+          //                   userData.longitude as double),
+          //               radius: _radius,
+          //               strokeWidth: 2,
+          //               strokeColor: Colors.red)
+          //         },
+          //       ),
+          //     ),
+          //   );
+          //   //}
 
-            // }
-            return Loading();
-          }));
-    } else {
-      return _widgetOptions.elementAt(_selectedIndex);
-    }
-    return Loading();
+          // }
+          return Loading();
+        }));
   }
 }
