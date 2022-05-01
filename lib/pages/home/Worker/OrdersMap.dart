@@ -1,19 +1,9 @@
-// import 'dart:html';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/pages/home/Customer/cust_home.dart';
-import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
-import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
-import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
-
-import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/methods.dart';
 import 'package:coffre_app/shared/appbar.dart';
-import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -21,18 +11,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:permission_handler/permission_handler.dart' as PermssionHandler;
 import 'package:provider/provider.dart';
-import 'package:async/async.dart';
 
-class worker_home extends StatefulWidget {
-  const worker_home({Key? key}) : super(key: key);
+class OrdersMap extends StatefulWidget {
+  const OrdersMap({Key? key}) : super(key: key);
 
   @override
-  _worker_homeState createState() => _worker_homeState();
+  State<OrdersMap> createState() => _OrdersMapState();
 }
 
-class _worker_homeState extends State<worker_home> {
+class _OrdersMapState extends State<OrdersMap> {
   late Stream<UserData> userDATA;
 
   Location location = new Location();
@@ -63,110 +51,86 @@ class _worker_homeState extends State<worker_home> {
     //GETTING THE DATA OF THE WORKER
 
     bool noRequests = true;
+    return StreamBuilder<UserData>(
+        stream: userDATA,
+        builder: ((context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Loading();
+            case ConnectionState.done:
+            default:
+              if (snapshot.hasError) {
+                return Text('An error');
+              } else if (snapshot.hasData) {
+                UserData? userData = snapshot.data;
+                // _markers.add(Marker(
+                //     markerId: MarkerId('SomeId'),
+                //     position: LatLng(userData?.latitude as double,
+                //         userData?.longitude as double),
+                //     infoWindow: InfoWindow(title: userData?.name)));
+                List<Request> a = requests;
+                for (Request item in a) {
+                  // for (int i = 0; i >= a.length; i++)
 
-    // void _showAppSettingss() {
-    //   showModalBottomSheet(
-    //       context: context,
-    //       builder: (context) {
-    //         return Container(
-    //           child: setLocationWorker(),
-    //         );
-    //       });
-    // }
+                  if (userData!.profession == item.profession &&
+                      distance(userData.latitude, item.latitude,
+                              userData.longitude, item.longitude) <
+                          30) {
+                    _markers.add(Marker(
+                      markerId: MarkerId('${item.name}'),
+                      position: LatLng(item.latitude, item.longitude),
+                      infoWindow: InfoWindow(title: item.Description),
+                      onTap: () {
+                        // print('${item.name}');
+                        Navigator.pushNamed(context, '/Show_Request',
+                            arguments: item);
+                      },
+                    ));
+                    // print(item.latitude);
+                  }
+                }
+                _markers.add(Marker(
+                    markerId: MarkerId(userData?.name as String),
+                    position: LatLng(userData?.latitude as double,
+                        userData?.longitude as double),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(180)));
+                // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
+                //while (noRequests) {
+                return Scaffold(
+                  appBar: AppBar(title: Text("Nearby Customers")),
+                  body: Scaffold(
+                    body: GoogleMap(
+                      //liteModeEnabled: true,
+                      mapType: MapType.normal,
+                      markers: Set<Marker>.of(_markers),
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: true,
+                      zoomGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
 
-    Future SetLocation() async {
-      _isServiceEnabled = await location.serviceEnabled();
-      if (!_isServiceEnabled!) {
-        _isServiceEnabled = await location.requestService();
-        if (_isServiceEnabled!) return;
-      }
+                      gestureRecognizers: Set()
+                        ..add(Factory<PanGestureRecognizer>(
+                            () => PanGestureRecognizer())),
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(userData?.latitude as double,
+                              userData?.longitude as double),
+                          zoom: 11),
 
-      _permissionGranted = await location.hasPermission();
-      if (_permissionGranted == PermissionStatus.granted) {
-        _locationData = await location.getLocation();
-        await _db.updateUserLocation(
-            _locationData!.latitude, _locationData!.longitude);
-        print(_permissionGranted);
-      }
-      print('$_permissionGranted');
-      try {
-        await PermssionHandler.Permission.location.request();
-      } catch (e) {
-        print(e.toString());
-      }
-      // if (_permissionGranted == PermissionStatus.denied) {
-      if (await PermssionHandler.Permission.location.isDenied) {
-        Navigator.pushNamed(context, '/SetWorkerLocation');
-      }
-      // }
-      //Navigator.pop(context);
-      // if (_permissionGranted == PermissionStatus.denied) {}
-      //_showAppSettingss();
-
-      //return PermssionHandler.openAppSettings();
-      // if (_permissionGranted == PermissionStatus.granted) {}
-      // }
-      // if (_permissionGranted == PermissionStatus.denied) {
-      //   // _permissionGranted = await location.requestPermission();
-      //   // if (_permissionGranted == PermissionStatus.denied) {
-      //   Navigator.pushNamed(context, '/SetWorkerLocation');
-      //   // }
-      //   //_showAppSettingss();
-
-      //   //return PermssionHandler.openAppSettings();
-      //   // if (_permissionGranted == PermissionStatus.granted) {}
-      // }
-      if (_permissionGranted == PermissionStatus.granted) {
-        return;
-      }
-
-      // if (_permissionGranted == PermissionStatus.denied) {
-      //   setState(() {
-
-      //   });
-      // }
-    }
-
-    SetLocation();
-    final AsyncMemoizer _memoizer = AsyncMemoizer();
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.Allbackgroundcolor,
-        drawer: worker_drawer(
-          username: user?.displayName,
-          logout: TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
-            onPressed: () async {
-              // Navigator.of(context).pop();
-              await _auth.SignOut();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-          ),
-        ),
-        appBar: MyCustomAppBar(
-          name: "${user?.displayName}'s Home Page",
-          widget: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    SetLocation();
-                  });
-                  //Future.delayed(Duration(seconds: 5));
-                  // setState(() {});
-                },
-                icon: Icon(Icons.location_pin))
-          ],
-        ),
-        body: Center(
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/OrdersMap');
-              },
-              child: Text('Open a Map of the nearby Orders')),
-        ));
-  }
-}
+                      minMaxZoomPreference: MinMaxZoomPreference(10, 18),
+                      circles: {
+                        Circle(
+                            circleId: CircleId(userData!.name as String),
+                            center: LatLng(userData.latitude as double,
+                                userData.longitude as double),
+                            radius: _radius,
+                            strokeWidth: 2,
+                            strokeColor: Colors.red)
+                      },
+                    ),
+                  ),
+                );
+              }
+          }
           // if (!snapshot.hasData) {
           //   // while data is loading:
 
@@ -271,6 +235,7 @@ class _worker_homeState extends State<worker_home> {
           //   //}
 
           // }
-          
-       
-  
+          return Loading();
+        }));
+  }
+}

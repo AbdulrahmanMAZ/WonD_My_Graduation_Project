@@ -129,7 +129,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
               }
             }
 
-            return Text(snapshot.connectionState.name);
+            return Loading();
           },
         )
       : Scaffold(

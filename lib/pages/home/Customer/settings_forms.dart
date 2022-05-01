@@ -52,180 +52,188 @@ class _SettingsFormState extends State<SettingsForm> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
-            return Form(
-                key: _formKey,
-                child: Card(
-                  child: Column(
-                    children: <Widget>[
-                      Text('Request a Service',
-                          style: GoogleFonts.nothingYouCouldDo(
-                              textStyle: TextStyle(
-                                  color: Colors.black38,
-                                  fontSize: 20,
-                                  letterSpacing: .5,
-                                  fontWeight: FontWeight.w900))),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text("Welcome ${userData!.name} to the requesting page",
-                          style: GoogleFonts.actor(
-                              textStyle: TextStyle(
-                                  color: Colors.black38,
-                                  fontSize: 20,
-                                  letterSpacing: .5,
-                                  fontWeight: FontWeight.w900))),
-                      SizedBox(
-                        height: 20,
-                      ),
-
-                      //Drop Down.
-                      Text(
-                        "You are Requesting: ${widget.profession}",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      // TextField(
-                      //   enabled: false,
-                      //   style: TextStyle(fontSize: 12),
-                      //   decoration: InputDecoration(
-                      //       filled: true,
-                      //       fillColor: Colors.white,
-                      //       border: InputBorder.none,
-                      //       labelText: 'Your image name',
-                      //       hintText: ''),
-                      //   onChanged: (val) => setState(() {
-                      //     Description = val;
-                      //   }),
-                      // ),
-
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        style: TextStyle(fontSize: 12),
-                        decoration: InputDecoration(
-                          hoverColor: Colors.blue,
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: InputBorder.none,
-                          labelText: 'Description of the problem',
-                          hintText: 'Enter Your problem Description',
-
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black26, width: 5)),
-
-                          // Color when not in clicked
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(66, 136, 136, 136),
-                                width: 5.0),
+            return SingleChildScrollView(
+                child: ConstrainedBox(
+              constraints: BoxConstraints(),
+              child: IntrinsicHeight(
+                child: Form(
+                    key: _formKey,
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          Text('Request a Service',
+                              style: GoogleFonts.nothingYouCouldDo(
+                                  textStyle: TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 20,
+                                      letterSpacing: .5,
+                                      fontWeight: FontWeight.w900))),
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        onChanged: (val) => setState(() {
-                          Description = val;
-                        }),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text("Upload an Image for the problem"),
-                      IconButton(
-                        onPressed: () async {
-                          final result = await FilePicker.platform.pickFiles(
-                              allowMultiple: false,
-                              type: FileType.custom,
-                              allowedExtensions: ['png', 'jpg']);
-                          if (result == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('No Image is There'),
+                          Text(
+                              "Welcome ${userData!.name} to the requesting page",
+                              style: GoogleFonts.actor(
+                                  textStyle: TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 20,
+                                      letterSpacing: .5,
+                                      fontWeight: FontWeight.w900))),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          //Drop Down.
+                          Text(
+                            "You are Requesting: ${widget.profession}",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          // TextField(
+                          //   enabled: false,
+                          //   style: TextStyle(fontSize: 12),
+                          //   decoration: InputDecoration(
+                          //       filled: true,
+                          //       fillColor: Colors.white,
+                          //       border: InputBorder.none,
+                          //       labelText: 'Your image name',
+                          //       hintText: ''),
+                          //   onChanged: (val) => setState(() {
+                          //     Description = val;
+                          //   }),
+                          // ),
+
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextField(
+                            style: TextStyle(fontSize: 12),
+                            decoration: InputDecoration(
+                              hoverColor: Colors.blue,
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: InputBorder.none,
+                              labelText: 'Description of the problem',
+                              hintText: 'Enter Your problem Description',
+
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black26, width: 5)),
+
+                              // Color when not in clicked
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(66, 136, 136, 136),
+                                    width: 5.0),
                               ),
-                            );
-                            return null;
-                          }
-                          setState(() {
-                            Path = result.files.single.path!;
-                            FileName = result.files.single.name;
-                            setState(() {
-                              this.imageuploaded = true;
-                            });
-                          });
-                          print(Path + ' -- ' + FileName);
-                          ;
-                        },
-                        icon: Icon(Icons.upload_file),
-                      ),
-                      Visibility(
-                          visible: imageuploaded,
-                          child: Text(
-                            "Photo is uploaded",
-                            style: TextStyle(
-                                color: Colors.redAccent, fontSize: 20),
-                          )),
-                      //Slider
-                      // Slider(
-                      //     min: 100,
-                      //     max: 900,
-                      //     divisions: 8,
-                      //     value:
-                      //         (_currentStrength ?? userData.strngth)!.toDouble(),
-                      //     activeColor: Colors
-                      //         .brown[_currentStrength ?? userData.strngth as int],
-                      //     inactiveColor: Colors
-                      //         .brown[_currentStrength ?? userData.strngth as int],
-                      //     onChanged: (e) {
-                      //       setState(() {
-                      //         _currentStrength = e.round();
-                      //       });
-                      //     }),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        style:
-                            ElevatedButton.styleFrom(primary: Colors.black87),
-                        onPressed: () async {
-                          final UUID = Uuid().v1();
+                            ),
+                            onChanged: (val) => setState(() {
+                              Description = val;
+                            }),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("Upload an Image for the problem"),
+                          IconButton(
+                            onPressed: () async {
+                              final result = await FilePicker.platform
+                                  .pickFiles(
+                                      allowMultiple: false,
+                                      type: FileType.custom,
+                                      allowedExtensions: ['png', 'jpg']);
+                              if (result == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('No Image is There'),
+                                  ),
+                                );
+                                return null;
+                              }
+                              setState(() {
+                                Path = result.files.single.path!;
+                                FileName = result.files.single.name;
+                                setState(() {
+                                  this.imageuploaded = true;
+                                });
+                              });
+                              print(Path + ' -- ' + FileName);
+                              ;
+                            },
+                            icon: Icon(Icons.upload_file),
+                          ),
+                          Visibility(
+                              visible: imageuploaded,
+                              child: Text(
+                                "Photo is uploaded",
+                                style: TextStyle(
+                                    color: Colors.redAccent, fontSize: 20),
+                              )),
+                          //Slider
+                          // Slider(
+                          //     min: 100,
+                          //     max: 900,
+                          //     divisions: 8,
+                          //     value:
+                          //         (_currentStrength ?? userData.strngth)!.toDouble(),
+                          //     activeColor: Colors
+                          //         .brown[_currentStrength ?? userData.strngth as int],
+                          //     inactiveColor: Colors
+                          //         .brown[_currentStrength ?? userData.strngth as int],
+                          //     onChanged: (e) {
+                          //       setState(() {
+                          //         _currentStrength = e.round();
+                          //       });
+                          //     }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.black87),
+                            onPressed: () async {
+                              final UUID = Uuid().v1();
 
-                          if (_formKey.currentState!.validate()) {
-                            if (FileName == "no_image_in_firebase.png") {
-                              await DatabaseService().RaiseRequest(
-                                  user.displayName.toString(),
-                                  user.uid,
-                                  DateTime.now().millisecondsSinceEpoch,
-                                  widget.profession,
-                                  "no_image_in_firebase.png",
-                                  Description,
-                                  userData.latitude,
-                                  userData.longitude);
-                            }
+                              if (_formKey.currentState!.validate()) {
+                                if (FileName == "no_image_in_firebase.png") {
+                                  await DatabaseService().RaiseRequest(
+                                      user.displayName.toString(),
+                                      user.uid,
+                                      DateTime.now().millisecondsSinceEpoch,
+                                      widget.profession,
+                                      "no_image_in_firebase.png",
+                                      Description,
+                                      userData.latitude,
+                                      userData.longitude);
+                                }
 
-                            if (FileName != "no_image_in_firebase.png") {
-                              await DatabaseService().RaiseRequest(
-                                  user.displayName.toString(),
-                                  user.uid,
-                                  DateTime.now().millisecondsSinceEpoch,
-                                  widget.profession,
-                                  UUID,
-                                  Description,
-                                  userData.latitude,
-                                  userData.longitude);
-                              storage
-                                  .uploudFile(Path, UUID)
-                                  .then((value) => print('Uplouded'));
-                            }
-                          }
-                          Navigator.pop(context);
-                        },
-                        child: Text('Submit'),
+                                if (FileName != "no_image_in_firebase.png") {
+                                  await DatabaseService().RaiseRequest(
+                                      user.displayName.toString(),
+                                      user.uid,
+                                      DateTime.now().millisecondsSinceEpoch,
+                                      widget.profession,
+                                      UUID,
+                                      Description,
+                                      userData.latitude,
+                                      userData.longitude);
+                                  storage
+                                      .uploudFile(Path, UUID)
+                                      .then((value) => print('Uplouded'));
+                                }
+                              }
+                              Navigator.pop(context);
+                            },
+                            child: Text('Submit'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ));
+                    )),
+              ),
+            ));
           } else {
             return Loading();
           }

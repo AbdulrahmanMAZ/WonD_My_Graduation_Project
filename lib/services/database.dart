@@ -31,6 +31,7 @@ class DatabaseService {
   Future<void> updateUserData(
       String name, bool isWorker, String profession) async {
     return await workersCollection.doc(uid).set({
+      'uid': uid,
       'name': name,
       'isWorker': isWorker,
       'profession': profession,
@@ -231,6 +232,18 @@ class DatabaseService {
         longitude: snapshot.get('longitude'));
   }
 
+  List<UserData>? _usersListDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UserData(
+          uid: doc.get('uid'),
+          name: doc.get('name'),
+          isWorker: doc.get('isWorker'),
+          profession: doc.get('profession'),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude'));
+    }).toList();
+  }
+
   UserData _userDataFromSnapshot2(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
@@ -254,6 +267,11 @@ class DatabaseService {
   Stream<List<user>> get users {
     //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
     return workersCollection.snapshots().map(_workersListFromSnapshot);
+  }
+
+  Stream<List<UserData>?> get users2 {
+    //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+    return workersCollection.snapshots().map(_usersListDataFromSnapshot);
   }
 
   Stream<List<Request>> get requets {

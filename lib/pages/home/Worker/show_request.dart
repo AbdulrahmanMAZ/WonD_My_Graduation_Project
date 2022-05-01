@@ -41,6 +41,7 @@ class _ShowRequestState extends State<ShowRequest>
     _controller.dispose();
   }
 
+  bool showLocation = false;
   String? price;
   @override
   Widget build(BuildContext context) {
@@ -49,13 +50,13 @@ class _ShowRequestState extends State<ShowRequest>
     final DatabaseService _db = DatabaseService(uid: user?.uid);
     //Double later
     _markers.add(Marker(
-        markerId: MarkerId('SomeId'),
+        markerId: MarkerId(args.name),
         position: LatLng(args.latitude, args.longitude),
         infoWindow: InfoWindow(title: args.name)));
     final Storage storage = Storage();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("${args.name}'s Location")),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(),
@@ -177,21 +178,30 @@ class _ShowRequestState extends State<ShowRequest>
                             color: AppColors.blacColor,
                           ),
                         ),
-                        Center(
-                          child: Container(
-                            height: 200,
-                            width: 200,
-                            child: GoogleMap(
-                              mapType: MapType.normal,
-                              markers: Set<Marker>.of(_markers),
-                              myLocationButtonEnabled: false,
-                              zoomControlsEnabled: false,
-                              initialCameraPosition: CameraPosition(
-                                  target: LatLng(args.latitude, args.longitude),
-                                  zoom: 14),
-                            ),
-                          ),
-                        ),
+                        (showLocation)
+                            ? Center(
+                                child: Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: GoogleMap(
+                                    mapType: MapType.normal,
+                                    markers: Set<Marker>.of(_markers),
+                                    myLocationButtonEnabled: false,
+                                    zoomControlsEnabled: false,
+                                    initialCameraPosition: CameraPosition(
+                                        target: LatLng(
+                                            args.latitude, args.longitude),
+                                        zoom: 14),
+                                  ),
+                                ),
+                              )
+                            : ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showLocation = true;
+                                  });
+                                },
+                                child: Text('Show location')),
                         const SizedBox(
                           height: 18,
                         ),

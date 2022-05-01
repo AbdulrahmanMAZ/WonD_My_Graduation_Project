@@ -45,13 +45,17 @@ class _Cust_HomeState extends State<Cust_Home> {
     final usera = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: usera?.uid);
     void _showAppSettings(profession) {
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return Container(
-              child: SettingsForm(profession: profession),
-            );
-          });
+      try {
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: SettingsForm(profession: profession),
+              );
+            });
+      } catch (e) {
+        print("${e.toString()} You have already signed out.");
+      }
     }
 
     final _myAcceptedRequests =
@@ -118,6 +122,7 @@ class _Cust_HomeState extends State<Cust_Home> {
             label: Text('logout'),
             onPressed: () async {
               await _auth.SignOut();
+              Navigator.of(context).popUntil((route) => route.isFirst);
               // Navigator.pushReplacement(
               //     context, MaterialPageRoute(builder: (context) => SignIn()));
               // Navigator.of(context).pop();

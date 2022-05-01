@@ -36,9 +36,8 @@ class worker_requests extends StatelessWidget {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
-              Navigator.of(context).pop();
               await _auth.SignOut();
-              Navigator.of(context).pop();
+              Navigator.of(context).popUntil((route) => route.isFirst);
               // Navigator.of(context).pop();
               // Navigator.of(context).pushNamedAndRemoveUntil(
               //     '/login', (Route<dynamic> route) => false);

@@ -8,6 +8,7 @@ import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
+import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/Worker/show_request.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
@@ -47,6 +48,8 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider<User?>.value(
             initialData: null, value: AuthSrrvice().user),
+        StreamProvider<List<UserData>?>.value(
+            initialData: [], value: DatabaseService().users2),
         StreamProvider<List<WorkingOnit>>.value(
             initialData: [], value: DatabaseService().WorkingOnitStream),
         StreamProvider<List<AcceptedRequest>>.value(
@@ -70,6 +73,7 @@ class MyApp extends StatelessWidget {
           '/SetWorkerLocation': (context) => setLocationWorker(),
           '/accept_tracker': (context) => accept_tracker(),
           '/Profile': (context) => Profile(),
+          '/OrdersMap': (context) => OrdersMap(),
         },
         home: Wrapper(),
       ),
