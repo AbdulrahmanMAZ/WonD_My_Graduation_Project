@@ -122,7 +122,9 @@ class _Cust_HomeState extends State<Cust_Home> {
             label: Text('logout'),
             onPressed: () async {
               await _auth.SignOut();
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SignIn()),
+                  (Route<dynamic> route) => false);
               // Navigator.pushReplacement(
               //     context, MaterialPageRoute(builder: (context) => SignIn()));
               // Navigator.of(context).pop();

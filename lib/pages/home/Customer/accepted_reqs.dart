@@ -39,8 +39,9 @@ class Accepted_Orders extends StatelessWidget {
               await _auth.SignOut();
 
               // Navigator.of(context).pop();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login', (Route<dynamic> route) => false);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SignIn()),
+                  (Route<dynamic> route) => false);
               // await _auth.SignOut();
               // Navigator.of(context).popAndPushNamed('/login');
               // Navigator.of(context).pushNamedAndRemoveUntil(

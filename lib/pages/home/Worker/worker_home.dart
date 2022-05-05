@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
+import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
@@ -138,9 +139,12 @@ class _worker_homeState extends State<worker_home> {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
-              // Navigator.of(context).pop();
+              Navigator.of(context).pop();
               await _auth.SignOut();
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              // Navigator.of(context).pop();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SignIn()),
+                  (Route<dynamic> route) => false);
             },
           ),
         ),

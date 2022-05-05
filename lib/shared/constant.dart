@@ -35,7 +35,7 @@ class AppColors {
 }
 
 InputDecoration textInputDecoration = InputDecoration(
-  hintText: 'Enter You Email',
+  hintText: 'Ex: Worker@gmail.com',
   fillColor: Colors.white,
   filled: true,
   // Color when it is clicked
@@ -59,15 +59,8 @@ InputDecoration textInputDecoration = InputDecoration(
       width: 0.6,
     ),
   ),
-  label: Text(
-    'Enter an E-Mail',
-    style: const TextStyle(
-      fontSize: 14,
-      fontFamily: Constants.appFont,
-      fontWeight: FontWeight.w500,
-      color: Colors.grey,
-    ),
-  ),
+  labelText: 'Enter an E-Mail',
+  floatingLabelBehavior: FloatingLabelBehavior.never,
   prefixIcon: Icon(
     Icons.email,
     color: Colors.grey,
@@ -115,15 +108,9 @@ InputDecoration userInputDecoration = InputDecoration(
       width: 0.6,
     ),
   ),
-  label: Text(
-    'Enter Your Name',
-    style: const TextStyle(
-      fontSize: 14,
-      fontFamily: Constants.appFont,
-      fontWeight: FontWeight.w500,
-      color: Colors.grey,
-    ),
-  ),
+  labelText: 'Enter Your Name',
+  floatingLabelBehavior: FloatingLabelBehavior.never,
+
   prefixIcon: Icon(
     Icons.person,
     color: Colors.grey,
@@ -171,15 +158,8 @@ InputDecoration passwordInputDecoration = InputDecoration(
       width: 0.6,
     ),
   ),
-  label: Text(
-    'Password',
-    style: const TextStyle(
-      fontSize: 14,
-      fontFamily: Constants.appFont,
-      fontWeight: FontWeight.w500,
-      color: Colors.grey,
-    ),
-  ),
+  labelText: 'Enter Your Nameee',
+  floatingLabelBehavior: FloatingLabelBehavior.never,
   prefixIcon: Icon(
     Icons.lock,
     color: Colors.grey,

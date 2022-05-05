@@ -45,6 +45,7 @@ class _OrdersMapState extends State<OrdersMap> {
     double _radius = 30000.0;
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
+    final _acceptedRequest = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final user = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: user?.uid);
     // final _userData = DatabaseService(uid: user?.uid).userData;
@@ -62,33 +63,42 @@ class _OrdersMapState extends State<OrdersMap> {
               if (snapshot.hasError) {
                 return Text('An error');
               } else if (snapshot.hasData) {
+                bool hasAccepted = false;
                 UserData? userData = snapshot.data;
+                List<AcceptedRequest> b = _acceptedRequest;
                 // _markers.add(Marker(
                 //     markerId: MarkerId('SomeId'),
                 //     position: LatLng(userData?.latitude as double,
                 //         userData?.longitude as double),
                 //     infoWindow: InfoWindow(title: userData?.name)));
                 List<Request> a = requests;
-                for (Request item in a) {
-                  // for (int i = 0; i >= a.length; i++)
-
-                  if (userData!.profession == item.profession &&
-                      distance(userData.latitude, item.latitude,
-                              userData.longitude, item.longitude) <
-                          30) {
-                    _markers.add(Marker(
-                      markerId: MarkerId('${item.name}'),
-                      position: LatLng(item.latitude, item.longitude),
-                      infoWindow: InfoWindow(title: item.Description),
-                      onTap: () {
-                        // print('${item.name}');
-                        Navigator.pushNamed(context, '/Show_Request',
-                            arguments: item);
-                      },
-                    ));
-                    // print(item.latitude);
+                List<AcceptedRequest> AcceptedRequests = [];
+                for (AcceptedRequest item in b) {
+                  if (item.worker_ID == user!.uid) {
+                    hasAccepted = true;
                   }
                 }
+                if (!hasAccepted)
+                  for (Request item in a) {
+                    // for (int i = 0; i >= a.length; i++)
+
+                    if (userData!.profession == item.profession &&
+                        distance(userData.latitude, item.latitude,
+                                userData.longitude, item.longitude) <
+                            30) {
+                      _markers.add(Marker(
+                        markerId: MarkerId('${item.name}'),
+                        position: LatLng(item.latitude, item.longitude),
+                        infoWindow: InfoWindow(title: item.Description),
+                        onTap: () {
+                          // print('${item.name}');
+                          Navigator.pushNamed(context, '/Show_Request',
+                              arguments: item);
+                        },
+                      ));
+                      // print(item.latitude);
+                    }
+                  }
                 _markers.add(Marker(
                     markerId: MarkerId(userData?.name as String),
                     position: LatLng(userData?.latitude as double,

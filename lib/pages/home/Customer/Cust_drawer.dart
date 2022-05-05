@@ -38,7 +38,7 @@ class CustDrawer extends StatelessWidget {
           icon: Icon(Icons.person),
           label: Text('On-going Requests'),
           onPressed: () {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => workingpage(a[0])));
           },
         );
@@ -71,6 +71,7 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Home Page'),
               onPressed: () {
+                Navigator.pop(context);
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Cust_Home()));
               },
@@ -79,7 +80,8 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('My orders'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pop(context);
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Cust_Order()));
               },
             ),
@@ -87,7 +89,8 @@ class CustDrawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Workers accepts'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pop(context);
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Accepted_Orders()));
               },
             ),

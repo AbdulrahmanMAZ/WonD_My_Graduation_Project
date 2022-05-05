@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:coffre_app/pages/authenricate/authenticate.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
@@ -235,11 +236,20 @@ class _RegisterState extends State<Register> {
                                             height: 10,
                                           ),
                                           TextFormField(
-                                              decoration: textInputDecoration
-                                                  .copyWith(),
-                                              validator: (val) => val!.isEmpty
-                                                  ? 'enter a value'
-                                                  : null,
+                                              decoration: textInputDecoration,
+                                              validator: (val) {
+                                                if (val != null &&
+                                                    val.isEmpty) {
+                                                  return 'enter a value';
+                                                }
+                                                if (val != null &&
+                                                    !EmailValidator.validate(
+                                                        val)) {
+                                                  return "Not a valid Email";
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
                                               onChanged: (val) {
                                                 setState(() {
                                                   email = val;
@@ -274,13 +284,18 @@ class _RegisterState extends State<Register> {
                                               ],
                                               decoration:
                                                   userInputDecoration.copyWith(
-                                                hintText: "Enter You phone",
-                                              ),
+                                                      hintText:
+                                                          "Phone Number Ex: 53XXXXXXX",
+                                                      labelText:
+                                                          'Enter Your phone'),
                                               validator: (val) {
-                                                if (val!.isEmpty) {
+                                                if (val != null &&
+                                                    val.isEmpty) {
                                                   return 'enter a value';
-                                                } else if (val.length > 9 ||
-                                                    val.length < 9) {
+                                                } else if (val != null &&
+                                                        val.length > 9 ||
+                                                    val != null &&
+                                                        val.length < 9) {
                                                   return 'Not a valid number';
                                                 } else {
                                                   return null;
@@ -314,7 +329,7 @@ class _RegisterState extends State<Register> {
                                           TextFormField(
                                             controller: _pass,
                                             decoration: InputDecoration(
-                                              hintText: 'Enter You Password',
+                                              hintText: '8 numbers at least',
                                               fillColor: Colors.white,
                                               filled: true,
                                               suffixIcon: IconButton(
@@ -347,15 +362,9 @@ class _RegisterState extends State<Register> {
                                                   width: 0.5,
                                                 ),
                                               ),
-                                              label: const Text(
-                                                'Password',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: Constants.appFont,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
+                                              labelText: 'Enter Your Password',
+                                              floatingLabelBehavior:
+                                                  FloatingLabelBehavior.never,
                                               prefixIcon: const Icon(
                                                 Icons.lock,
                                                 color: Colors.grey,
@@ -416,7 +425,8 @@ class _RegisterState extends State<Register> {
                                           TextFormField(
                                             controller: _confirmPass,
                                             decoration: InputDecoration(
-                                              hintText: 'Repeat Your Password',
+                                              hintText:
+                                                  'Must match your password',
                                               fillColor: Colors.white,
                                               filled: true,
                                               suffixIcon: IconButton(
@@ -449,15 +459,10 @@ class _RegisterState extends State<Register> {
                                                   width: 0.5,
                                                 ),
                                               ),
-                                              label: const Text(
-                                                'Repeat Password',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: Constants.appFont,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
+                                              labelText:
+                                                  'Re Enter Youe password',
+                                              floatingLabelBehavior:
+                                                  FloatingLabelBehavior.never,
                                               prefixIcon: const Icon(
                                                 Icons.lock,
                                                 color: Colors.grey,

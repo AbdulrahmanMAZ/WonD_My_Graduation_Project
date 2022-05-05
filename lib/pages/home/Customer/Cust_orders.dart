@@ -37,6 +37,9 @@ class Cust_Order extends StatelessWidget {
             onPressed: () async {
               // Navigator.of(context).pop();
               await _auth.SignOut();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => SignIn()),
+                  (Route<dynamic> route) => false);
               // Navigator.of(context).pop();
               // Navigator.of(context).pop();
               // Navigator.of(context).pushNamedAndRemoveUntil(

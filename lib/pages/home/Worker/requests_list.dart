@@ -28,6 +28,7 @@ class _RequestsListState extends State<RequestsList> {
   Widget build(BuildContext context) {
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
+    final _acceptedRequest = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final user = Provider.of<User?>(context);
 
     //GETTING THE DATA OF THE WORKER
@@ -37,18 +38,26 @@ class _RequestsListState extends State<RequestsList> {
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
-
+            bool hasAccepted = false;
             List<Request> a = requests;
+            List<AcceptedRequest> b = _acceptedRequest;
 
             List<Request> RealComingRequests = [];
-            for (Request item in a) {
-              if (userData!.profession == item.profession &&
-                  distance(userData.latitude, item.latitude, userData.longitude,
-                          item.longitude) <
-                      30) {
-                RealComingRequests.add(item);
+            List<AcceptedRequest> AcceptedRequests = [];
+            for (AcceptedRequest item in b) {
+              if (item.worker_ID == user!.uid) {
+                hasAccepted = true;
               }
             }
+            if (!hasAccepted)
+              for (Request item in a) {
+                if (userData!.profession == item.profession &&
+                    distance(userData.latitude, item.latitude,
+                            userData.longitude, item.longitude) <
+                        30) {
+                  RealComingRequests.add(item);
+                }
+              }
 
             RealComingRequests.sort((a, b) => distance(userData!.latitude,
                     a.latitude, userData.longitude, a.longitude)

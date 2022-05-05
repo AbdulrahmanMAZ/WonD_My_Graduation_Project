@@ -84,31 +84,32 @@ class _ProfileState extends State<Profile> {
             SizedBox(
               height: 24,
             ),
-            Column(
-              children: [
-                Text(
-                  currentUser?.name as String,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(usera?.email as String,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    )),
-                SizedBox(
-                  height: 5,
-                ),
-                Text('data',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    )),
-                SizedBox(
-                  height: 5,
-                ),
-              ],
-            ),
+            if (currentUser?.name != null && usera != null)
+              Column(
+                children: [
+                  Text(
+                    currentUser?.name as String,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(usera.email as String,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text('data',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      )),
+                  SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
             StreamBuilder<List<Rate>>(
                 stream: DatabaseService(uid: usera?.uid).ratee,
                 builder: (context, snapshot) {
@@ -120,7 +121,38 @@ class _ProfileState extends State<Profile> {
                         avregeRating += item.rate;
                       }
                     }
-                    return Text('${avregeRating / userRate!.length}');
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
+                      child: Card(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${avregeRating / userRate!.length}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    )),
+                                Text('(${userRate.length})',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: Colors.amber)),
+                              ],
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "Rating",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 24),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   } else {
                     return Loading();
                   }
@@ -138,4 +170,44 @@ class MyClip extends CustomClipper<Rect> {
   bool shouldReclip(oldClipper) {
     return false;
   }
+}
+
+class NumbersWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          buildButton(context, '4.8', 'Ranking'),
+          buildDivider(),
+          buildButton(context, '35', 'Following'),
+          buildDivider(),
+          buildButton(context, '50', 'Followers'),
+        ],
+      );
+  Widget buildDivider() => Container(
+        height: 24,
+        child: VerticalDivider(),
+      );
+
+  Widget buildButton(BuildContext context, String value, String text) =>
+      MaterialButton(
+        padding: EdgeInsets.symmetric(vertical: 4),
+        onPressed: () {},
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              value,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
+            SizedBox(height: 2),
+            Text(
+              text,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
 }

@@ -43,7 +43,8 @@ class worker_drawer extends StatelessWidget {
               label: Text('Home Page'),
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/worker_home');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => worker_home()));
 
                 // Navigator.of(context).pushNamedAndRemoveUntil(
                 //     '/worker_home', (Route<dynamic> route) => false);
@@ -54,7 +55,8 @@ class worker_drawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('My orders'),
               onPressed: () {
-                Navigator.push(context,
+                Navigator.pop(context);
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => worker_requests()));
               },
             ),
@@ -62,6 +64,7 @@ class worker_drawer extends StatelessWidget {
               icon: Icon(Icons.person),
               label: Text('Requests tracker'),
               onPressed: () {
+                // Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => accept_tracker()));
               },

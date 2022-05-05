@@ -179,6 +179,9 @@ class _SignInState extends State<SignIn> {
                                         key: Key('password'),
                                         decoration:
                                             passwordInputDecoration.copyWith(
+                                          labelText: 'Enter Your Password',
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.never,
                                           suffixIcon: IconButton(
                                             onPressed: () {
                                               setState(() {
