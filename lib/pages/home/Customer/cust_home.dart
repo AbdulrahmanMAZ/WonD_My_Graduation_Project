@@ -2,6 +2,7 @@ import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
+import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
@@ -19,6 +20,7 @@ import 'package:permission_handler/permission_handler.dart'
     as PermissionHandler;
 
 class Cust_Home extends StatefulWidget {
+  int a = 0;
   @override
   State<Cust_Home> createState() => _Cust_HomeState();
 }
@@ -27,6 +29,7 @@ class _Cust_HomeState extends State<Cust_Home> {
   PermissionStatus? _permissionGranted;
   void initState() {
     super.initState();
+    // widget.a += 1;
     PermissionHandler.Permission.location;
   }
 
@@ -108,6 +111,7 @@ class _Cust_HomeState extends State<Cust_Home> {
 
     // SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
+    print(widget.a);
     return StreamProvider<User?>.value(
       initialData: null,
       value: AuthSrrvice().user,
@@ -121,10 +125,14 @@ class _Cust_HomeState extends State<Cust_Home> {
             icon: Icon(Icons.person),
             label: Text('logout'),
             onPressed: () async {
+              // setState(() {});
+              // Navigator.pushReplacement(context,
+              //     MaterialPageRoute(builder: (context) => Cust_Home()));
               await _auth.SignOut();
-              Navigator.of(context).pushAndRemoveUntil(
+              await Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => SignIn()),
                   (Route<dynamic> route) => false);
+
               // Navigator.pushReplacement(
               //     context, MaterialPageRoute(builder: (context) => SignIn()));
               // Navigator.of(context).pop();

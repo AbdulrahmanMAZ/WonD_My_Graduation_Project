@@ -94,29 +94,29 @@ class _SignInState extends State<SignIn> {
                     ])),
                 child: Stack(
                   children: [
-                    Positioned(
-                      top: -MediaQuery.of(context).size.height * .10,
-                      right: -MediaQuery.of(context).size.width * .3,
-                      child: Container(
-                          child: Transform.rotate(
-                        angle: -pi / 3.5,
-                        child: ClipPath(
-                          clipper: ClipPainter(),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * .5,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                  Color.fromARGB(255, 59, 111, 179),
-                                  Color.fromARGB(214, 156, 18, 145)
-                                ])),
-                          ),
-                        ),
-                      )),
-                    ),
+                    // Positioned(
+                    //   top: -MediaQuery.of(context).size.height * .10,
+                    //   right: -MediaQuery.of(context).size.width * .3,
+                    //   child: Container(
+                    //       child: Transform.rotate(
+                    //     angle: -pi / 3.5,
+                    //     child: ClipPath(
+                    //       clipper: ClipPainter(),
+                    //       child: Container(
+                    //         height: MediaQuery.of(context).size.height * .5,
+                    //         width: MediaQuery.of(context).size.width,
+                    //         decoration: BoxDecoration(
+                    //             gradient: LinearGradient(
+                    //                 begin: Alignment.topCenter,
+                    //                 end: Alignment.bottomCenter,
+                    //                 colors: [
+                    //               Color.fromARGB(255, 59, 111, 179),
+                    //               Color.fromARGB(214, 156, 18, 145)
+                    //             ])),
+                    //       ),
+                    //     ),
+                    //   )),
+                    // ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: SingleChildScrollView(
