@@ -277,13 +277,19 @@ class _Cust_HomeState extends State<Cust_Home> {
                           hasInternet =
                               await InternetConnectionChecker().hasConnection;
                           if (hasInternet) {
-                            if (await PermissionHandler
-                                .Permission.location.isGranted)
-                              return _showAppSettings("Electrician");
-                            else {
-                              return setState(() {
-                                SetLocation("Electrician");
-                              });
+                            if (Workers_Who_Accepted.isEmpty) {
+                              if (await PermissionHandler
+                                  .Permission.location.isGranted)
+                                return _showAppSettings("Electrician");
+                              else {
+                                return setState(() {
+                                  SetLocation("Electrician");
+                                });
+                              }
+                            } else {
+                              showSimpleNotification(
+                                  Text('You have an On-going request!'),
+                                  background: Colors.red);
                             }
                           } else {
                             showSimpleNotification(
@@ -335,13 +341,19 @@ class _Cust_HomeState extends State<Cust_Home> {
                           hasInternet =
                               await InternetConnectionChecker().hasConnection;
                           if (hasInternet) {
-                            if (await PermissionHandler
-                                .Permission.location.isGranted)
-                              return _showAppSettings("plumber");
-                            else {
-                              return setState(() {
-                                SetLocation('plumber');
-                              });
+                            if (Workers_Who_Accepted.isEmpty) {
+                              if (await PermissionHandler
+                                  .Permission.location.isGranted)
+                                return _showAppSettings("plumber");
+                              else {
+                                return setState(() {
+                                  SetLocation('plumber');
+                                });
+                              }
+                            } else {
+                              showSimpleNotification(
+                                  Text('You have an On-going request!'),
+                                  background: Colors.red);
                             }
                           } else {
                             showSimpleNotification(

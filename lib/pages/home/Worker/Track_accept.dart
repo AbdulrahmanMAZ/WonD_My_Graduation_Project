@@ -1,4 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/home/Worker/miniMap.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
@@ -17,7 +18,6 @@ class accept_tracker extends StatefulWidget {
 }
 
 class _accept_trackerState extends State<accept_tracker> {
-  List<Marker> _markers = [];
   final _formKey = GlobalKey<FormState>();
   int? _OTP;
   @override
@@ -39,10 +39,6 @@ class _accept_trackerState extends State<accept_tracker> {
       // then we will show the secoed page.
 
       if (item.worker_ID == user?.uid) {
-        _markers.add(Marker(
-            markerId: MarkerId(item.Cust_name),
-            position: LatLng(item.latitude, item.longitude),
-            infoWindow: InfoWindow(title: item.Cust_name)));
         if (item.Status == 1) {
           return Scaffold(
             appBar: AppBar(
@@ -66,7 +62,8 @@ class _accept_trackerState extends State<accept_tracker> {
                   children: [
                     PositionedBackground(context),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SafeArea(
                             child: Center(
@@ -87,6 +84,7 @@ class _accept_trackerState extends State<accept_tracker> {
                           key: _formKey,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextFormField(
                                   validator: ((val) {
@@ -113,6 +111,9 @@ class _accept_trackerState extends State<accept_tracker> {
                                       filled: true,
                                       alignLabelWithHint: true,
                                       hintText: 'Provide the OTP')),
+                              SizedBox(
+                                height: 15,
+                              ),
                               Center(
                                 child: TextButton(
                                   style: TextButton.styleFrom(
@@ -146,28 +147,44 @@ class _accept_trackerState extends State<accept_tracker> {
                           height: 30,
                         ),
                         Text(
-                          'Here is the locatin of the Customer',
+                          'Here is the location of the Customer',
                           style: TextStyle(
                               fontSize: 19, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 200,
-                          child: GoogleMap(
-                            mapType: MapType.normal,
-                            markers: Set<Marker>.of(_markers),
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            initialCameraPosition: CameraPosition(
-                                target: LatLng(item.latitude, item.longitude),
-                                zoom: 14),
-                          ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/mini_Map',
+                                arguments: item);
+                          },
+                          child:
+                              Text('See the location of the customer on map'),
                         ),
                         Text(
-                          'Click on the red marker then selecet google maps icon to start tracking',
+                          'To be able to see directions please do the following steps:',
                           style: TextStyle(
-                              fontSize: 19,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          '1. Click on the button above to open the map',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          '2. Click on the red marker',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          '3. Click on the arrow icon at the bottom to start tracking',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
                               color: Colors.white),
                         ),
                       ],

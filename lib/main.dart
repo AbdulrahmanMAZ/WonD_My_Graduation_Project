@@ -10,6 +10,7 @@ import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
 import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
+import 'package:coffre_app/pages/home/Worker/miniMap.dart';
 import 'package:coffre_app/pages/home/Worker/show_request.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
 import 'package:coffre_app/pages/home/Worker/workerProfile.dart';
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
             '/accept_tracker': (context) => accept_tracker(),
             '/Profile': (context) => Profile(),
             '/OrdersMap': (context) => OrdersMap(),
+            '/mini_Map': (context) => miniMap(),
           },
           home: Wrapper(),
         ),
