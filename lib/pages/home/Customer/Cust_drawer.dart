@@ -12,25 +12,41 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CustDrawer extends StatelessWidget {
+class CustDrawer extends StatefulWidget {
   final String? username;
   final Widget logout;
 
   CustDrawer({Key? key, required this.username, required this.logout})
       : super(key: key);
+
+  @override
+  State<CustDrawer> createState() => _CustDrawerState();
+}
+
+class _CustDrawerState extends State<CustDrawer> {
   final AuthSrrvice _auth = AuthSrrvice();
 
   @override
   bool youHaveRequest = false;
+
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
     final acceptedrequests = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     List a = [];
     for (var item in acceptedrequests) {
       if (item.Cust_ID == user?.uid) {
-        youHaveRequest = true;
+        // youHaveRequest = true;
         a.add(item);
       }
+    }
+    if (a.isNotEmpty) {
+      setState(() {
+        youHaveRequest = true;
+      });
+    } else {
+      setState(() {
+        youHaveRequest = false;
+      });
     }
     Widget choose() {
       if (youHaveRequest) {
@@ -38,7 +54,7 @@ class CustDrawer extends StatelessWidget {
           icon: Icon(Icons.person),
           label: Text('On-going Requests'),
           onPressed: () {
-            Navigator.pushReplacement(context,
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => workingpage(a[0])));
           },
         );
@@ -64,7 +80,7 @@ class CustDrawer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   color: Color.fromARGB(255, 142, 187, 245),
                 ),
-                child: Text('Welcome, $username'),
+                child: Text('Welcome, ${widget.username}'),
               ),
             ),
             TextButton.icon(
@@ -95,7 +111,7 @@ class CustDrawer extends StatelessWidget {
               },
             ),
             choose(),
-            logout,
+            widget.logout,
           ],
         ),
       ),

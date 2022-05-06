@@ -1,242 +1,254 @@
-// import 'package:coffre_app/modules/user.dart';
+// // import 'package:coffre_app/modules/user.dart';
 
-import 'package:coffre_app/modules/users.dart';
-import 'package:coffre_app/services/database.dart';
-import 'package:coffre_app/shared/loading.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:coffre_app/shared/constant.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:coffre_app/modules/users.dart';
-import 'package:uuid/uuid.dart';
+// import 'package:coffre_app/modules/users.dart';
+// import 'package:coffre_app/services/database.dart';
+// import 'package:coffre_app/shared/loading.dart';
+// import 'package:file_picker/file_picker.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+// import 'package:coffre_app/shared/constant.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:overlay_support/overlay_support.dart';
+// import 'package:provider/provider.dart';
+// import 'package:coffre_app/modules/users.dart';
+// import 'package:uuid/uuid.dart';
 
-import '../../../services/storage.dart';
+// import '../../../services/storage.dart';
 
-class SettingsForm extends StatefulWidget {
-  const SettingsForm({Key? key, latitude, longitude, required this.profession})
-      : super(key: key);
-  final String profession;
+// class SettingsForm extends StatefulWidget {
+//   const SettingsForm({Key? key, latitude, longitude, required this.profession})
+//       : super(key: key);
+//   final String profession;
 
-  @override
-  _SettingsFormState createState() => _SettingsFormState();
-}
+//   @override
+//   _SettingsFormState createState() => _SettingsFormState();
+// }
 
-class _SettingsFormState extends State<SettingsForm> {
-  final _formKey = GlobalKey<FormState>();
+// class _SettingsFormState extends State<SettingsForm> {
+//   final _formKey = GlobalKey<FormState>();
 
-  // final List<String> professions = [
-  //   'Hairdresser',
-  //   'Mechanic',
-  //   'Electrician',
-  //   'plumber'
-  // ];
+//   // final List<String> professions = [
+//   //   'Hairdresser',
+//   //   'Mechanic',
+//   //   'Electrician',
+//   //   'plumber'
+//   // ];
 
-  String? _currentName;
-  String? _currentProfession;
-  bool? _isWorker;
-  String? dropdownValue = '0';
-  String? Description;
-  bool imageuploaded = false;
-  var Path;
-  var FileName = "no_image_in_firebase.png";
+//   String? _currentName;
+//   String? _currentProfession;
+//   bool? _isWorker;
+//   String? dropdownValue = '0';
+//   String? Description;
+//   bool imageuploaded = false;
+//   var Path;
+//   var FileName = "no_image_in_firebase.png";
 
-  @override
-  Widget build(BuildContext context) {
-    var t;
-    final Storage storage = Storage();
-    final user = Provider.of<User>(context);
-    return StreamBuilder<UserData>(
-        stream: DatabaseService(uid: user.uid).userData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            UserData? userData = snapshot.data;
-            return SingleChildScrollView(
-                child: ConstrainedBox(
-              constraints: BoxConstraints(),
-              child: IntrinsicHeight(
-                child: Form(
-                    key: _formKey,
-                    child: Card(
-                      child: Column(
-                        children: <Widget>[
-                          Text('Request a Service',
-                              style: GoogleFonts.nothingYouCouldDo(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 20,
-                                      letterSpacing: .5,
-                                      fontWeight: FontWeight.w900))),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                              "Welcome ${userData!.name} to the requesting page",
-                              style: GoogleFonts.actor(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 20,
-                                      letterSpacing: .5,
-                                      fontWeight: FontWeight.w900))),
-                          SizedBox(
-                            height: 20,
-                          ),
+//   bool hasInternet = false;
 
-                          //Drop Down.
-                          Text(
-                            "You are Requesting: ${widget.profession}",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
+//   @override
+//   Widget build(BuildContext context) {
+//     var t;
+//     final Storage storage = Storage();
+//     final user = Provider.of<User>(context);
+//     return StreamBuilder<UserData>(
+//         stream: DatabaseService(uid: user.uid).userData,
+//         builder: (context, snapshot) {
+//           if (snapshot.hasData) {
+//             UserData? userData = snapshot.data;
+//             return SingleChildScrollView(
+//                 child: ConstrainedBox(
+//               constraints: BoxConstraints(),
+//               child: IntrinsicHeight(
+//                 child: Form(
+//                     key: _formKey,
+//                     child: Card(
+//                       child: Column(
+//                         children: <Widget>[
+//                           Text('Request a Service',
+//                               style: GoogleFonts.nothingYouCouldDo(
+//                                   textStyle: TextStyle(
+//                                       color: Colors.black38,
+//                                       fontSize: 20,
+//                                       letterSpacing: .5,
+//                                       fontWeight: FontWeight.w900))),
+//                           SizedBox(
+//                             height: 20,
+//                           ),
+//                           Text(
+//                               "Welcome ${userData!.name} to the requesting page",
+//                               style: GoogleFonts.actor(
+//                                   textStyle: TextStyle(
+//                                       color: Colors.black38,
+//                                       fontSize: 20,
+//                                       letterSpacing: .5,
+//                                       fontWeight: FontWeight.w900))),
+//                           SizedBox(
+//                             height: 20,
+//                           ),
 
-                          // TextField(
-                          //   enabled: false,
-                          //   style: TextStyle(fontSize: 12),
-                          //   decoration: InputDecoration(
-                          //       filled: true,
-                          //       fillColor: Colors.white,
-                          //       border: InputBorder.none,
-                          //       labelText: 'Your image name',
-                          //       hintText: ''),
-                          //   onChanged: (val) => setState(() {
-                          //     Description = val;
-                          //   }),
-                          // ),
+//                           //Drop Down.
+//                           Text(
+//                             "You are Requesting: ${widget.profession}",
+//                             style: TextStyle(fontSize: 25),
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
 
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            style: TextStyle(fontSize: 12),
-                            decoration: InputDecoration(
-                              hoverColor: Colors.blue,
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: InputBorder.none,
-                              labelText: 'Description of the problem',
-                              hintText: 'Enter Your problem Description',
+//                           // TextField(
+//                           //   enabled: false,
+//                           //   style: TextStyle(fontSize: 12),
+//                           //   decoration: InputDecoration(
+//                           //       filled: true,
+//                           //       fillColor: Colors.white,
+//                           //       border: InputBorder.none,
+//                           //       labelText: 'Your image name',
+//                           //       hintText: ''),
+//                           //   onChanged: (val) => setState(() {
+//                           //     Description = val;
+//                           //   }),
+//                           // ),
 
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.black26, width: 5)),
+//                           SizedBox(
+//                             height: 20,
+//                           ),
+//                           TextField(
+//                             style: TextStyle(fontSize: 12),
+//                             decoration: InputDecoration(
+//                               hoverColor: Colors.blue,
+//                               filled: true,
+//                               fillColor: Colors.white,
+//                               border: InputBorder.none,
+//                               labelText: 'Description of the problem',
+//                               hintText: 'Enter Your problem Description',
 
-                              // Color when not in clicked
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(66, 136, 136, 136),
-                                    width: 5.0),
-                              ),
-                            ),
-                            onChanged: (val) => setState(() {
-                              Description = val;
-                            }),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text("Upload an Image for the problem"),
-                          IconButton(
-                            onPressed: () async {
-                              final result = await FilePicker.platform
-                                  .pickFiles(
-                                      allowMultiple: false,
-                                      type: FileType.custom,
-                                      allowedExtensions: ['png', 'jpg']);
-                              if (result == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('No Image is There'),
-                                  ),
-                                );
-                                return null;
-                              }
-                              setState(() {
-                                Path = result.files.single.path!;
-                                FileName = result.files.single.name;
-                                setState(() {
-                                  this.imageuploaded = true;
-                                });
-                              });
-                              print(Path + ' -- ' + FileName);
-                              ;
-                            },
-                            icon: Icon(Icons.upload_file),
-                          ),
-                          Visibility(
-                              visible: imageuploaded,
-                              child: Text(
-                                "Photo is uploaded",
-                                style: TextStyle(
-                                    color: Colors.redAccent, fontSize: 20),
-                              )),
-                          //Slider
-                          // Slider(
-                          //     min: 100,
-                          //     max: 900,
-                          //     divisions: 8,
-                          //     value:
-                          //         (_currentStrength ?? userData.strngth)!.toDouble(),
-                          //     activeColor: Colors
-                          //         .brown[_currentStrength ?? userData.strngth as int],
-                          //     inactiveColor: Colors
-                          //         .brown[_currentStrength ?? userData.strngth as int],
-                          //     onChanged: (e) {
-                          //       setState(() {
-                          //         _currentStrength = e.round();
-                          //       });
-                          //     }),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.black87),
-                            onPressed: () async {
-                              final UUID = Uuid().v1();
+//                               focusedBorder: OutlineInputBorder(
+//                                   borderSide: BorderSide(
+//                                       color: Colors.black26, width: 5)),
 
-                              if (_formKey.currentState!.validate()) {
-                                if (FileName == "no_image_in_firebase.png") {
-                                  await DatabaseService().RaiseRequest(
-                                      user.displayName.toString(),
-                                      user.uid,
-                                      DateTime.now().millisecondsSinceEpoch,
-                                      widget.profession,
-                                      "no_image_in_firebase.png",
-                                      Description,
-                                      userData.latitude,
-                                      userData.longitude);
-                                }
+//                               // Color when not in clicked
+//                               enabledBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(
+//                                     color: Color.fromARGB(66, 136, 136, 136),
+//                                     width: 5.0),
+//                               ),
+//                             ),
+//                             onChanged: (val) => setState(() {
+//                               Description = val;
+//                             }),
+//                           ),
+//                           SizedBox(
+//                             height: 10,
+//                           ),
+//                           Text("Upload an Image for the problem"),
+//                           IconButton(
+//                             onPressed: () async {
+//                               final result = await FilePicker.platform
+//                                   .pickFiles(
+//                                       allowMultiple: false,
+//                                       type: FileType.custom,
+//                                       allowedExtensions: ['png', 'jpg']);
+//                               if (result == null) {
+//                                 ScaffoldMessenger.of(context).showSnackBar(
+//                                   const SnackBar(
+//                                     content: Text('No Image is There'),
+//                                   ),
+//                                 );
+//                                 return null;
+//                               }
+//                               setState(() {
+//                                 Path = result.files.single.path!;
+//                                 FileName = result.files.single.name;
+//                                 setState(() {
+//                                   this.imageuploaded = true;
+//                                 });
+//                               });
+//                               print(Path + ' -- ' + FileName);
+//                               ;
+//                             },
+//                             icon: Icon(Icons.upload_file),
+//                           ),
+//                           Visibility(
+//                               visible: imageuploaded,
+//                               child: Text(
+//                                 "Photo is uploaded",
+//                                 style: TextStyle(
+//                                     color: Colors.redAccent, fontSize: 20),
+//                               )),
+//                           //Slider
+//                           // Slider(
+//                           //     min: 100,
+//                           //     max: 900,
+//                           //     divisions: 8,
+//                           //     value:
+//                           //         (_currentStrength ?? userData.strngth)!.toDouble(),
+//                           //     activeColor: Colors
+//                           //         .brown[_currentStrength ?? userData.strngth as int],
+//                           //     inactiveColor: Colors
+//                           //         .brown[_currentStrength ?? userData.strngth as int],
+//                           //     onChanged: (e) {
+//                           //       setState(() {
+//                           //         _currentStrength = e.round();
+//                           //       });
+//                           //     }),
+//                           SizedBox(
+//                             height: 20,
+//                           ),
+//                           ElevatedButton(
+//                             style: ElevatedButton.styleFrom(
+//                                 primary: Colors.black87),
+//                             onPressed: () async {
+//                               hasInternet = await InternetConnectionChecker()
+//                                   .hasConnection;
+//                               if (hasInternet) {
+//                                 final UUID = Uuid().v1();
 
-                                if (FileName != "no_image_in_firebase.png") {
-                                  await DatabaseService().RaiseRequest(
-                                      user.displayName.toString(),
-                                      user.uid,
-                                      DateTime.now().millisecondsSinceEpoch,
-                                      widget.profession,
-                                      UUID,
-                                      Description,
-                                      userData.latitude,
-                                      userData.longitude);
-                                  storage
-                                      .uploudFile(Path, UUID)
-                                      .then((value) => print('Uplouded'));
-                                }
-                              }
-                              Navigator.pop(context);
-                            },
-                            child: Text('Submit'),
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
-            ));
-          } else {
-            return Loading();
-          }
-        });
-  }
-}
+//                                 if (_formKey.currentState!.validate()) {
+//                                   if (FileName == "no_image_in_firebase.png") {
+//                                     await DatabaseService().RaiseRequest(
+//                                         user.displayName.toString(),
+//                                         user.uid,
+//                                         DateTime.now().millisecondsSinceEpoch,
+//                                         widget.profession,
+//                                         "no_image_in_firebase.png",
+//                                         Description,
+//                                         userData.latitude,
+//                                         userData.longitude);
+//                                   }
+
+//                                   if (FileName != "no_image_in_firebase.png") {
+//                                     await DatabaseService().RaiseRequest(
+//                                         user.displayName.toString(),
+//                                         user.uid,
+//                                         DateTime.now().millisecondsSinceEpoch,
+//                                         widget.profession,
+//                                         UUID,
+//                                         Description,
+//                                         userData.latitude,
+//                                         userData.longitude);
+//                                     storage
+//                                         .uploudFile(Path, UUID)
+//                                         .then((value) => print('Uplouded'));
+//                                   }
+//                                 }
+//                                 Navigator.pop(context);
+//                               } else {
+//                                 showSimpleNotification(
+//                                     Text('You have no connection!'),
+//                                     background: Colors.red);
+//                               }
+//                             },
+//                             child: Text('Submit'),
+//                           ),
+//                         ],
+//                       ),
+//                     )),
+//               ),
+//             ));
+//           } else {
+//             return Loading();
+//           }
+//         });
+//   }
+// }

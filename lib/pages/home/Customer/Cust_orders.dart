@@ -11,6 +11,7 @@ import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 class Cust_Order extends StatelessWidget {
   final AuthSrrvice _auth = AuthSrrvice();
@@ -68,7 +69,22 @@ class Cust_Order extends StatelessWidget {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: UserList(),
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 73, 3, 105),
+                Color.fromARGB(255, 15, 7, 1)
+              ])),
+          child: Stack(
+            children: [
+              PositionedBackground(context),
+              UserList(),
+            ],
+          ),
+        ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.settings),
           onPressed: () {},

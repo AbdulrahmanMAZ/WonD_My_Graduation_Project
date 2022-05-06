@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ScreenSettings {
@@ -181,3 +183,73 @@ InputDecoration passwordInputDecoration = InputDecoration(
     ),
   ),
 );
+
+class ClipPainter extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var height = size.height;
+    var width = size.width;
+    var path = new Path();
+
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, height);
+    path.lineTo(size.width, 0);
+
+    /// [Top Left corner]
+    var secondControlPoint = Offset(0, 0);
+    var secondEndPoint = Offset(width * .5, height * .3);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    /// [Left Middle]
+    var fifthControlPoint = Offset(width * .3, height * .2);
+    var fiftEndPoint = Offset(width * .23, height * .1);
+    path.quadraticBezierTo(fifthControlPoint.dx, fifthControlPoint.dy,
+        fiftEndPoint.dx, fiftEndPoint.dy);
+
+    /// [Bottom Left corner]
+    var thirdControlPoint = Offset(0, height);
+    var thirdEndPoint = Offset(width, height);
+    path.quadraticBezierTo(thirdControlPoint.dx, thirdControlPoint.dy,
+        thirdEndPoint.dx, thirdEndPoint.dy);
+
+    path.lineTo(0, size.height);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // TODO: implement shouldReclip
+    return true;
+  }
+}
+
+Positioned PositionedBackground(context) {
+  Random rand = Random();
+  double randNumber = rand.nextInt(10) / 10;
+  return Positioned(
+    top: -MediaQuery.of(context).size.height * .0,
+    right: -MediaQuery.of(context).size.width * .2,
+    child: Container(
+        child: Transform.rotate(
+      angle: -pi / 3.5,
+      child: ClipPath(
+        clipper: ClipPainter(),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .5,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 59, 111, 179),
+                Color.fromARGB(214, 156, 18, 145)
+              ])),
+        ),
+      ),
+    )),
+  );
+}

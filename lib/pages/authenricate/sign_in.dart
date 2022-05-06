@@ -94,6 +94,7 @@ class _SignInState extends State<SignIn> {
                     ])),
                 child: Stack(
                   children: [
+                    PositionedBackground(context),
                     // Positioned(
                     //   top: -MediaQuery.of(context).size.height * .10,
                     //   right: -MediaQuery.of(context).size.width * .3,

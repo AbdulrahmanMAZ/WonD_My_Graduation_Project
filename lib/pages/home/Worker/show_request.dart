@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
@@ -209,7 +210,6 @@ class _ShowRequestState extends State<ShowRequest>
                           const SizedBox(
                             height: 18,
                           ),
-                          const Spacer(),
                           TextFormField(
                               validator: ((value) {
                                 if (value != null && value.isEmpty) {
@@ -237,6 +237,8 @@ class _ShowRequestState extends State<ShowRequest>
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      var rng = new Random();
+                      var OTP = rng.nextInt(900000) + 100000;
                       if (_formKey.currentState!.validate()) {
                         _db.AcceptRequest(
                             args.name,
@@ -245,12 +247,17 @@ class _ShowRequestState extends State<ShowRequest>
                             user?.uid,
                             DateTime.now().millisecondsSinceEpoch,
                             price,
-                            0);
+                            0,
+                            args.latitude,
+                            args.longitude,
+                            OTP);
                         Navigator.pop(context);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => accept_tracker()));
+                        // Navigator.pushNamed(context, '/Show_Request',
+                        //     arguments: args);
                       }
                     },
                     style: ElevatedButton.styleFrom(

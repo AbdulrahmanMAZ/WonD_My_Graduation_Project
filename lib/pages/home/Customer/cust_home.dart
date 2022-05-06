@@ -1,19 +1,26 @@
+import 'dart:io';
+
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
+import 'package:coffre_app/pages/home/Customer/AdressPage.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
+import 'package:coffre_app/pages/home/Customer/MakeOrder.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
 import 'package:coffre_app/pages/home/Customer/Users_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
+import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:permission_handler/permission_handler.dart'
@@ -27,6 +34,8 @@ class Cust_Home extends StatefulWidget {
 
 class _Cust_HomeState extends State<Cust_Home> {
   PermissionStatus? _permissionGranted;
+
+  bool hasInternet = false;
   void initState() {
     super.initState();
     // widget.a += 1;
@@ -43,19 +52,17 @@ class _Cust_HomeState extends State<Cust_Home> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     final CollectionReference aaa =
         FirebaseFirestore.instance.collection('coffes');
     final usera = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: usera?.uid);
     void _showAppSettings(profession) {
       try {
-        showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Container(
-                child: SettingsForm(profession: profession),
-              );
-            });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MakeOrder(profession: profession)));
       } catch (e) {
         print("${e.toString()} You have already signed out.");
       }
@@ -82,11 +89,10 @@ class _Cust_HomeState extends State<Cust_Home> {
             _locationData!.latitude, _locationData!.longitude);
         _showAppSettings(a);
       } else {
-        return showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Container(child: Text('Must allow permission'));
-            });
+        showSimpleNotification(
+            Text(
+                'You must allow location access to continue\nTo do so, click on the location icon at the right top corner'),
+            background: Colors.red);
       }
     }
     //   _isServiceEnabled = await location.serviceEnabled();
@@ -111,7 +117,7 @@ class _Cust_HomeState extends State<Cust_Home> {
 
     // SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
-    print(widget.a);
+
     return StreamProvider<User?>.value(
       initialData: null,
       value: AuthSrrvice().user,
@@ -130,7 +136,7 @@ class _Cust_HomeState extends State<Cust_Home> {
               //     MaterialPageRoute(builder: (context) => Cust_Home()));
               await _auth.SignOut();
               await Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => SignIn()),
+                  MaterialPageRoute(builder: (context) => Wrapper()),
                   (Route<dynamic> route) => false);
 
               // Navigator.pushReplacement(
@@ -146,10 +152,15 @@ class _Cust_HomeState extends State<Cust_Home> {
 
         appBar: MyCustomAppBar(name: 'Your Requests', widget: [
           IconButton(
-              onPressed: () {
-                setState(() {
-                  // SetLocation();
-                });
+              onPressed: () async {
+                if (await PermissionHandler.Permission.location.isDenied)
+                  setState(() {
+                    PermissionHandler.openAppSettings();
+                  });
+                else {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AdressPage()));
+                }
               },
               icon: Icon(Icons.location_pin)),
           IconButton(
@@ -193,7 +204,7 @@ class _Cust_HomeState extends State<Cust_Home> {
                     ),
                 ],
               ),
-              onPressed: () => {
+              onPressed: () async => {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -243,88 +254,140 @@ class _Cust_HomeState extends State<Cust_Home> {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: Wrap(children: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: InkWell(
-              onTap: () {
-                return setState(() {
-                  SetLocation("Electrician");
-                });
-              },
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.asset(
-                      "images/fix fesh.jpg",
-                      color: Color.fromARGB(255, 136, 135, 135),
-                      colorBlendMode: BlendMode.darken,
-                      //alignment: ,
-                      fit: BoxFit.cover,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Electrion",
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: Colors.white,
-                            ),
+        body: Container(
+          height: height,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 73, 3, 105),
+                Color.fromARGB(255, 15, 7, 1)
+              ])),
+          child: Stack(
+            children: [
+              PositionedBackground(context),
+              Container(
+                child: SingleChildScrollView(
+                  child: Wrap(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: InkWell(
+                        onTap: () async {
+                          hasInternet =
+                              await InternetConnectionChecker().hasConnection;
+                          if (hasInternet) {
+                            if (await PermissionHandler
+                                .Permission.location.isGranted)
+                              return _showAppSettings("Electrician");
+                            else {
+                              return setState(() {
+                                SetLocation("Electrician");
+                              });
+                            }
+                          } else {
+                            showSimpleNotification(
+                                Text('You have no connection!'),
+                                background: Colors.red);
+                          }
+                        },
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.asset(
+                                "images/fix fesh.jpg",
+                                color: Color.fromARGB(255, 136, 135, 135),
+                                colorBlendMode: BlendMode.darken,
+                                //alignment: ,
+                                fit: BoxFit.cover,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Electrion",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-            width: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: InkWell(
-              onTap: () {
-                return setState(() {
-                  SetLocation('plumber');
-                });
-              },
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.asset(
-                      "images/brken sink.jpg",
-                      color: Color.fromARGB(255, 211, 210, 210),
-                      colorBlendMode: BlendMode.darken,
-                      //alignment: ,
-                      fit: BoxFit.cover,
+                    SizedBox(
+                      height: 10,
+                      width: 10,
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "plumbing",
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: Colors.white,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: InkWell(
+                        onTap: () async {
+                          hasInternet =
+                              await InternetConnectionChecker().hasConnection;
+                          if (hasInternet) {
+                            if (await PermissionHandler
+                                .Permission.location.isGranted)
+                              return _showAppSettings("plumber");
+                            else {
+                              return setState(() {
+                                SetLocation('plumber');
+                              });
+                            }
+                          } else {
+                            showSimpleNotification(
+                                Text('You have no connection!'),
+                                background: Colors.red);
+                          }
+                        },
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.asset(
+                                "images/brken sink.jpg",
+                                color: Color.fromARGB(255, 211, 210, 210),
+                                colorBlendMode: BlendMode.darken,
+                                //alignment: ,
+                                fit: BoxFit.cover,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "plumbing",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ],
+                  ]),
                 ),
               ),
-            ),
+            ],
           ),
-        ]),
+        ),
         // floatingActionButton: FloatingActionButton(
         //   child: Icon(Icons.settings),
         //   onPressed: () {},

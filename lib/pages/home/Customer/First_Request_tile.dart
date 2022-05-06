@@ -5,12 +5,15 @@ import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:coffre_app/modules/users.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class custTile extends StatelessWidget {
+class requestTile extends StatelessWidget {
   final Request userRequest;
-  custTile({required this.userRequest});
+  bool hasInternet = false;
+  requestTile({required this.userRequest});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,19 @@ class custTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
           trailing: TextButton.icon(
-              onPressed: () {
-                DatabaseService()
-                    .RequestsCollection
-                    .doc(userStream.uid)
-                    .delete() // <-- Delete
-                    .then((_) => print('Deleted'))
-                    .catchError((error) => print('Delete failed: $error'));
+              onPressed: () async {
+                hasInternet = await InternetConnectionChecker().hasConnection;
+                if (hasInternet) {
+                  DatabaseService()
+                      .RequestsCollection
+                      .doc(userStream.uid)
+                      .delete() // <-- Delete
+                      .then((_) => print('Deleted'))
+                      .catchError((error) => print('Delete failed: $error'));
+                } else {
+                  showSimpleNotification(Text('You have no connection!'),
+                      background: Colors.red);
+                }
               },
               icon: Icon(
                 Icons.delete,

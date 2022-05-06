@@ -106,6 +106,13 @@ class _workingpageState extends State<workingpage>
                       onRatingUpdate: (rating) {
                         DatabaseService(uid: item.worker_ID)
                             .Ratethis(rating, item.Cust_ID);
+                        DatabaseService()
+                            .AcceptenceCollection
+                            .doc(item.worker_ID)
+                            .delete() // <-- Delete
+                            .then((_) => print('Deleted'))
+                            .catchError(
+                                (error) => print('Delete failed: $error'));
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -139,7 +146,30 @@ class _workingpageState extends State<workingpage>
                     ),
                   ),
                 )),
-                Loading()
+                Loading(),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'Provide the worker with this code when he finsh the work',
+                  style: GoogleFonts.actor(
+                      textStyle: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 20,
+                          letterSpacing: .5,
+                          fontWeight: FontWeight.w900)),
+                ),
+                Card(
+                  child: Text(
+                    '${item.OTP}',
+                    style: GoogleFonts.abel(
+                        textStyle: TextStyle(
+                            color: Color.fromARGB(255, 194, 31, 186),
+                            fontSize: 40,
+                            letterSpacing: .5,
+                            fontWeight: FontWeight.w900)),
+                  ),
+                ),
               ],
             ),
           );

@@ -29,15 +29,22 @@ class AcceptedRequest {
   final int t;
   final String price;
   final int Status;
+  final double latitude;
+  final double longitude;
+  final int OTP;
 
-  AcceptedRequest(
-      {required this.Cust_ID,
-      required this.Cust_name,
-      required this.worker_ID,
-      required this.worker_name,
-      required this.t,
-      required this.price,
-      required this.Status});
+  AcceptedRequest({
+    required this.Cust_ID,
+    required this.Cust_name,
+    required this.worker_ID,
+    required this.worker_name,
+    required this.t,
+    required this.price,
+    required this.Status,
+    required this.latitude,
+    required this.longitude,
+    required this.OTP,
+  });
 }
 
 class WorkingOnit {

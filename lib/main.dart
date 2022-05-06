@@ -26,6 +26,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -59,23 +60,25 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<Rate>>.value(
             initialData: [], value: DatabaseService().ratee),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/cust_orders': (context) => Cust_Order(),
-          '/cust_home': (context) => Cust_Home(),
-          '/login': (context) => SignIn(),
-          '/worker_home': (context) => worker_home(),
-          '/worker_requests': (context) => worker_requests(),
-          '/cust_ordering': (context) => OrderPage(),
-          '/Show_Request': (context) => ShowRequest(),
-          '/Accepted_Requests': (context) => Accepted_Orders(),
-          '/SetWorkerLocation': (context) => setLocationWorker(),
-          '/accept_tracker': (context) => accept_tracker(),
-          '/Profile': (context) => Profile(),
-          '/OrdersMap': (context) => OrdersMap(),
-        },
-        home: Wrapper(),
+      child: OverlaySupport.global(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/cust_orders': (context) => Cust_Order(),
+            '/cust_home': (context) => Cust_Home(),
+            '/login': (context) => SignIn(),
+            '/worker_home': (context) => worker_home(),
+            '/worker_requests': (context) => worker_requests(),
+            '/cust_ordering': (context) => OrderPage(),
+            '/Show_Request': (context) => ShowRequest(),
+            '/Accepted_Requests': (context) => Accepted_Orders(),
+            '/SetWorkerLocation': (context) => setLocationWorker(),
+            '/accept_tracker': (context) => accept_tracker(),
+            '/Profile': (context) => Profile(),
+            '/OrdersMap': (context) => OrdersMap(),
+          },
+          home: Wrapper(),
+        ),
       ),
     );
   }

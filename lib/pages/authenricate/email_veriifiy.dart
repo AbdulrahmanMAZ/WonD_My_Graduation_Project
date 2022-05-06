@@ -5,6 +5,7 @@ import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/CustLocation.dart';
 import 'package:coffre_app/pages/home/Customer/landing.dart';
+import 'package:coffre_app/pages/home/Worker/workerLanding.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/services/auth.dart';
@@ -124,7 +125,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   snapshot.data!.data() as Map<String, dynamic>;
 
               if (data['isWorker'] == true) {
-                return worker_home();
+                return workerlanding();
               } else {
                 return landing();
               }

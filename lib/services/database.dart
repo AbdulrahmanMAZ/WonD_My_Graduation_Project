@@ -96,8 +96,17 @@ class DatabaseService {
     });
   }
 
-  Future<void> AcceptRequest(String Cust_name, String Cust_ID,
-      String Worker_Name, Worker_ID, int t, Price, Status) async {
+  Future<void> AcceptRequest(
+      String Cust_name,
+      String Cust_ID,
+      String Worker_Name,
+      Worker_ID,
+      int t,
+      Price,
+      Status,
+      lat,
+      long,
+      OTP) async {
     return await AcceptenceCollection.doc(Worker_ID).set({
       'Cust_ID': Cust_ID,
       'Cust_name': Cust_name,
@@ -105,7 +114,10 @@ class DatabaseService {
       'Worker_Name': Worker_Name,
       'time': t,
       'Price': Price,
-      'Status': Status
+      'Status': Status,
+      'latitude': lat,
+      'longitude': long,
+      'OTP': OTP
     });
   }
 
@@ -162,7 +174,10 @@ class DatabaseService {
           worker_name: doc.get('Worker_Name'),
           t: doc.get('time'),
           price: doc.get('Price'),
-          Status: doc.get('Status'));
+          Status: doc.get('Status'),
+          latitude: doc.get('latitude'),
+          longitude: doc.get('longitude'),
+          OTP: doc.get('OTP'));
     }).toList();
   }
 

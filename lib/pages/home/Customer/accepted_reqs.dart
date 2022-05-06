@@ -66,13 +66,29 @@ class Accepted_Orders extends StatelessWidget {
         //         label: Text('Rquest Service'))
         //   ],
         // ),
-        body: AcceptedRequestsList(),
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 73, 3, 105),
+                Color.fromARGB(255, 15, 7, 1)
+              ])),
+          child: Stack(
+            children: [
+              PositionedBackground(context),
+              AcceptedRequestsList(),
+            ],
+          ),
+        ),
 
         //TO DO: make several sorting methods
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.sort),
-          onPressed: () {},
-        )
+        // floatingActionButton: FloatingActionButton(
+
+        //   child: Icon(Icons.sort),
+        //   onPressed: () {},
+        // ),
 
         //  FutureBuilder<DocumentSnapshot>(
         //     future: coffes.doc(_auth.inputData()).get(),
@@ -93,8 +109,6 @@ class Accepted_Orders extends StatelessWidget {
         //       }
         //       return Loading();
         //     })
-
-        ,
       ),
     );
   }
