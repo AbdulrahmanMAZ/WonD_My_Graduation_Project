@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 1), () {
       setState(() {
         _isLoading = true;
       });

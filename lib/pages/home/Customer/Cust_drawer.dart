@@ -36,7 +36,9 @@ class _CustDrawerState extends State<CustDrawer> {
     for (var item in acceptedrequests) {
       if (item.Cust_ID == user?.uid) {
         // youHaveRequest = true;
-        a.add(item);
+        if (item.Status >= 1) {
+          a.add(item);
+        }
       }
     }
     if (a.isNotEmpty) {

@@ -29,7 +29,7 @@ class _UserProfileState extends State<UserProfile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 1), () {
       setState(() {
         _isLoading = true;
       });
@@ -148,7 +148,7 @@ class _UserProfileState extends State<UserProfile> {
                 stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    double avregeRating = 0;
+                    double avregeRating = 1;
                     List<Rate>? userRate = snapshot.data;
                     if (userRate != null) {
                       for (var item in userRate) {
