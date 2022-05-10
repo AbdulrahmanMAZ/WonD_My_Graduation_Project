@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 class Storage {
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
-
+// Orders Images
   Future<void> uploudFile(String filePath, String fileName) async {
     File file = File(filePath);
     try {
@@ -22,6 +22,28 @@ class Storage {
     try {
       downloadURL =
           await storage.ref('Orders_Images/$imageName').getDownloadURL();
+    } catch (e) {
+      print(e);
+      downloadURL = 'No photo found';
+    }
+    return downloadURL;
+  }
+
+//Profile Image uploader
+  Future<void> uploudProfileImage(String filePath, String fileName) async {
+    File file = File(filePath);
+    try {
+      await storage.ref('profile_images/$fileName').putFile(file);
+    } on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> downloadProfileImageURL(String imageName) async {
+    late String downloadURL;
+    try {
+      downloadURL =
+          await storage.ref('profile_images/$imageName').getDownloadURL();
     } catch (e) {
       print(e);
       downloadURL = 'No photo found';

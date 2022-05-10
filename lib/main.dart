@@ -19,7 +19,7 @@ import 'package:coffre_app/pages/home/Worker/worker_home_old.dart';
 import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 
 // import 'package:coffre_app/pages/home/cust_home.dart';
-import 'package:coffre_app/pages/home/profile.dart';
+import 'package:coffre_app/pages/home/Customer/profile.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';

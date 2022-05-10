@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/services/storage.dart';
 import 'package:coffre_app/shared/loading.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -15,8 +20,32 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  bool _isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // 1. Using Timer
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+    // Future.delayed(Duration(seconds: 2), () {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    // });
+  }
+
+  bool imageuploaded = false;
+  var Path;
+  var FileName = "no_image_in_firebase.png";
+
   @override
   Widget build(BuildContext context) {
+    final Storage storage = Storage();
+    final _formKey = GlobalKey<FormState>();
     final usera = Provider.of<User?>(context);
     // final _myrates = Provider.of<List<Rate>?>(context) ?? [];
 
@@ -41,124 +70,176 @@ class _ProfileState extends State<Profile> {
         }
       }
     } catch (e) {}
-    return Scaffold(
-        appBar: AppBar(),
-        body: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            Center(
-              child: Stack(
-                children: [
-                  ClipOval(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Ink.image(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1649636269015-d92f1f08f11d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"),
-                        fit: BoxFit.cover,
-                        width: 128,
-                        height: 128,
-                        child: InkWell(onTap: () {}),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 4,
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 17,
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 20,
+
+    return _isLoading
+        ? Scaffold(
+            appBar: AppBar(),
+            body: ListView(
+              physics: BouncingScrollPhysics(),
+              children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: FutureBuilder(
+                              future: storage.downloadProfileImageURL(
+                                  currentUser!.profileImage as String),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  return Container(
+                                    child: Image.network(
+                                      snapshot.data!,
+                                      fit: BoxFit.cover,
+                                      color: Colors.grey,
+                                      colorBlendMode: BlendMode.multiply,
+                                    ),
+                                  );
+                                }
+                                return Loading();
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            if (currentUser?.name != null && usera != null)
-              Column(
-                children: [
-                  Text(
-                    currentUser?.name as String,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                      Positioned(
+                        bottom: 0,
+                        right: 4,
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 17,
+                            child: IconButton(
+                              onPressed: () async {
+                                final result = await FilePicker.platform
+                                    .pickFiles(
+                                        allowMultiple: false,
+                                        type: FileType.custom,
+                                        allowedExtensions: ['png', 'jpg']);
+                                if (result == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('No Image is There'),
+                                    ),
+                                  );
+                                  return null;
+                                }
+                                setState(() {
+                                  Path = result.files.single.path!;
+                                  FileName = result.files.single.name;
+                                  setState(() {
+                                    this.imageuploaded = true;
+                                  });
+                                });
+                                print(Path + ' -- ' + FileName);
+                                final UUID = Uuid().v1();
+                                if (FileName != "no_image_in_firebase.png") {
+                                  await DatabaseService(uid: usera!.uid)
+                                      .updateUserImage(UUID);
+
+                                  storage
+                                      .uploudProfileImage(Path, UUID)
+                                      .then((value) => print('Uplouded'));
+                                }
+                              },
+                              icon: Icon(Icons.edit,
+                                  color: Colors.white, size: 20),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: 5,
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                if (currentUser?.name != null && usera != null)
+                  Column(
+                    children: [
+                      Text(
+                        currentUser?.name as String,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(usera.email as String,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(currentUser?.phoneNumber as String,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
                   ),
-                  Text(usera.email as String,
-                      style: TextStyle(
-                        color: Colors.grey,
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('data',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      )),
-                  SizedBox(
-                    height: 15,
-                  ),
-                ],
-              ),
-            StreamBuilder<List<Rate>>(
-                stream: DatabaseService(uid: usera?.uid).ratee,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    double avregeRating = 0;
-                    List<Rate>? userRate = snapshot.data;
-                    if (userRate != null) {
-                      for (var item in userRate) {
-                        avregeRating += item.rate;
-                      }
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
-                      child: Card(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${avregeRating / userRate!.length}',
-                                    style: TextStyle(
+                StreamBuilder<List<Rate>>(
+                    stream: DatabaseService(uid: usera?.uid).ratee,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        double avregeRating = 1;
+                        List<Rate>? userRate = snapshot.data;
+                        if (userRate != null) {
+                          for (var item in userRate) {
+                            avregeRating += item.rate;
+                          }
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
+                          child: Card(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${avregeRating / userRate!.length}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24,
+                                        )),
+                                    Text('(${userRate.length})',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            color: Colors.amber)),
+                                  ],
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  "Rating",
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                    )),
-                                Text('(${userRate.length})',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Colors.amber)),
+                                      fontSize: 24),
+                                ),
                               ],
                             ),
-                            SizedBox(height: 2),
-                            Text(
-                              "Rating",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 24),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Loading();
-                  }
-                }),
-          ],
-        ));
+                          ),
+                        );
+                      } else {
+                        return Loading();
+                      }
+                    }),
+              ],
+            ))
+        : Loading();
   }
 }
 

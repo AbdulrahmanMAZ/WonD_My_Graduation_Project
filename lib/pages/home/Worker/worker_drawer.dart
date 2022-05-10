@@ -26,59 +26,73 @@ class worker_drawer extends StatelessWidget {
       initialData: null,
       value: AuthSrrvice().user,
       child: Drawer(
-        child: ListView(
-          children: [
-            Container(
-              height: 50,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Color.fromARGB(255, 38, 70, 173),
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                Color.fromARGB(255, 73, 3, 105),
+                Color.fromARGB(255, 138, 74, 25)
+              ])),
+          child: ListView(
+            children: [
+              Container(
+                height: 50,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color.fromARGB(255, 181, 193, 231),
+                  ),
+                  child: Text('Welcome, $username'),
                 ),
-                child: Text('Welcome, $username'),
               ),
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Home Page'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => worker_home()));
+              TextButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('Home Page'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => worker_home()));
 
-                // Navigator.of(context).pushNamedAndRemoveUntil(
-                //     '/worker_home', (Route<dynamic> route) => false);
-                // Navigator.of(context).pushReplacementNamed('/worker_home');
-              },
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('My orders'),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => worker_requests()));
-              },
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Requests tracker'),
-              onPressed: () {
-                // Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => accept_tracker()));
-              },
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Profile'),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile()));
-              },
-            ),
-            logout,
-          ],
+                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                  //     '/worker_home', (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushReplacementNamed('/worker_home');
+                },
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('My orders'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => worker_requests()));
+                },
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('Requests tracker'),
+                onPressed: () {
+                  // Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => accept_tracker()));
+                },
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('Profile'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Profile()));
+                },
+              ),
+              logout,
+            ],
+          ),
         ),
       ),
     );

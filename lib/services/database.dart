@@ -29,14 +29,15 @@ class DatabaseService {
   // DocumentSnapshot doc = await DocRef.get();
 
   Future<void> updateUserData(
-      String name, bool isWorker, String profession) async {
+      String name, bool isWorker, String profession, phone_number) async {
     return await workersCollection.doc(uid).set({
       'uid': uid,
       'name': name,
       'isWorker': isWorker,
       'profession': profession,
       'latitude': 0.1,
-      'longitude': 0.1
+      'longitude': 0.1,
+      'phone_number': phone_number
     });
   }
 
@@ -45,6 +46,18 @@ class DatabaseService {
       var a = await workersCollection
           .doc(uid)
           .update({'latitude': lat, 'longitude': long});
+
+      return a;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> updateUserImage(profile_image) async {
+    try {
+      var a = await workersCollection
+          .doc(uid)
+          .update({'profile_image': profile_image});
 
       return a;
     } catch (e) {
@@ -239,24 +252,29 @@ class DatabaseService {
   //UserData from snapshot
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
-        uid: uid,
-        name: snapshot.get('name'),
-        isWorker: snapshot.get('isWorker'),
-        profession: snapshot.get('profession'),
-        latitude: snapshot.get('latitude'),
-        longitude: snapshot.get('longitude'));
+      uid: uid,
+      name: snapshot.get('name'),
+      isWorker: snapshot.get('isWorker'),
+      profession: snapshot.get('profession'),
+      latitude: snapshot.get('latitude'),
+      longitude: snapshot.get('longitude'),
+    );
   }
 
   List<UserData>? _usersListDataFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return UserData(
-          uid: doc.get('uid'),
-          name: doc.get('name'),
-          isWorker: doc.get('isWorker'),
-          profession: doc.get('profession'),
-          latitude: doc.get('latitude'),
-          longitude: doc.get('longitude'));
-    }).toList();
+    try {
+      return snapshot.docs.map((doc) {
+        return UserData(
+            uid: doc.get('uid'),
+            name: doc.get('name'),
+            isWorker: doc.get('isWorker'),
+            profession: doc.get('profession'),
+            latitude: doc.get('latitude'),
+            longitude: doc.get('longitude'),
+            phoneNumber: doc.get('phone_number'),
+            profileImage: doc.get('profile_image'));
+      }).toList();
+    } catch (e) {}
   }
 
   UserData _userDataFromSnapshot2(DocumentSnapshot snapshot) {
@@ -275,7 +293,9 @@ class DatabaseService {
         isWorker: snapshot.get('isWorker'),
         profession: snapshot.get('profession'),
         latitude: snapshot.get('latitude'),
-        longitude: snapshot.get('longitude'));
+        longitude: snapshot.get('longitude'),
+        phoneNumber: snapshot.get('phone_number'),
+        profileImage: snapshot.get('profile_image'));
   }
 
   //get users stream

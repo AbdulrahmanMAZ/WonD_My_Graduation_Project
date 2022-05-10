@@ -553,7 +553,8 @@ class _RegisterState extends State<Register> {
                                                       password,
                                                       isWorker,
                                                       _currentProfession
-                                                          as String);
+                                                          as String,
+                                                      '+966' + Phone_Number);
                                               print(result);
                                               if (result == null) {
                                                 setState(() {
