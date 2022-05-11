@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/CustLocation.dart';
-import 'package:coffre_app/pages/home/Customer/landing.dart';
+import 'package:coffre_app/pages/home/Customer/Customerlanding.dart';
 import 'package:coffre_app/pages/home/Worker/workerLanding.dart';
 import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
@@ -126,8 +126,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
               if (data['isWorker'] == true) {
                 return workerlanding();
+              } else if (data['isShop'] == true) {
+                return Loading();
               } else {
-                return landing();
+                return Customerlanding();
               }
             }
 

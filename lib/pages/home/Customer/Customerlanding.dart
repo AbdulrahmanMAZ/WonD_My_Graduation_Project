@@ -4,14 +4,14 @@ import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
-class landing extends StatefulWidget {
-  const landing({Key? key}) : super(key: key);
+class Customerlanding extends StatefulWidget {
+  const Customerlanding({Key? key}) : super(key: key);
 
   @override
-  State<landing> createState() => _landingState();
+  State<Customerlanding> createState() => _CustomerlandingState();
 }
 
-class _landingState extends State<landing> {
+class _CustomerlandingState extends State<Customerlanding> {
   @override
   void initState() {
     Timer.run(() {

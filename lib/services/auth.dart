@@ -48,6 +48,7 @@ class AuthSrrvice {
       String email,
       String password,
       bool isWorker,
+      bool isShop,
       String profession,
       String phone_number) async {
     try {
@@ -63,7 +64,7 @@ class AuthSrrvice {
       //       .set({'Worker_ID': user.uid, 'Worker_email': email});
       // }
       await DatabaseService(uid: user.uid)
-          .updateUserData(name, isWorker, profession, phone_number);
+          .updateUserData(name, isWorker, isShop, profession, phone_number);
       return user;
     } catch (e) {
       // print(e.toString());

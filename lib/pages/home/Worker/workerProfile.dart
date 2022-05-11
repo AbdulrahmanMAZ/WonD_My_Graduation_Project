@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 1), () {
+    Timer(Duration(seconds: 5), () {
       setState(() {
         _isLoading = true;
       });
@@ -70,6 +70,7 @@ class _ProfileState extends State<Profile> {
         }
       }
     } catch (e) {}
+    print(a.length);
 
     return _isLoading
         ? Scaffold(
@@ -86,26 +87,28 @@ class _ProfileState extends State<Profile> {
                         child: ClipOval(
                           child: Material(
                             color: Colors.transparent,
-                            child: FutureBuilder(
-                              future: storage.downloadProfileImageURL(
-                                  currentUser!.profileImage as String),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<String> snapshot) {
-                                if (snapshot.connectionState ==
-                                        ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  return Container(
-                                    child: Image.network(
-                                      snapshot.data!,
-                                      fit: BoxFit.cover,
-                                      color: Colors.grey,
-                                      colorBlendMode: BlendMode.multiply,
-                                    ),
-                                  );
-                                }
-                                return Loading();
-                              },
-                            ),
+                            child: _isLoading
+                                ? FutureBuilder(
+                                    future: storage.downloadProfileImageURL(
+                                        currentUser?.profileImage as String),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<String> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.hasData) {
+                                        return Container(
+                                          child: Image.network(
+                                            snapshot.data!,
+                                            fit: BoxFit.cover,
+                                            color: Colors.grey,
+                                            colorBlendMode: BlendMode.multiply,
+                                          ),
+                                        );
+                                      }
+                                      return Loading();
+                                    },
+                                  )
+                                : Loading(),
                           ),
                         ),
                       ),
@@ -210,7 +213,8 @@ class _ProfileState extends State<Profile> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${avregeRating / userRate!.length}',
+                                    Text(
+                                        '${(avregeRating / userRate!.length).toStringAsFixed(1)}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 24,

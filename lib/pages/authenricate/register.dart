@@ -28,6 +28,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   AuthSrrvice _auth = AuthSrrvice();
   bool _passwordVisible = true;
+  bool _RepasswordVisible = true;
   final _formKey = GlobalKey<FormState>();
   String? _currentProfession = 'Customer';
   String email = '';
@@ -39,6 +40,7 @@ class _RegisterState extends State<Register> {
   bool loading = false;
 
   bool isWorker = false;
+  bool isShop = false;
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 
@@ -215,6 +217,11 @@ class _RegisterState extends State<Register> {
                                           ),
                                           TextFormField(
                                               decoration: textInputDecoration,
+                                              inputFormatters: <
+                                                  TextInputFormatter>[
+                                                FilteringTextInputFormatter
+                                                    .deny(RegExp("[ ]")),
+                                              ],
                                               validator: (val) {
                                                 if (val != null &&
                                                     val.isEmpty) {
@@ -401,80 +408,84 @@ class _RegisterState extends State<Register> {
                                             height: 10,
                                           ),
                                           TextFormField(
-                                            controller: _confirmPass,
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  'Must match your password',
-                                              fillColor: Colors.white,
-                                              filled: true,
-                                              suffixIcon: IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _passwordVisible =
-                                                        !_passwordVisible;
-                                                  });
-                                                },
-                                                icon: Icon(_passwordVisible
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off),
-                                              ),
-                                              border: OutlineInputBorder(
+                                              controller: _confirmPass,
+                                              decoration: InputDecoration(
+                                                hintText:
+                                                    'Must match your password',
+                                                fillColor: Colors.white,
+                                                filled: true,
+                                                suffixIcon: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _RepasswordVisible =
+                                                          !_RepasswordVisible;
+                                                    });
+                                                  },
+                                                  icon: Icon(_RepasswordVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off),
+                                                ),
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    borderSide: BorderSide(
+                                                      color: AppColors
+                                                          .underlineColor,
+                                                      width: 0.5,
+                                                    )),
+
+                                                // Color when it is clicked
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: const BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 105, 21, 216),
+                                                    width: 0.5,
+                                                  ),
+                                                ),
+                                                labelText:
+                                                    'Re Enter Youe password',
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior.never,
+                                                prefixIcon: const Icon(
+                                                  Icons.lock,
+                                                  color: Colors.grey,
+                                                  size: 22,
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: const BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 255, 17, 0),
+                                                    width: 0.6,
+                                                  ),
+                                                ),
+
+                                                enabledBorder:
+                                                    OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                   borderSide: BorderSide(
                                                     color: AppColors
                                                         .underlineColor,
                                                     width: 0.5,
-                                                  )),
-
-                                              // Color when it is clicked
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 105, 21, 216),
-                                                  width: 0.5,
+                                                  ),
                                                 ),
-                                              ),
-                                              labelText:
-                                                  'Re Enter Youe password',
-                                              floatingLabelBehavior:
-                                                  FloatingLabelBehavior.never,
-                                              prefixIcon: const Icon(
-                                                Icons.lock,
-                                                color: Colors.grey,
-                                                size: 22,
-                                              ),
-                                              errorBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: const BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 255, 17, 0),
-                                                  width: 0.6,
-                                                ),
-                                              ),
 
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                  color:
-                                                      AppColors.underlineColor,
-                                                  width: 0.5,
-                                                ),
+                                                // Color when not in clicked
                                               ),
-
-                                              // Color when not in clicked
-                                            ),
-                                            validator: (val) {
-                                              if (val!.isEmpty) return 'Empty';
-                                              if (val != _pass.text)
-                                                return 'Not Match';
-                                              return null;
-                                            },
-                                          ),
+                                              validator: (val) {
+                                                if (val!.isEmpty)
+                                                  return 'Empty';
+                                                if (val != _pass.text)
+                                                  return 'Not Match';
+                                                return null;
+                                              },
+                                              obscureText: _RepasswordVisible),
                                         ],
                                       ),
                                       const SizedBox(
@@ -552,6 +563,7 @@ class _RegisterState extends State<Register> {
                                                       email,
                                                       password,
                                                       isWorker,
+                                                      isShop,
                                                       _currentProfession
                                                           as String,
                                                       '+966' + Phone_Number);
