@@ -149,12 +149,12 @@ class DatabaseService {
     });
   }
 
-  Future<void> Ratethis(double Rate, String whorated) async {
+  Future<void> Ratethis(double Rate, String whorated, userFeedback) async {
     return await workersCollection
         .doc(uid)
         .collection("Ratings")
         .doc(whorated)
-        .set({'Rating': Rate});
+        .set({'Rating': Rate, 'userFeedback': userFeedback});
   }
 
   Future<void> UpdateWorker(String name, String Cust_ID, profession) async {
@@ -239,6 +239,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return Rate(
         rate: doc.get('Rating'),
+        feedback: doc.get('userFeedback') ?? 'ff',
       );
     }).toList();
   }

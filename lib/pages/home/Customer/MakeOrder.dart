@@ -71,7 +71,7 @@ class _MakeOrderState extends State<MakeOrder> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                   Color.fromARGB(255, 73, 3, 105),
-                                  Color.fromARGB(255, 184, 110, 55)
+                                  Color.fromARGB(255, 247, 244, 243)
                                 ])),
                             child: Column(
                               children: <Widget>[

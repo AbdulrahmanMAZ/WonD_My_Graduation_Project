@@ -34,6 +34,9 @@ class _workingpageState extends State<workingpage>
     _controller.dispose();
   }
 
+  String? userFeedback;
+  double Rating = 0;
+
   @override
   Widget build(BuildContext context) {
     //  final requests = Provider.of<List<WorkingOnit>?>(context) ?? [];
@@ -104,21 +107,57 @@ class _workingpageState extends State<workingpage>
                         return Text('gg');
                       },
                       onRatingUpdate: (rating) {
-                        DatabaseService(uid: item.worker_ID)
-                            .Ratethis(rating, item.Cust_ID);
-                        DatabaseService()
-                            .AcceptenceCollection
-                            .doc(item.worker_ID)
-                            .delete() // <-- Delete
-                            .then((_) => print('Deleted'))
-                            .catchError(
-                                (error) => print('Delete failed: $error'));
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Cust_Home()));
+                        Rating = rating;
                       }),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  maxLines: 5,
+                  style: TextStyle(fontSize: 12),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 25.0, horizontal: 10.0),
+                    hoverColor: Colors.blue,
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: InputBorder.none,
+                    labelText: 'ُEnter Your Feedback',
+                    hintText: 'Enter Your Feedback',
+
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.black26, width: 5)),
+
+                    // Color when not in clicked
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(66, 136, 136, 136), width: 5.0),
+                    ),
+                  ),
+                  onChanged: (val) => setState(() {
+                    userFeedback = val;
+                  }),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      DatabaseService(uid: item.worker_ID)
+                          .Ratethis(Rating, item.Cust_ID, userFeedback);
+                      DatabaseService()
+                          .AcceptenceCollection
+                          .doc(item.worker_ID)
+                          .delete() // <-- Delete
+                          .then((_) => print('Deleted'))
+                          .catchError(
+                              (error) => print('Delete failed: $error'));
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Cust_Home()));
+                    },
+                    child: Text('Submit Rating and feedback'))
                 // TextButton(onPressed: (){, child: child)
               ],
             ),

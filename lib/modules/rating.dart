@@ -1,7 +1,5 @@
 class Rate {
   final double rate;
-
-  Rate({
-    required this.rate,
-  });
+  final String? feedback;
+  Rate({required this.rate, this.feedback});
 }
