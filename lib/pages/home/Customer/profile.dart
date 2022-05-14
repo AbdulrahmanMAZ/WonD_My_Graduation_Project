@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
+import 'package:coffre_app/pages/home/Worker/worker_feedback_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
 import 'package:coffre_app/shared/loading.dart';
@@ -29,7 +31,7 @@ class _UserProfileState extends State<UserProfile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 1), () {
+    Timer(Duration(seconds: 0), () {
       setState(() {
         _isLoading = true;
       });
@@ -75,130 +77,172 @@ class _UserProfileState extends State<UserProfile> {
     final user = Provider.of<User?>(context);
     return Scaffold(
         appBar: AppBar(),
-        body: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            Center(
-              child: Stack(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: ClipOval(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: _isLoading
-                            ? FutureBuilder(
-                                future: storage.downloadProfileImageURL(
-                                    currentUser!.profileImage as String),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      snapshot.hasData) {
-                                    return Container(
-                                      child: Image.network(
-                                        snapshot.data!,
-                                        fit: BoxFit.cover,
-                                        color: Colors.grey,
-                                        colorBlendMode: BlendMode.multiply,
-                                      ),
-                                    );
-                                  }
-                                  return Loading();
-                                },
-                              )
-                            : Loading(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            if (currentUser?.name != null && usera != null)
-              Column(
-                children: [
-                  Text(
-                    currentUser?.name as String,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(usera.email as String,
-                      style: TextStyle(
-                        color: Colors.grey,
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(currentUser?.phoneNumber as String,
-                      style: TextStyle(
-                        color: Colors.grey,
-                      )),
-                  SizedBox(
-                    height: 15,
-                  ),
-                ],
-              ),
-            StreamBuilder<List<Rate>>(
-                stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    double avregeRating = 1;
-                    List<Rate>? userRate = snapshot.data;
-                    if (userRate != null) {
-                      for (var item in userRate) {
-                        avregeRating += item.rate;
-                      }
-                    }
-
-                    int Number_of_ratings = userRate!.length;
-                    if (Number_of_ratings <= 0) {
-                      Number_of_ratings = 1;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
-                      child: Card(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                    '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                    )),
-                                Text('(${userRate.length})',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Colors.amber)),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Text(
-                              "Rating",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 24),
-                            ),
-                          ],
+        body: Scrollbar(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: _isLoading
+                                ? FutureBuilder(
+                                    future: storage.downloadProfileImageURL(
+                                        currentUser!.profileImage as String),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<String> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.hasData) {
+                                        return Container(
+                                          child: Image.network(
+                                            snapshot.data!,
+                                            fit: BoxFit.cover,
+                                            color: Colors.grey,
+                                            colorBlendMode: BlendMode.multiply,
+                                          ),
+                                        );
+                                      }
+                                      return Loading();
+                                    },
+                                  )
+                                : Loading(),
+                          ),
                         ),
                       ),
-                    );
-                  } else {
-                    return Loading();
-                  }
-                }),
-          ],
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                if (currentUser?.name != null && usera != null)
+                  Column(
+                    children: [
+                      Text(
+                        currentUser?.name as String,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(currentUser!.email as String,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(currentUser?.phoneNumber as String,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          )),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ),
+                StreamBuilder<List<Rate>>(
+                    stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        double avregeRating = 1;
+                        List<Rate>? userRate = snapshot.data;
+                        if (userRate != null) {
+                          for (var item in userRate) {
+                            avregeRating += item.rate;
+                          }
+                        }
+
+                        int Number_of_ratings = userRate!.length;
+                        if (Number_of_ratings <= 0) {
+                          Number_of_ratings = 1;
+                        }
+
+                        return Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(150, 0, 150, 0),
+                              child: Card(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                            '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                            )),
+                                        Text('(${userRate.length})',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                                color: Colors.amber)),
+                                      ],
+                                    ),
+                                    SizedBox(height: 2),
+                                    Text(
+                                      "Rating",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  //                 if (userRate != null) {
+                                  //   for (var item in userRate) {
+                                  //     avregeRating += item.rate;
+                                  //   }
+                                  // }
+                                  final _random = new Random();
+                                  userRate[_random.nextInt(userRate.length)];
+                                  var element = userRate[
+                                      _random.nextInt(userRate.length)];
+                                  if (userRate != null) {
+                                    return worker_feedback_tile(
+                                        rate: element.rate,
+                                        name: element.name,
+                                        feedback: element.feedback);
+                                  }
+                                  return Loading();
+                                }),
+                          ],
+                        );
+                      } else {
+                        return Loading();
+                      }
+                    }),
+                TextButton(
+                  child: Text('See More! Feedbacks'),
+                  onPressed: () {
+                    // TO DO GO TO ALL FEEDBACKS PAGE
+                    Navigator.pushNamed(context, '/FeedBack',
+                        arguments: widget.req);
+                  },
+                )
+              ],
+            ),
+          ),
         ));
   }
 }

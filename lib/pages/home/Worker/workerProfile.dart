@@ -7,6 +7,7 @@ import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Worker/worker_feedback_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
+import 'package:coffre_app/shared/feedbacks.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -266,8 +267,9 @@ class _ProfileState extends State<Profile> {
                                   userRate[_random.nextInt(userRate.length)];
                                   var element = userRate[
                                       _random.nextInt(userRate.length)];
-                                  if (UserRate != null) {
+                                  if (userRate != null) {
                                     return worker_feedback_tile(
+                                        name: element.name,
                                         rate: element.rate,
                                         feedback: element.feedback);
                                   }
@@ -283,6 +285,8 @@ class _ProfileState extends State<Profile> {
                   child: Text('See More! Feedbacks'),
                   onPressed: () {
                     // TO DO GO TO ALL FEEDBACKS PAGE
+                    Navigator.pushNamed(context, '/FeedBack',
+                        arguments: FeedBack);
                   },
                 )
               ],

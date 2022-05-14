@@ -10,8 +10,12 @@ class worker_feedback_tile extends StatelessWidget {
   final double rate;
 
   final String? feedback;
+  final String? name;
   const worker_feedback_tile(
-      {Key? key, required this.rate, required this.feedback})
+      {Key? key,
+      required this.rate,
+      required this.feedback,
+      required this.name})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,16 @@ class worker_feedback_tile extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.album),
-              title: Text(rate.toString()),
+              title: Row(
+                children: [
+                  Text("${name as String} "),
+                  Text(rate.toString()),
+                  Icon(
+                    Icons.star_rate_sharp,
+                    size: 15,
+                  )
+                ],
+              ),
               subtitle: Text(feedback as String),
             ),
             SizedBox()

@@ -23,6 +23,7 @@ import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 import 'package:coffre_app/pages/home/Customer/profile.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/shared/feedbacks.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
             '/Profile': (context) => Profile(),
             '/OrdersMap': (context) => OrdersMap(),
             '/mini_Map': (context) => miniMap(),
+            '/FeedBack': (context) => FeedBack(),
           },
           home: Wrapper(),
         ),

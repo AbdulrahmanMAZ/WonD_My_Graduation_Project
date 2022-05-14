@@ -15,6 +15,7 @@ class user {
 class UserData {
   final String? uid;
   final String? name;
+  final String? email;
   final String? phoneNumber;
   final String? profileImage;
   final bool? isWorker;
@@ -23,6 +24,7 @@ class UserData {
   final double? longitude;
   UserData(
       {this.isWorker,
+      this.email,
       this.phoneNumber,
       this.profileImage,
       this.name,

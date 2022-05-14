@@ -63,8 +63,8 @@ class AuthSrrvice {
       //       .doc()
       //       .set({'Worker_ID': user.uid, 'Worker_email': email});
       // }
-      await DatabaseService(uid: user.uid)
-          .updateUserData(name, isWorker, isShop, profession, phone_number);
+      await DatabaseService(uid: user.uid).updateUserData(
+          name, isWorker, isShop, email, profession, phone_number);
       return user;
     } catch (e) {
       // print(e.toString());

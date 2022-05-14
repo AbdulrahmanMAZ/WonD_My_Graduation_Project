@@ -145,8 +145,8 @@ class _workingpageState extends State<workingpage>
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      DatabaseService(uid: item.worker_ID)
-                          .Ratethis(Rating, item.Cust_ID, userFeedback);
+                      DatabaseService(uid: item.worker_ID).Ratethis(
+                          Rating, item.Cust_ID, userFeedback, item.Cust_name);
                       DatabaseService()
                           .AcceptenceCollection
                           .doc(item.worker_ID)

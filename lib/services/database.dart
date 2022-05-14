@@ -4,6 +4,7 @@ import 'package:coffre_app/modules/requests.dart';
 //import 'package:coffre_app/modules/User.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/pages/authenricate/sign_in.dart';
 //import 'package:coffre_app/modules/user.dart';
 
 class DatabaseService {
@@ -29,10 +30,11 @@ class DatabaseService {
   // DocumentSnapshot doc = await DocRef.get();
 
   Future<void> updateUserData(String name, bool isWorker, bool isShop,
-      String profession, phone_number) async {
+      String email, String profession, phone_number) async {
     return await workersCollection.doc(uid).set({
       'uid': uid,
       'name': name,
+      'email': email,
       'isWorker': isWorker,
       'isShop': isWorker,
       'profession': profession,
@@ -149,12 +151,13 @@ class DatabaseService {
     });
   }
 
-  Future<void> Ratethis(double Rate, String whorated, userFeedback) async {
+  Future<void> Ratethis(
+      double Rate, String whorated, userFeedback, String name) async {
     return await workersCollection
         .doc(uid)
         .collection("Ratings")
         .doc(whorated)
-        .set({'Rating': Rate, 'userFeedback': userFeedback});
+        .set({'Rating': Rate, 'userFeedback': userFeedback, 'name': name});
   }
 
   Future<void> UpdateWorker(String name, String Cust_ID, profession) async {
@@ -240,11 +243,12 @@ class DatabaseService {
       return Rate(
         rate: doc.get('Rating'),
         feedback: doc.get('userFeedback') ?? 'ff',
+        name: doc.get('name'),
       );
     }).toList();
   }
 
-  // brew list from snapshot
+  // users list from snapshot
   List<user> _workersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return user(
@@ -272,6 +276,7 @@ class DatabaseService {
             name: doc.get('name'),
             isWorker: doc.get('isWorker'),
             profession: doc.get('profession'),
+            email: doc.get('email'),
             latitude: doc.get('latitude'),
             longitude: doc.get('longitude'),
             phoneNumber: doc.get('phone_number'),
