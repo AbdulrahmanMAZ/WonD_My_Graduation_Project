@@ -8,6 +8,7 @@ import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
+import 'package:coffre_app/pages/home/Shop/shopHomePage.dart';
 import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/Worker/miniMap.dart';

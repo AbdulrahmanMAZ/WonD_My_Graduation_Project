@@ -24,7 +24,9 @@ class Storage {
           await storage.ref('Orders_Images/$imageName').getDownloadURL();
     } catch (e) {
       print(e);
-      downloadURL = 'No photo found';
+      downloadURL = await storage
+          .ref('profile_images/no_image_in_firebase.png')
+          .getDownloadURL();
     }
     return downloadURL;
   }
@@ -46,7 +48,10 @@ class Storage {
           await storage.ref('profile_images/$imageName').getDownloadURL();
     } catch (e) {
       print(e);
-      downloadURL = 'No photo found';
+      downloadURL = await storage
+          .ref('profile_images/No_photo_found.png')
+          .getDownloadURL();
+      ;
     }
     return downloadURL;
   }

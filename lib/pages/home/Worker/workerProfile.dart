@@ -203,6 +203,10 @@ class _ProfileState extends State<Profile> {
                             avregeRating += item.rate;
                           }
                         }
+                        int Number_of_ratings = userRate!.length;
+                        if (Number_of_ratings <= 0) {
+                          Number_of_ratings = 1;
+                        }
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
                           child: Card(
@@ -214,7 +218,7 @@ class _ProfileState extends State<Profile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                        '${(avregeRating / userRate!.length).toStringAsFixed(1)}',
+                                        '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 24,

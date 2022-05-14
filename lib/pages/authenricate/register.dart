@@ -470,8 +470,8 @@ class _RegisterState extends State<Register> {
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                   borderSide: BorderSide(
-                                                    color: AppColors
-                                                        .underlineColor,
+                                                    color: Color.fromARGB(
+                                                        255, 245, 243, 247),
                                                     width: 0.5,
                                                   ),
                                                 ),
@@ -491,24 +491,38 @@ class _RegisterState extends State<Register> {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      CheckboxListTile(
-                                        title: Text(
-                                          'Register as a worker',
-                                          style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
+                                      Theme(
+                                        data: ThemeData(
+                                            unselectedWidgetColor:
+                                                Colors.white),
+                                        child: CheckboxListTile(
+                                          tileColor: Colors.white,
+                                          checkColor:
+                                              Color.fromARGB(255, 139, 43, 143),
+                                          activeColor: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          selectedTileColor: Colors.amber,
+                                          title: Text(
+                                            'Register as a worker',
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ),
+                                          value: this.isWorker,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              this.isWorker = value as bool;
+                                            });
+                                          },
                                         ),
-                                        value: this.isWorker,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            this.isWorker = value as bool;
-                                          });
-                                        },
                                       ),
                                       Visibility(
                                         visible: isWorker,
                                         child: DropdownButtonFormField(
+                                          dropdownColor:
+                                              Color.fromARGB(255, 89, 25, 97),
                                           value: widget.professions[0],
                                           //  icon: Icon(Icons.arrow_downward),
                                           items: widget.professions
@@ -519,7 +533,7 @@ class _RegisterState extends State<Register> {
                                                   '$e ',
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
-                                                          207, 200, 82, 211)),
+                                                          207, 255, 255, 255)),
                                                 ));
                                           }).toList(),
                                           onChanged: (newValue) {
