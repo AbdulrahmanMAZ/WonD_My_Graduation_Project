@@ -57,6 +57,23 @@ class DatabaseService {
     }
   }
 
+  Future<UserData> getUser() async {
+    try {
+      DocumentSnapshot a = await workersCollection.doc(uid).get();
+      return UserData(
+          uid: a.get('uid'),
+          name: a.get('name'),
+          isWorker: a.get('isWorker'),
+          profession: a.get('profession'),
+          email: a.get('email'),
+          latitude: a.get('latitude'),
+          longitude: a.get('longitude'),
+          phoneNumber: a.get('phone_number'),
+          profileImage: a.get('profile_image'));
+    } catch (e) {}
+    throw 'null';
+  }
+
   Future<void> updateUserImage(profile_image) async {
     try {
       var a = await workersCollection

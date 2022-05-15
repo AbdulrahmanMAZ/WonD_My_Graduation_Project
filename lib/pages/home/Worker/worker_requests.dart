@@ -30,29 +30,29 @@ class worker_requests extends StatelessWidget {
       initialData: null,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.brown[50],
-        drawer: worker_drawer(
-          username: usera?.displayName,
-          logout: TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
-            onPressed: () async {
-              await _auth.SignOut();
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Wrapper()),
-                  (Route<dynamic> route) => false);
-              // Navigator.of(context).pop();
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //     '/login', (Route<dynamic> route) => false);
-              // await _auth.SignOut();
-              // Navigator.of(context).popAndPushNamed('/login');
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //     '/login', (Route<dynamic> route) => false);
-            },
-          ),
-        ),
+        backgroundColor: Color.fromARGB(255, 45, 13, 63),
+        // drawer: worker_drawer(
+        //   username: usera?.displayName,
+        //   logout: TextButton.icon(
+        //     icon: Icon(Icons.person),
+        //     label: Text('logout'),
+        //     onPressed: () async {
+        //       await _auth.SignOut();
+        //       Navigator.of(context).pushAndRemoveUntil(
+        //           MaterialPageRoute(builder: (context) => Wrapper()),
+        //           (Route<dynamic> route) => false);
+        //       // Navigator.of(context).pop();
+        //       // Navigator.of(context).pushNamedAndRemoveUntil(
+        //       //     '/login', (Route<dynamic> route) => false);
+        //       // await _auth.SignOut();
+        //       // Navigator.of(context).popAndPushNamed('/login');
+        //       // Navigator.of(context).pushNamedAndRemoveUntil(
+        //       //     '/login', (Route<dynamic> route) => false);
+        //     },
+        //   ),
+        // ),
 
-        appBar: MyCustomAppBar(name: 'My Orders', widget: []),
+        appBar: MyCustomAppBar(name: 'My Nearby Orders', widget: []),
 
         //  AppBar(
         //   title: Text('Your requests'),
@@ -69,10 +69,12 @@ class worker_requests extends StatelessWidget {
         //   ],
         // ),
         body: RequestsList(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.settings),
-          onPressed: () {},
-        )
+
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.settings),
+        //   onPressed: () {},
+        // )
+
         //  FutureBuilder<DocumentSnapshot>(
         //     future: coffes.doc(_auth.inputData()).get(),
         //     builder:
@@ -92,8 +94,6 @@ class worker_requests extends StatelessWidget {
         //       }
         //       return Loading();
         //     })
-
-        ,
       ),
     );
   }

@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 
 class FeedBack extends StatelessWidget {
   final AcceptedRequest? req;
-  const FeedBack({Key? key, this.req}) : super(key: key);
+  final Rate? rateList;
+
+  const FeedBack({Key? key, this.req, this.rateList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

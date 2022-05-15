@@ -1,5 +1,7 @@
 // import 'dart:html';
 
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
@@ -26,6 +28,7 @@ class _RequestsListState extends State<RequestsList> {
   List<Marker> _markers = [];
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     //UserData? userData = user as UserData;
     final requests = Provider.of<List<Request>?>(context) ?? [];
     final _acceptedRequest = Provider.of<List<AcceptedRequest>?>(context) ?? [];
@@ -109,39 +112,38 @@ class _RequestsListState extends State<RequestsList> {
                     }
                     return Text('data');
                   });
-              // }
-              // print(_markers.length);
-              //noRequests = false;
-              //print();
-              // return Scaffold(
-              //   body: SingleChildScrollView(
-              //     child: ConstrainedBox(
-              //       constraints: BoxConstraints(),
-              //       child: IntrinsicHeight(
-              //         child: Column(
-              //           children: [
-              //             SizedBox(
-              //               width: 410,
-              //               height: 300,
-              //               child: GoogleMap(
-              //                 mapType: MapType.normal,
-              //                 markers: Set<Marker>.of(_markers),
-              //                 myLocationButtonEnabled: false,
-              //                 zoomControlsEnabled: false,
-              //                 initialCameraPosition: CameraPosition(
-              //                     target: LatLng(userData?.latitude as double,
-              //                         userData?.longitude as double),
-              //                     zoom: 14),
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // );
             } else {
-              return Text('You have no orders!');
+              return Container(
+                height: height,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      Color.fromARGB(255, 73, 3, 105),
+                      Color.fromARGB(255, 15, 7, 1)
+                    ])),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset('images/Error_face.png'),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'Sorry, no nearby orders',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
             //}
 

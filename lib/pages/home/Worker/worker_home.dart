@@ -131,6 +131,8 @@ class _worker_homeState extends State<worker_home> {
 
     SetLocation();
     final AsyncMemoizer _memoizer = AsyncMemoizer();
+    String firebaseURL =
+        'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: AppColors.Allbackgroundcolor,

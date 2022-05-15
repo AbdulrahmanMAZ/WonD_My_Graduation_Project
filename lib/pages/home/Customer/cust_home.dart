@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
@@ -18,6 +21,7 @@ import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geoCoding;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -33,12 +37,14 @@ class Cust_Home extends StatefulWidget {
 }
 
 class _Cust_HomeState extends State<Cust_Home> {
+  bool _isLoading = false;
   PermissionStatus? _permissionGranted;
-
+  String? _currentAddress;
   bool hasInternet = false;
   void initState() {
     super.initState();
     // widget.a += 1;
+
     PermissionHandler.Permission.location;
   }
 
@@ -49,7 +55,7 @@ class _Cust_HomeState extends State<Cust_Home> {
   LocationData? _locationData;
   bool _isListenLocation = false, isGetLocation = false;
   final AuthSrrvice _auth = AuthSrrvice();
-
+  int RefreshCounter = 0;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -57,6 +63,38 @@ class _Cust_HomeState extends State<Cust_Home> {
         FirebaseFirestore.instance.collection('coffes');
     final usera = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: usera?.uid);
+
+    //LOCATION IN TITLE
+    void locatepostion() async {
+      //GET THE CURRENT USER DATA
+      final users = Provider.of<List<UserData>?>(context) ?? [];
+      List<UserData>? a = users;
+      if (usera?.uid != null) {
+        UserData? wattinguser = await _db.getUser();
+
+        if (RefreshCounter < 1)
+          setState(() {
+            RefreshCounter++;
+          });
+        UserData currentUser = wattinguser;
+
+        try {
+          List<geoCoding.Placemark> placemarks =
+              await geoCoding.placemarkFromCoordinates(
+                  currentUser.latitude as double,
+                  currentUser.longitude as double);
+
+          geoCoding.Placemark place1 = placemarks[0];
+          geoCoding.Placemark place2 = placemarks[1];
+
+          _currentAddress =
+              "${place2.locality}  ${place2.country} ${place1.street}  ";
+        } catch (e) {
+          print(e.toString());
+        }
+      }
+    }
+
     void _showAppSettings(profession) {
       try {
         Navigator.push(
@@ -79,7 +117,6 @@ class _Cust_HomeState extends State<Cust_Home> {
     Future SetLocation(a) async {
       var _locationStatus = await PermissionHandler.Permission.location.status;
       print(_locationStatus);
-
       if (!_locationStatus.isGranted) {
         await PermissionHandler.Permission.location.request();
       }
@@ -117,7 +154,7 @@ class _Cust_HomeState extends State<Cust_Home> {
 
     // SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
-
+    locatepostion();
     return StreamProvider<User?>.value(
       initialData: null,
       value: AuthSrrvice().user,
@@ -150,7 +187,7 @@ class _Cust_HomeState extends State<Cust_Home> {
           ),
         ),
 
-        appBar: MyCustomAppBar(name: 'Your Requests', widget: [
+        appBar: MyCustomAppBar(name: _currentAddress ?? '', widget: [
           IconButton(
               onPressed: () async {
                 if (await PermissionHandler.Permission.location.isDenied)

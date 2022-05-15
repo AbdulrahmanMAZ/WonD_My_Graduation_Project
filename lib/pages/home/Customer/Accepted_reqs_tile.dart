@@ -46,6 +46,9 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
     // });
   }
 
+  String? firebaseURL =
+      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
+
   @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
@@ -147,33 +150,39 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                   width: 50,
                   child: ClipOval(
                     child: Material(
-                        color: Colors.transparent,
-                        child: FutureBuilder(
-                          future: storage.downloadProfileImageURL(
-                              currentUser!.profileImage as String),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                snapshot.hasData) {
-                              // print(currentUser!.uid);
+                      color: Colors.transparent,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(firebaseURL! + currentUser!.uid!),
+                      ),
 
-                              return Container(
-                                child: Image.network(
-                                  snapshot.data!,
-                                  fit: BoxFit.cover,
-                                  color: Colors.grey,
-                                  colorBlendMode: BlendMode.multiply,
-                                ),
-                              );
-                            } else if (snapshot.connectionState ==
-                                    ConnectionState.none &&
-                                snapshot.hasError) {
-                              print('ff');
-                            }
-                            return Loading();
-                          },
-                        )),
+                      // FutureBuilder(
+                      //   future: storage.downloadProfileImageURL(
+                      //       currentUser!.profileImage as String),
+                      //   builder: (BuildContext context,
+                      //       AsyncSnapshot<String> snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //             ConnectionState.done &&
+                      //         snapshot.hasData) {
+                      //       // print(currentUser!.uid);
+
+                      //       return Container(
+                      //         child: Image.network(
+                      //           snapshot.data!,
+                      //           fit: BoxFit.cover,
+                      //           color: Colors.grey,
+                      //           colorBlendMode: BlendMode.multiply,
+                      //         ),
+                      //       );
+                      //     } else if (snapshot.connectionState ==
+                      //             ConnectionState.none &&
+                      //         snapshot.hasError) {
+                      //       print('ff');
+                      //     }
+                      //     return Loading();
+                      //   },
+                      // )
+                    ),
                   ),
                 ),
                 title: RichText(

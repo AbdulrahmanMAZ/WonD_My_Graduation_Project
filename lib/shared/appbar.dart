@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -13,7 +14,11 @@ class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(name),
+      title: AutoSizeText(
+        name,
+        style: TextStyle(fontSize: 18),
+        maxLines: 2,
+      ),
       backgroundColor: Colors.transparent,
       elevation: 12.0,
       shadowColor: Color.fromARGB(45, 179, 8, 231),

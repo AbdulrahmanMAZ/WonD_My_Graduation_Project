@@ -61,6 +61,7 @@ class _AdressPageState extends State<AdressPage> {
           child: ElevatedButton(
               onPressed: () {
                 SetLocation();
+                Navigator.pushNamed(context, '/cust_home');
               },
               child: Text('Update Location'))),
     );

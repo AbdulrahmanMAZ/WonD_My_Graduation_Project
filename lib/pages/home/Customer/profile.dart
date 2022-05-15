@@ -26,6 +26,9 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  String? firebaseURL =
+      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
+
   bool _isLoading = false;
   void initState() {
     // TODO: implement initState
@@ -45,6 +48,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    int itreation = 0;
     final Storage storage = Storage();
     final _formKey = GlobalKey<FormState>();
     final usera = Provider.of<User?>(context);
@@ -90,28 +94,10 @@ class _UserProfileState extends State<UserProfile> {
                         child: ClipOval(
                           child: Material(
                             color: Colors.transparent,
-                            child: _isLoading
-                                ? FutureBuilder(
-                                    future: storage.downloadProfileImageURL(
-                                        currentUser!.profileImage as String),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<String> snapshot) {
-                                      if (snapshot.connectionState ==
-                                              ConnectionState.done &&
-                                          snapshot.hasData) {
-                                        return Container(
-                                          child: Image.network(
-                                            snapshot.data!,
-                                            fit: BoxFit.cover,
-                                            color: Colors.grey,
-                                            colorBlendMode: BlendMode.multiply,
-                                          ),
-                                        );
-                                      }
-                                      return Loading();
-                                    },
-                                  )
-                                : Loading(),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(firebaseURL! + usera!.uid),
+                            ),
                           ),
                         ),
                       ),
@@ -165,6 +151,16 @@ class _UserProfileState extends State<UserProfile> {
                           Number_of_ratings = 1;
                         }
 
+                        if (userRate.isEmpty) {
+                          itreation = 0;
+                        }
+                        if (userRate.length <= 3 && userRate.isNotEmpty) {
+                          itreation = userRate.length;
+                        }
+
+                        if (userRate.length > 3) {
+                          itreation = 3;
+                        }
                         return Column(
                           children: [
                             Padding(
@@ -207,7 +203,7 @@ class _UserProfileState extends State<UserProfile> {
                                 physics: NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
-                                itemCount: 3,
+                                itemCount: itreation,
                                 itemBuilder: (context, index) {
                                   //                 if (userRate != null) {
                                   //   for (var item in userRate) {
@@ -232,14 +228,18 @@ class _UserProfileState extends State<UserProfile> {
                         return Loading();
                       }
                     }),
-                TextButton(
-                  child: Text('See More! Feedbacks'),
-                  onPressed: () {
-                    // TO DO GO TO ALL FEEDBACKS PAGE
-                    Navigator.pushNamed(context, '/FeedBack',
-                        arguments: widget.req);
-                  },
-                )
+                (itreation > 0)
+                    ? TextButton(
+                        child: Text('See More! Feedbacks'),
+                        onPressed: () {
+                          // TO DO GO TO ALL FEEDBACKS PAGE
+                          Navigator.pushNamed(context, '/FeedBack',
+                              arguments: widget.req);
+                        },
+                      )
+                    : (itreation == 0)
+                        ? Text('No Feedbacks yet')
+                        : Text('There is no more feedbacks')
               ],
             ),
           ),

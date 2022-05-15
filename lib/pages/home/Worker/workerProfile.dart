@@ -29,7 +29,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 2), () {
+    Timer(Duration(seconds: 0), () {
       setState(() {
         _isLoading = true;
       });
@@ -44,10 +44,13 @@ class _ProfileState extends State<Profile> {
   bool imageuploaded = false;
   var Path;
   var FileName = "no_image_in_firebase.png";
+  String? firebaseURL =
+      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
+
   @override
   Widget build(BuildContext context) {
     List<Rate> UserRate = Provider.of<List<Rate>>(context);
-
+    int itreation = 0;
     final Storage storage = Storage();
     final _formKey = GlobalKey<FormState>();
     final usera = Provider.of<User?>(context);
@@ -87,37 +90,21 @@ class _ProfileState extends State<Profile> {
                 Center(
                   child: Stack(
                     children: [
-                      SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: _isLoading
-                                ? FutureBuilder(
-                                    future: storage.downloadProfileImageURL(
-                                        currentUser?.profileImage as String),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<String> snapshot) {
-                                      if (snapshot.connectionState ==
-                                              ConnectionState.done &&
-                                          snapshot.hasData) {
-                                        return Container(
-                                          child: Image.network(
-                                            snapshot.data!,
-                                            fit: BoxFit.cover,
-                                            color: Colors.grey,
-                                            colorBlendMode: BlendMode.multiply,
-                                          ),
-                                        );
-                                      }
-                                      return Loading();
-                                    },
-                                  )
-                                : Loading(),
+                      if (usera!.uid != null)
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: ClipOval(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage:
+                                    NetworkImage(firebaseURL! + usera.uid),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
                       Positioned(
                         bottom: 0,
                         right: 4,
@@ -211,9 +198,23 @@ class _ProfileState extends State<Profile> {
                             print(item.rate);
                           }
                         }
+                        for (var i = 0; i < UserRate.length; i++) {
+                          print(UserRate[i]);
+                        }
                         int Number_of_ratings = userRate!.length;
                         if (Number_of_ratings <= 0) {
                           Number_of_ratings = 1;
+                        }
+
+                        if (userRate.isEmpty) {
+                          itreation = 0;
+                        }
+                        if (userRate.length <= 3 && userRate.isNotEmpty) {
+                          itreation = userRate.length;
+                        }
+
+                        if (userRate.length > 3) {
+                          itreation = 3;
                         }
                         return Column(
                           children: [
@@ -256,7 +257,7 @@ class _ProfileState extends State<Profile> {
                             ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
-                                itemCount: 3,
+                                itemCount: itreation,
                                 itemBuilder: (context, index) {
                                   //                 if (userRate != null) {
                                   //   for (var item in userRate) {
@@ -275,20 +276,24 @@ class _ProfileState extends State<Profile> {
                                   }
                                   return Loading();
                                 }),
+                            (itreation > 0)
+                                ? TextButton(
+                                    child: Text('See More! Feedbacks'),
+                                    onPressed: () {
+                                      // TO DO GO TO ALL FEEDBACKS PAGE
+                                      Navigator.pushNamed(context, '/FeedBack',
+                                          arguments: userRate);
+                                    },
+                                  )
+                                : (itreation == 0)
+                                    ? Text('No Feedbacks or Rates yet')
+                                    : Text('There is no more feedbacks')
                           ],
                         );
                       } else {
                         return Loading();
                       }
                     }),
-                TextButton(
-                  child: Text('See More! Feedbacks'),
-                  onPressed: () {
-                    // TO DO GO TO ALL FEEDBACKS PAGE
-                    Navigator.pushNamed(context, '/FeedBack',
-                        arguments: FeedBack);
-                  },
-                )
               ],
             ))
         : Loading();

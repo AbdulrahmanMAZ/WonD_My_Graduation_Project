@@ -33,7 +33,7 @@ class worker_drawer extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                 Color.fromARGB(255, 73, 3, 105),
-                Color.fromARGB(255, 138, 74, 25)
+                Color.fromARGB(255, 12, 7, 10)
               ])),
           child: ListView(
             children: [
@@ -64,8 +64,8 @@ class worker_drawer extends StatelessWidget {
                 icon: Icon(Icons.person),
                 label: Text('My orders'),
                 onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
+                  // Navigator.pop(context);
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => worker_requests()));
