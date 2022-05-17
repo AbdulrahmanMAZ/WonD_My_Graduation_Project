@@ -46,9 +46,11 @@ class _UserProfileState extends State<UserProfile> {
     // });
   }
 
+  int ListLeangth = 0;
   @override
   Widget build(BuildContext context) {
     int itreation = 0;
+
     final Storage storage = Storage();
     final _formKey = GlobalKey<FormState>();
     final usera = Provider.of<User?>(context);
@@ -83,165 +85,162 @@ class _UserProfileState extends State<UserProfile> {
         appBar: AppBar(),
         body: Scrollbar(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Center(
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: ClipOval(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(firebaseURL! + usera!.uid),
-                            ),
+            child: Column(children: [
+              Center(
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: ClipOval(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(firebaseURL! + usera!.uid),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 24,
-                ),
-                if (currentUser?.name != null && usera != null)
-                  Column(
-                    children: [
-                      Text(
-                        currentUser?.name as String,
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              if (currentUser?.name != null && usera != null)
+                Column(
+                  children: [
+                    Text(
+                      currentUser?.name as String,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(currentUser!.email as String,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(currentUser!.email as String,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(currentUser?.phoneNumber as String,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          )),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  ),
-                StreamBuilder<List<Rate>>(
-                    stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        double avregeRating = 1;
-                        List<Rate>? userRate = snapshot.data;
-                        if (userRate != null) {
-                          for (var item in userRate) {
-                            avregeRating += item.rate;
-                          }
+                          color: Colors.grey,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(currentUser?.phoneNumber as String,
+                        style: TextStyle(
+                          color: Colors.grey,
+                        )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ),
+              StreamBuilder<List<Rate>>(
+                  stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      double avregeRating = 1;
+                      List<Rate>? userRate = snapshot.data;
+                      if (userRate != null) {
+                        for (var item in userRate) {
+                          avregeRating += item.rate;
                         }
+                      }
 
-                        int Number_of_ratings = userRate!.length;
-                        if (Number_of_ratings <= 0) {
-                          Number_of_ratings = 1;
-                        }
+                      int Number_of_ratings = userRate!.length;
+                      if (Number_of_ratings <= 0) {
+                        Number_of_ratings = 1;
+                      }
 
-                        if (userRate.isEmpty) {
-                          itreation = 0;
-                        }
-                        if (userRate.length <= 3 && userRate.isNotEmpty) {
-                          itreation = userRate.length;
-                        }
+                      if (userRate.isEmpty) {
+                        itreation = 0;
+                      }
+                      if (userRate.length <= 3 && userRate.isNotEmpty) {
+                        itreation = userRate.length;
+                      }
 
-                        if (userRate.length > 3) {
-                          itreation = 3;
-                        }
-                        return Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(150, 0, 150, 0),
-                              child: Card(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                            '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
-                                            style: TextStyle(
+                      if (userRate.length > 3) {
+                        itreation = 3;
+                      }
+                      ListLeangth = userRate.length;
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(150, 0, 150, 0),
+                            child: Card(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24,
+                                          )),
+                                      Text('(${userRate.length})',
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24,
-                                            )),
-                                        Text('(${userRate.length})',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                                color: Colors.amber)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 2),
-                                    Text(
-                                      "Rating",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24),
-                                    ),
-                                  ],
-                                ),
+                                              fontSize: 12,
+                                              color: Colors.amber)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text(
+                                    "Rating",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                  ),
+                                ],
                               ),
                             ),
-                            ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: itreation,
-                                itemBuilder: (context, index) {
-                                  //                 if (userRate != null) {
-                                  //   for (var item in userRate) {
-                                  //     avregeRating += item.rate;
-                                  //   }
-                                  // }
-                                  final _random = new Random();
-                                  userRate[_random.nextInt(userRate.length)];
-                                  var element = userRate[
-                                      _random.nextInt(userRate.length)];
-                                  if (userRate != null) {
-                                    return worker_feedback_tile(
-                                        rate: element.rate,
-                                        name: element.name,
-                                        feedback: element.feedback);
-                                  }
-                                  return Loading();
-                                }),
-                          ],
-                        );
-                      } else {
-                        return Loading();
-                      }
-                    }),
-                (itreation > 0)
-                    ? TextButton(
-                        child: Text('See More! Feedbacks'),
-                        onPressed: () {
-                          // TO DO GO TO ALL FEEDBACKS PAGE
-                          Navigator.pushNamed(context, '/FeedBack',
-                              arguments: widget.req);
-                        },
-                      )
-                    : (itreation == 0)
-                        ? Text('No Feedbacks yet')
-                        : Text('There is no more feedbacks')
-              ],
-            ),
+                          ),
+                          ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: itreation,
+                              itemBuilder: (context, index) {
+                                //                 if (userRate != null) {
+                                //   for (var item in userRate) {
+                                //     avregeRating += item.rate;
+                                //   }
+                                // }
+                                final _random = new Random();
+                                userRate[_random.nextInt(userRate.length)];
+                                var element =
+                                    userRate[_random.nextInt(userRate.length)];
+                                if (userRate != null) {
+                                  return worker_feedback_tile(
+                                      rate: element.rate,
+                                      name: element.name,
+                                      feedback: element.feedback);
+                                }
+                                return Loading();
+                              }),
+                        ],
+                      );
+                    } else {
+                      return Loading();
+                    }
+                  }),
+              (ListLeangth > 3)
+                  ? TextButton(
+                      child: Text('See More! Feedbacks'),
+                      onPressed: () {
+                        // TO DO GO TO ALL FEEDBACKS PAGE
+                        Navigator.pushNamed(context, '/FeedBack',
+                            arguments: widget.req);
+                      },
+                    )
+                  : (ListLeangth == 0)
+                      ? Text('No Feedbacks yet')
+                      : Text('There is no more feedbacks')
+            ]),
           ),
         ));
   }

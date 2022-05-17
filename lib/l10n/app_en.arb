@@ -1,0 +1,138 @@
+{
+    "language": "English",
+    "@language":{
+        "description": "The description language"
+    } ,
+    "homepage": "Home Page",
+    "@homepage":{
+        "description": "home"
+    },
+     "welcome": "Welcome",
+    "@welcome":{
+        "description": "greating"
+    },
+     "login": "Login",
+    "@login":{
+        "description": "go in"
+    },
+     "register": "Register",
+    "@register":{
+        "description": "be in"
+    },
+     "gotoregisterNOAccount": "Do not have an account ?",
+    "@gotoregisterNOAccount":{
+        "description": "no account go to register"
+    },
+     "grettingParagrath": "Nice to see you again,if you have an account you can login from here",
+    "@grettingParagrath":{
+        "description": "greeting mesaage"
+    },
+    "enterEmail": "Enter an E-Mail",
+    "@enterEmail":{
+        "description": "Enter and Email"
+    },
+     "enterPass": "Enter Your Password",
+    "@enterPass":{
+        "description": "enter a Password"
+    
+    },
+     "reEnterPass": "Enter Your Password Again",
+    "@enterPass":{
+        "description": "enter a Password Again"
+    },
+     "shorPass": "Your password  must be longer than 8 letters",
+    "@grettingParagrath":{
+        "description": "Short password"
+    },
+     "incorrectInfo": "Incorrect information",
+    "@grettingParagrath":{
+        "description": "Incorrect information"
+    },
+     "loginButton": "Login",
+    "@grettingParagrath":{
+        "description": "Login Button"
+    
+    },
+     "haveAccount": "Already have an account ?",
+    "@grettingParagrath":{
+        "description": "Already have an account ?"
+    
+    },
+     "registerWelcomeParagraph": "Nice to see you in our app,here is the register page and you can create new account from here",
+    "@grettingParagrath":{
+        "description": "Nice to see you Register"
+    },
+     "fullname": "Full Name",
+    "@grettingParagrath":{
+        "description": "fullname"
+    },
+     "email": "E-Mail",
+    "@grettingParagrath":{
+        "description": "E-Mail"
+    },
+     "validEmail": "Not a valid E-mail",
+    "@grettingParagrath":{
+        "description": "Not a valid E-mail"
+    },
+     "phoneNumber": "Phone Number",
+    "@grettingParagrath":{
+        "description": "Phone Number"
+    
+    },
+     "phoneNumberExample": "Phone Number Ex: 53XXXXXXX",
+    "@grettingParagrath":{
+        "description": "Phone Number Ex: 53XXXXXXX"
+    
+    },
+     "enterPhoneNumber": "Enter Your phone",
+    "@grettingParagrath":{
+        "description": "Enter Your phone"
+    
+    },
+     "notValidPhoneNumber": "Not a valid phone number",
+    "@grettingParagrath":{
+        "description": "Enter a valid phone"
+    
+    },
+     "notMatchPass": "Must match your password",
+    "@grettingParagrath":{
+        "description": "Enter  same pass"
+    
+    
+    },
+     "empty": "Must Enter a Value",
+    "@grettingParagrath":{
+        "description": "Enter a Value"
+    
+    },
+     "asWorker": "Do you want to sign a worker?",
+    "@grettingParagrath":{
+        "description": "Do you want to sign a worker?"
+    
+    },
+     "hairDresser": "Hair Dresser",
+    "@grettingParagrath":{
+        "description": "Hair dresser"
+    
+    },
+     "mechanic": "Mechanic",
+    "@grettingParagrath":{
+        "description": "Mechanic"
+    
+    },
+     "electrician": "Electrician",
+    "@grettingParagrath":{
+        "description": "Electrician"
+    
+    },
+     "plumber": "Plumber",
+    "@grettingParagrath":{
+        "description": "Plumber"
+    
+    },
+     "enterName": "Enter Your Name",
+    "@grettingParagrath":{
+        "description": "Enter Your Name"
+    }
+
+}

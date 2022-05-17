@@ -21,16 +21,21 @@ import 'package:coffre_app/pages/home/Worker/worker_requests.dart';
 
 // import 'package:coffre_app/pages/home/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/profile.dart';
+
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/feedbacks.dart';
+import 'package:coffre_app/shared/feedbacks2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -65,6 +70,13 @@ class MyApp extends StatelessWidget {
       ],
       child: OverlaySupport.global(
         child: MaterialApp(
+          supportedLocales: L10n.all,
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
           debugShowCheckedModeBanner: false,
           routes: {
             '/cust_orders': (context) => Cust_Order(),
@@ -81,6 +93,7 @@ class MyApp extends StatelessWidget {
             '/OrdersMap': (context) => OrdersMap(),
             '/mini_Map': (context) => miniMap(),
             '/FeedBack': (context) => FeedBack(),
+            '/FeedBack2': (context) => FeedBack2(),
           },
           home: Wrapper(),
         ),

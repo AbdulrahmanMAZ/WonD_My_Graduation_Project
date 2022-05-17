@@ -24,6 +24,7 @@ class worker_feedback_tile extends StatelessWidget {
     double price;
     return Center(
       child: Card(
+        color: Color.fromARGB(255, 51, 1, 59),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

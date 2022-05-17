@@ -9,18 +9,37 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import '../../services/auth.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Register extends StatefulWidget {
 //  const Register({Key? key}) : super(key: key);
 
   final Function toggleView;
   Register({required this.toggleView});
-  final List<String> professions = [
-    'Hairdresser',
-    'Mechanic',
-    'Electrician',
-    'plumber'
-  ];
+  // final List<String> professions = [
+  //   'Hairdresser',
+  //   'Mechanic',
+  //   'Electrician',
+  //   'plumber'
+  // ];
+
+  var proffessionsIdentifier = {
+    "ميكب ارتست / حلاق": "Hairdresser",
+    "كهربائي": "Electrician",
+    "سباكة": "plumber",
+    "ميكانيكي": "Mechanic",
+    "Hair Dresser": "Hairdresser",
+    "Electrician": "Electrician",
+    "plumber": "plumber",
+    "Mechanic": "Mechanic"
+  };
+
+  //  final Dixt<String> professions = [
+  //   'Hairdresser',
+  //   'Mechanic',
+  //   'Electrician',
+  //   'plumber'
+  // ];
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -81,7 +100,7 @@ class _RegisterState extends State<Register> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Already have an account ?',
+              AppLocalizations.of(context)!.haveAccount,
               style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -91,7 +110,7 @@ class _RegisterState extends State<Register> {
               width: 10,
             ),
             Text(
-              'Login',
+              AppLocalizations.of(context)!.loginButton,
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,
@@ -105,6 +124,12 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> professions = [
+      AppLocalizations.of(context)!.hairDresser,
+      AppLocalizations.of(context)!.electrician,
+      AppLocalizations.of(context)!.mechanic,
+      AppLocalizations.of(context)!.plumber
+    ];
     final height = MediaQuery.of(context).size.height;
     return loading
         ? Loading()
@@ -147,8 +172,9 @@ class _RegisterState extends State<Register> {
                                       const SizedBox(height: 15),
                                       _title(),
                                       const SizedBox(height: 8),
-                                      const Text(
-                                        "Nice to see you in our app,here is the register page and you can create new account from here",
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .registerWelcomeParagraph,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: Constants.appFont,
@@ -175,7 +201,8 @@ class _RegisterState extends State<Register> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "Full Name",
+                                            AppLocalizations.of(context)!
+                                                .fullname,
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
@@ -185,9 +212,20 @@ class _RegisterState extends State<Register> {
                                             height: 10,
                                           ),
                                           TextFormField(
-                                              decoration: userInputDecoration,
+                                              decoration:
+                                                  userInputDecoration.copyWith(
+                                                      labelText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterName,
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterName),
                                               validator: (val) => val!.isEmpty
-                                                  ? 'enter a value'
+                                                  ? AppLocalizations.of(
+                                                          context)!
+                                                      .enterEmail
                                                   : null,
                                               onChanged: (val) {
                                                 setState(() {
@@ -206,7 +244,7 @@ class _RegisterState extends State<Register> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "E-Mail",
+                                            AppLocalizations.of(context)!.email,
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
@@ -216,7 +254,16 @@ class _RegisterState extends State<Register> {
                                             height: 10,
                                           ),
                                           TextFormField(
-                                              decoration: textInputDecoration,
+                                              decoration:
+                                                  textInputDecoration.copyWith(
+                                                      labelText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterEmail,
+                                                      hintText:
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterEmail),
                                               inputFormatters: <
                                                   TextInputFormatter>[
                                                 FilteringTextInputFormatter
@@ -225,12 +272,16 @@ class _RegisterState extends State<Register> {
                                               validator: (val) {
                                                 if (val != null &&
                                                     val.isEmpty) {
-                                                  return 'enter a value';
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .enterEmail;
                                                 }
                                                 if (val != null &&
                                                     !EmailValidator.validate(
                                                         val)) {
-                                                  return "Not a valid Email";
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .validEmail;
                                                 } else {
                                                   return null;
                                                 }
@@ -250,7 +301,8 @@ class _RegisterState extends State<Register> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "Phone Numebr",
+                                            AppLocalizations.of(context)!
+                                                .phoneNumber,
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
@@ -269,19 +321,26 @@ class _RegisterState extends State<Register> {
                                               ],
                                               decoration:
                                                   userInputDecoration.copyWith(
-                                                      hintText:
-                                                          "Phone Number Ex: 53XXXXXXX",
+                                                      hintText: AppLocalizations
+                                                              .of(context)!
+                                                          .phoneNumberExample,
                                                       labelText:
-                                                          'Enter Your phone'),
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .enterPhoneNumber),
                                               validator: (val) {
                                                 if (val != null &&
                                                     val.isEmpty) {
-                                                  return 'enter a value';
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .enterPhoneNumber;
                                                 } else if (val != null &&
                                                         val.length > 9 ||
                                                     val != null &&
                                                         val.length < 9) {
-                                                  return 'Not a valid number';
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .notValidPhoneNumber;
                                                 } else {
                                                   return null;
                                                 }
@@ -302,7 +361,8 @@ class _RegisterState extends State<Register> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "Password",
+                                            AppLocalizations.of(context)!
+                                                .enterPass,
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
@@ -314,7 +374,9 @@ class _RegisterState extends State<Register> {
                                           TextFormField(
                                             controller: _pass,
                                             decoration: InputDecoration(
-                                              hintText: '8 numbers at least',
+                                              hintText:
+                                                  AppLocalizations.of(context)!
+                                                      .shorPass,
                                               fillColor: Colors.white,
                                               filled: true,
                                               suffixIcon: IconButton(
@@ -347,7 +409,9 @@ class _RegisterState extends State<Register> {
                                                   width: 0.5,
                                                 ),
                                               ),
-                                              labelText: 'Enter Your Password',
+                                              labelText:
+                                                  AppLocalizations.of(context)!
+                                                      .enterPass,
                                               floatingLabelBehavior:
                                                   FloatingLabelBehavior.never,
                                               prefixIcon: const Icon(
@@ -378,7 +442,8 @@ class _RegisterState extends State<Register> {
                                               // Color when not in clicked
                                             ),
                                             validator: (val) => val!.length < 8
-                                                ? 'enter a password'
+                                                ? AppLocalizations.of(context)!
+                                                    .shorPass
                                                 : null,
                                             obscureText: _passwordVisible,
                                             onChanged: (val) {
@@ -398,7 +463,8 @@ class _RegisterState extends State<Register> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "Re-Enter Password",
+                                            AppLocalizations.of(context)!
+                                                .reEnterPass,
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
@@ -410,8 +476,9 @@ class _RegisterState extends State<Register> {
                                           TextFormField(
                                               controller: _confirmPass,
                                               decoration: InputDecoration(
-                                                hintText:
-                                                    'Must match your password',
+                                                hintText: AppLocalizations.of(
+                                                        context)!
+                                                    .reEnterPass,
                                                 fillColor: Colors.white,
                                                 filled: true,
                                                 suffixIcon: IconButton(
@@ -446,8 +513,9 @@ class _RegisterState extends State<Register> {
                                                     width: 0.5,
                                                   ),
                                                 ),
-                                                labelText:
-                                                    'Re Enter Youe password',
+                                                labelText: AppLocalizations.of(
+                                                        context)!
+                                                    .reEnterPass,
                                                 floatingLabelBehavior:
                                                     FloatingLabelBehavior.never,
                                                 prefixIcon: const Icon(
@@ -480,9 +548,13 @@ class _RegisterState extends State<Register> {
                                               ),
                                               validator: (val) {
                                                 if (val!.isEmpty)
-                                                  return 'Empty';
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .empty;
                                                 if (val != _pass.text)
-                                                  return 'Not Match';
+                                                  return AppLocalizations.of(
+                                                          context)!
+                                                      .notMatchPass;
                                                 return null;
                                               },
                                               obscureText: _RepasswordVisible),
@@ -503,7 +575,8 @@ class _RegisterState extends State<Register> {
                                               255, 255, 255, 255),
                                           selectedTileColor: Colors.amber,
                                           title: Text(
-                                            'Register as a worker',
+                                            AppLocalizations.of(context)!
+                                                .asWorker,
                                             style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 255, 255, 255),
@@ -523,10 +596,9 @@ class _RegisterState extends State<Register> {
                                         child: DropdownButtonFormField(
                                           dropdownColor:
                                               Color.fromARGB(255, 89, 25, 97),
-                                          value: widget.professions[0],
+                                          value: professions[0],
                                           //  icon: Icon(Icons.arrow_downward),
-                                          items: widget.professions
-                                              .map((String e) {
+                                          items: professions.map((String e) {
                                             return DropdownMenuItem(
                                                 value: e,
                                                 child: Text(
@@ -539,7 +611,8 @@ class _RegisterState extends State<Register> {
                                           onChanged: (newValue) {
                                             setState(() {
                                               _currentProfession =
-                                                  newValue as String;
+                                                  widget.proffessionsIdentifier[
+                                                      newValue] as String;
                                             });
                                           },
                                         ),
@@ -585,7 +658,9 @@ class _RegisterState extends State<Register> {
                                               if (result == null) {
                                                 setState(() {
                                                   loading = false;
-                                                  error = 'Invalid email';
+                                                  error = AppLocalizations.of(
+                                                          context)!
+                                                      .incorrectInfo;
                                                 });
                                               }
                                               // print(email);
@@ -593,7 +668,8 @@ class _RegisterState extends State<Register> {
                                             }
                                           },
                                           child: Text(
-                                            'Register',
+                                            AppLocalizations.of(context)!
+                                                .register,
                                             style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 22,

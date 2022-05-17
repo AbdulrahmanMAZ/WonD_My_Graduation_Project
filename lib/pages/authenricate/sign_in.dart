@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffre_app/shared/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
@@ -52,14 +53,14 @@ class _SignInState extends State<SignIn> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Don\'t have an account ?',
+              AppLocalizations.of(context)!.gotoregisterNOAccount,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Register',
+              AppLocalizations.of(context)!.register,
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,
@@ -95,29 +96,6 @@ class _SignInState extends State<SignIn> {
                 child: Stack(
                   children: [
                     PositionedBackground(context),
-                    // Positioned(
-                    //   top: -MediaQuery.of(context).size.height * .10,
-                    //   right: -MediaQuery.of(context).size.width * .3,
-                    //   child: Container(
-                    //       child: Transform.rotate(
-                    //     angle: -pi / 3.5,
-                    //     child: ClipPath(
-                    //       clipper: ClipPainter(),
-                    //       child: Container(
-                    //         height: MediaQuery.of(context).size.height * .5,
-                    //         width: MediaQuery.of(context).size.width,
-                    //         decoration: BoxDecoration(
-                    //             gradient: LinearGradient(
-                    //                 begin: Alignment.topCenter,
-                    //                 end: Alignment.bottomCenter,
-                    //                 colors: [
-                    //               Color.fromARGB(255, 59, 111, 179),
-                    //               Color.fromARGB(214, 156, 18, 145)
-                    //             ])),
-                    //       ),
-                    //     ),
-                    //   )),
-                    // ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: SingleChildScrollView(
@@ -138,8 +116,8 @@ class _SignInState extends State<SignIn> {
                                       const SizedBox(
                                         height: 20.0,
                                       ),
-                                      const Text(
-                                        "Welcome",
+                                      Text(
+                                        AppLocalizations.of(context)!.welcome,
                                         style: TextStyle(
                                           fontSize: 30,
                                           fontFamily: Constants.appFont,
@@ -148,8 +126,9 @@ class _SignInState extends State<SignIn> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
-                                        "Nice to see you again,if you have an account you can login from here",
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .grettingParagrath,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: Constants.appFont,
@@ -162,9 +141,18 @@ class _SignInState extends State<SignIn> {
                                       TextFormField(
                                           key: Key('username'),
                                           restorationId: '1',
-                                          decoration: textInputDecoration,
+                                          decoration:
+                                              textInputDecoration.copyWith(
+                                                  labelText:
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .enterEmail,
+                                                  hintText: AppLocalizations.of(
+                                                          context)!
+                                                      .enterEmail),
                                           validator: (val) => val!.isEmpty
-                                              ? 'Enter an E-Mail'
+                                              ? AppLocalizations.of(context)!
+                                                  .enterEmail
                                               : null,
                                           onChanged: (val) {
                                             setState(() {
@@ -180,7 +168,12 @@ class _SignInState extends State<SignIn> {
                                         key: Key('password'),
                                         decoration:
                                             passwordInputDecoration.copyWith(
-                                          labelText: 'Enter Your Password',
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .enterPass,
+                                          labelText:
+                                              AppLocalizations.of(context)!
+                                                  .enterPass,
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.never,
                                           suffixIcon: IconButton(
@@ -196,7 +189,8 @@ class _SignInState extends State<SignIn> {
                                           ),
                                         ),
                                         validator: (val) => val!.length < 8
-                                            ? 'Your password  must be longer than 8 letters'
+                                            ? AppLocalizations.of(context)!
+                                                .shorPass
                                             : null,
                                         obscureText: _passwordVisible!,
                                         onChanged: (val) {
@@ -238,8 +232,9 @@ class _SignInState extends State<SignIn> {
 
                                               if (result == null) {
                                                 setState(() {
-                                                  error =
-                                                      'Incorrect information';
+                                                  error = AppLocalizations.of(
+                                                          context)!
+                                                      .incorrectInfo;
                                                   loading = false;
                                                 });
                                               }
@@ -252,7 +247,8 @@ class _SignInState extends State<SignIn> {
                                             }
                                           },
                                           child: Text(
-                                            'Log In',
+                                            AppLocalizations.of(context)!
+                                                .loginButton,
                                             style: const TextStyle(
                                               fontSize: 22,
                                               fontFamily: Constants.appFont,
