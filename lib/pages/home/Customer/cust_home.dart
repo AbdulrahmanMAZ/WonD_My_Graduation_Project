@@ -165,8 +165,8 @@ class _Cust_HomeState extends State<Cust_Home> {
         drawer: CustDrawer(
           username: usera?.displayName as String?,
           logout: TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('logout'),
+            icon: Icon(Icons.person, color: Colors.white),
+            label: Text('logout', style: TextStyle(color: Colors.white)),
             onPressed: () async {
               // setState(() {});
               // Navigator.pushReplacement(context,

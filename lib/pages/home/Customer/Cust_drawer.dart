@@ -72,7 +72,7 @@ class _CustDrawerState extends State<CustDrawer> {
       initialData: null,
       value: AuthSrrvice().user,
       child: Drawer(
-        backgroundColor: Color.fromARGB(64, 86, 123, 170),
+        backgroundColor: Color.fromARGB(201, 39, 1, 56),
         child: ListView(
           children: [
             Container(
@@ -80,14 +80,20 @@ class _CustDrawerState extends State<CustDrawer> {
               child: DrawerHeader(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Color.fromARGB(255, 142, 187, 245),
+                  color: Color.fromARGB(255, 175, 2, 209),
                 ),
                 child: Text('Welcome, ${widget.username}'),
               ),
             ),
             TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Home Page'),
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Home Page',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.pushReplacement(context,
@@ -95,8 +101,11 @@ class _CustDrawerState extends State<CustDrawer> {
               },
             ),
             TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('My orders'),
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              label: Text('My orders', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.pushReplacement(context,
@@ -104,8 +113,12 @@ class _CustDrawerState extends State<CustDrawer> {
               },
             ),
             TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Workers accepts'),
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              label: Text('Workers accepts',
+                  style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.pushReplacement(context,

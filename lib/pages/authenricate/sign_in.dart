@@ -54,7 +54,10 @@ class _SignInState extends State<SignIn> {
           children: <Widget>[
             Text(
               AppLocalizations.of(context)!.gotoregisterNOAccount,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
             ),
             SizedBox(
               width: 10,

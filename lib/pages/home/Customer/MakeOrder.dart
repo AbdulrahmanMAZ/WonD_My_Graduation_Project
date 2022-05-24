@@ -71,222 +71,252 @@ class _MakeOrderState extends State<MakeOrder> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                   Color.fromARGB(255, 73, 3, 105),
-                                  Color.fromARGB(255, 247, 244, 243)
+                                  Color.fromARGB(255, 5, 5, 5)
                                 ])),
-                            child: Column(
-                              children: <Widget>[
-                                Text('Request a Service',
-                                    style: GoogleFonts.nothingYouCouldDo(
-                                        textStyle: TextStyle(
-                                            color: Colors.black38,
-                                            fontSize: 20,
-                                            letterSpacing: .5,
-                                            fontWeight: FontWeight.w900))),
-                                SizedBox(
-                                  height: 20,
-                                ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 20,
+                                  ),
 
-                                SizedBox(
-                                  height: 20,
-                                ),
-
-                                //Drop Down.
-                                Text(
-                                  "You are Requesting: ${widget.profession}",
-                                  style: TextStyle(fontSize: 25),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-
-                                // TextField(
-                                //   enabled: false,
-                                //   style: TextStyle(fontSize: 12),
-                                //   decoration: InputDecoration(
-                                //       filled: true,
-                                //       fillColor: Colors.white,
-                                //       border: InputBorder.none,
-                                //       labelText: 'Your image name',
-                                //       hintText: ''),
-                                //   onChanged: (val) => setState(() {
-                                //     Description = val;
-                                //   }),
-                                // ),
-
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextFormField(
-                                  maxLines: 5,
-                                  initialValue: user.phoneNumber,
-                                  style: TextStyle(fontSize: 12),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 25.0, horizontal: 10.0),
-                                    hoverColor: Colors.blue,
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: InputBorder.none,
-                                    labelText: 'Description of the problem',
-                                    hintText: 'Enter Your problem Description',
-
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black26, width: 5)),
-
-                                    // Color when not in clicked
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(66, 136, 136, 136),
-                                          width: 5.0),
+                                  Center(
+                                    child: Text(
+                                      " ${widget.profession}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 29,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  onChanged: (val) => setState(() {
-                                    Description = val;
-                                  }),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text("Upload an Image for the problem"),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    final result = await FilePicker.platform
-                                        .pickFiles(
-                                            allowMultiple: false,
-                                            type: FileType.custom,
-                                            allowedExtensions: ['png', 'jpg']);
-                                    if (result == null) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text('No Image is There'),
-                                        ),
-                                      );
-                                      return null;
-                                    }
-                                    setState(() {
-                                      Path = result.files.single.path!;
-                                      FileName = result.files.single.name;
-                                      setState(() {
-                                        this.imageuploaded = true;
-                                      });
-                                    });
-                                    print(Path + ' -- ' + FileName);
-                                    ;
-                                  },
-                                  child: Text('Upload an image'),
-                                ),
-                                Visibility(
-                                    visible: imageuploaded,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Image is uploaded succesfully",
-                                          style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 74, 243, 7),
-                                              fontSize: 20),
-                                        ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
 
-                                        // FutureBuilder(
-                                        //   future: storage.downloadURL(FileName),
-                                        //   builder: (BuildContext context,
-                                        //       AsyncSnapshot<String> snapshot) {
-                                        //     if (snapshot.connectionState ==
-                                        //             ConnectionState.done &&
-                                        //         snapshot.hasData) {
-                                        //       return Container(
-                                        //         child: Image.network(
-                                        //           snapshot.data!,
-                                        //           fit: BoxFit.cover,
-                                        //           color: Colors.grey,
-                                        //           colorBlendMode:
-                                        //               BlendMode.multiply,
-                                        //         ),
-                                        //       );
-                                        //     }
-                                        //     return Loading();
-                                        //   },
-                                        // ),
+                                  // TextField(
+                                  //   enabled: false,
+                                  //   style: TextStyle(fontSize: 12),
+                                  //   decoration: InputDecoration(
+                                  //       filled: true,
+                                  //       fillColor: Colors.white,
+                                  //       border: InputBorder.none,
+                                  //       labelText: 'Your image name',
+                                  //       hintText: ''),
+                                  //   onChanged: (val) => setState(() {
+                                  //     Description = val;
+                                  //   }),
+                                  // ),
+                                  Text(
+                                    "Write a Description of the problem",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    maxLines: 5,
+                                    style: TextStyle(fontSize: 12),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 20.0, horizontal: 10.0),
+                                      hoverColor: Colors.blue,
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: InputBorder.none,
+                                      labelText: 'Description of the problem',
+                                      hintText:
+                                          'Enter Your problem Description',
 
-                                        // Row(
-                                        //   mainAxisAlignment: MainAxisAlignment.center,
-                                        //   children: imagePreviews,
-                                        // ),
-                                      ],
-                                    )),
-                                //Slider
-                                // Slider(
-                                //     min: 100,
-                                //     max: 900,
-                                //     divisions: 8,
-                                //     value:
-                                //         (_currentStrength ?? userData.strngth)!.toDouble(),
-                                //     activeColor: Colors
-                                //         .brown[_currentStrength ?? userData.strngth as int],
-                                //     inactiveColor: Colors
-                                //         .brown[_currentStrength ?? userData.strngth as int],
-                                //     onChanged: (e) {
-                                //       setState(() {
-                                //         _currentStrength = e.round();
-                                //       });
-                                //     }),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.black87),
-                                  onPressed: () async {
-                                    hasInternet =
-                                        await InternetConnectionChecker()
-                                            .hasConnection;
-                                    if (hasInternet) {
-                                      final UUID = Uuid().v1();
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.black26, width: 5)),
 
-                                      if (_formKey.currentState!.validate()) {
-                                        if (FileName ==
-                                            "no_image_in_firebase.png") {
-                                          await DatabaseService().RaiseRequest(
-                                              user.displayName.toString(),
-                                              user.uid,
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                              widget.profession,
-                                              "no_image_in_firebase.png",
-                                              Description,
-                                              userData!.latitude,
-                                              userData.longitude);
-                                        }
-
-                                        if (FileName !=
-                                            "no_image_in_firebase.png") {
-                                          await DatabaseService().RaiseRequest(
-                                              user.displayName.toString(),
-                                              user.uid,
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                              widget.profession,
-                                              UUID,
-                                              Description,
-                                              userData!.latitude,
-                                              userData.longitude);
-                                          storage.uploudFile(Path, UUID).then(
-                                              (value) => print('Uplouded'));
-                                        }
+                                      // Color when not in clicked
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color.fromARGB(
+                                                66, 136, 136, 136),
+                                            width: 5.0),
+                                      ),
+                                    ),
+                                    onChanged: (val) => setState(() {
+                                      Description = val;
+                                    }),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  ),
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.fromHeight(50),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      primary: Color.fromARGB(108, 71, 67, 71),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    label: Text('Upload an Image'),
+                                    icon: Icon(Icons.cloud_upload_outlined),
+                                    onPressed: () async {
+                                      final result = await FilePicker.platform
+                                          .pickFiles(
+                                              allowMultiple: false,
+                                              type: FileType.custom,
+                                              allowedExtensions: [
+                                            'png',
+                                            'jpg'
+                                          ]);
+                                      if (result == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('No Image is There'),
+                                          ),
+                                        );
+                                        return null;
                                       }
-                                      Navigator.pop(context);
-                                    } else {
-                                      showSimpleNotification(
-                                          Text('You have no connection!'),
-                                          background: Colors.red);
-                                    }
-                                  },
-                                  child: Text('Submit'),
-                                ),
-                              ],
+                                      setState(() {
+                                        Path = result.files.single.path!;
+                                        FileName = result.files.single.name;
+                                        setState(() {
+                                          this.imageuploaded = true;
+                                        });
+                                      });
+                                      print(Path + ' -- ' + FileName);
+                                      ;
+                                    },
+                                  ),
+                                  Visibility(
+                                      visible: imageuploaded,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Image is uploaded succesfully",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 74, 243, 7),
+                                                fontSize: 15),
+                                          ),
+
+                                          // FutureBuilder(
+                                          //   future: storage.downloadURL(FileName),
+                                          //   builder: (BuildContext context,
+                                          //       AsyncSnapshot<String> snapshot) {
+                                          //     if (snapshot.connectionState ==
+                                          //             ConnectionState.done &&
+                                          //         snapshot.hasData) {
+                                          //       return Container(
+                                          //         child: Image.network(
+                                          //           snapshot.data!,
+                                          //           fit: BoxFit.cover,
+                                          //           color: Colors.grey,
+                                          //           colorBlendMode:
+                                          //               BlendMode.multiply,
+                                          //         ),
+                                          //       );
+                                          //     }
+                                          //     return Loading();
+                                          //   },
+                                          // ),
+
+                                          // Row(
+                                          //   mainAxisAlignment: MainAxisAlignment.center,
+                                          //   children: imagePreviews,
+                                          // ),
+                                        ],
+                                      )),
+                                  //Slider
+                                  // Slider(
+                                  //     min: 100,
+                                  //     max: 900,
+                                  //     divisions: 8,
+                                  //     value:
+                                  //         (_currentStrength ?? userData.strngth)!.toDouble(),
+                                  //     activeColor: Colors
+                                  //         .brown[_currentStrength ?? userData.strngth as int],
+                                  //     inactiveColor: Colors
+                                  //         .brown[_currentStrength ?? userData.strngth as int],
+                                  //     onChanged: (e) {
+                                  //       setState(() {
+                                  //         _currentStrength = e.round();
+                                  //       });
+                                  //     }),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.fromHeight(50),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      primary: Color.fromARGB(108, 71, 67, 71),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      hasInternet =
+                                          await InternetConnectionChecker()
+                                              .hasConnection;
+                                      if (hasInternet) {
+                                        final UUID = Uuid().v1();
+
+                                        if (_formKey.currentState!.validate()) {
+                                          if (FileName ==
+                                              "no_image_in_firebase.png") {
+                                            await DatabaseService()
+                                                .RaiseRequest(
+                                                    user.displayName.toString(),
+                                                    user.uid,
+                                                    DateTime.now()
+                                                        .millisecondsSinceEpoch,
+                                                    widget.profession,
+                                                    "no_image_in_firebase.png",
+                                                    Description,
+                                                    userData!.latitude,
+                                                    userData.longitude);
+                                          }
+
+                                          if (FileName !=
+                                              "no_image_in_firebase.png") {
+                                            await DatabaseService()
+                                                .RaiseRequest(
+                                                    user.displayName.toString(),
+                                                    user.uid,
+                                                    DateTime.now()
+                                                        .millisecondsSinceEpoch,
+                                                    widget.profession,
+                                                    UUID,
+                                                    Description,
+                                                    userData!.latitude,
+                                                    userData.longitude);
+                                            storage.uploudFile(Path, UUID).then(
+                                                (value) => print('Uplouded'));
+                                          }
+                                        }
+                                        Navigator.pop(context);
+                                      } else {
+                                        showSimpleNotification(
+                                            Text('You have no connection!'),
+                                            background: Colors.red);
+                                      }
+                                    },
+                                    child: Text('Submit'),
+                                  ),
+                                ],
+                              ),
                             ),
                           )),
                     ),

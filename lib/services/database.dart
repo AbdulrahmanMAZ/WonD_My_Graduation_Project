@@ -29,14 +29,13 @@ class DatabaseService {
   // DocumentReference DocRef = workersCollection.doc(uid);
   // DocumentSnapshot doc = await DocRef.get();
 
-  Future<void> updateUserData(String name, bool isWorker, bool isShop,
-      String email, String profession, phone_number) async {
+  Future<void> updateUserData(String name, bool isWorker, String email,
+      String profession, phone_number) async {
     return await workersCollection.doc(uid).set({
       'uid': uid,
       'name': name,
       'email': email,
       'isWorker': isWorker,
-      'isShop': isWorker,
       'profession': profession,
       'latitude': 0.1,
       'longitude': 0.1,

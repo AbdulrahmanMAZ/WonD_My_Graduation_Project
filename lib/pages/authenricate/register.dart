@@ -30,7 +30,7 @@ class Register extends StatefulWidget {
     "ميكانيكي": "Mechanic",
     "Hair Dresser": "Hairdresser",
     "Electrician": "Electrician",
-    "plumber": "plumber",
+    "Plumber": "plumber",
     "Mechanic": "Mechanic"
   };
 
@@ -650,7 +650,6 @@ class _RegisterState extends State<Register> {
                                                       email,
                                                       password,
                                                       isWorker,
-                                                      isShop,
                                                       _currentProfession
                                                           as String,
                                                       '+966' + Phone_Number);
