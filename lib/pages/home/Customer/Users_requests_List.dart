@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserList extends StatefulWidget {
+class UserRequestsList extends StatefulWidget {
   @override
-  _UserListState createState() => _UserListState();
+  _UserRequestsListState createState() => _UserRequestsListState();
 }
 
-class _UserListState extends State<UserList> {
+class _UserRequestsListState extends State<UserRequestsList> {
   @override
   Widget build(BuildContext context) {
     //List<Widget> widgets = <Widget>[];
@@ -22,8 +22,6 @@ class _UserListState extends State<UserList> {
     return ListView.builder(
         itemCount: a.length,
         itemBuilder: (context, index) {
-          //print(users[index].);
-
           return requestTile(userRequest: a[index]);
         });
   }

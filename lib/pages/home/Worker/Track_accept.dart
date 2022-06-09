@@ -1,6 +1,7 @@
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/pages/home/Worker/miniMap.dart';
 import 'package:coffre_app/services/database.dart';
+import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,15 +24,10 @@ class _accept_trackerState extends State<accept_tracker> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    //final args = ModalRoute.of(context)!.settings.arguments as Request;
-    //  final requests = Provider.of<List<Request>?>(context) ?? [];
-    // final workinOnItrequests = Provider.of<List<WorkingOnit>?>(context) ?? [];
     final acceptedrequests = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final user = Provider.of<User?>(context);
 // user if == worker id
 // item.status == 2 - means customer accepted your request.
-//
-
     for (var item in acceptedrequests) {
       // If the worker ID == item.worker_id
       // and the item status == 1 then show waiting or working.
@@ -41,8 +37,9 @@ class _accept_trackerState extends State<accept_tracker> {
       if (item.worker_ID == user?.uid) {
         if (item.Status == 1) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Hello'),
+            appBar: MyCustomAppBar(
+              name: 'Customer Accepted - Working',
+              widget: [],
             ),
             backgroundColor: Colors.grey,
             body: Container(
@@ -69,14 +66,17 @@ class _accept_trackerState extends State<accept_tracker> {
                             child: Center(
                           child: Padding(
                             padding: const EdgeInsets.all(26.0),
-                            child: Text(
-                              'The user  ${item.Cust_name} accepted you offer',
-                              style: GoogleFonts.actor(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 20,
-                                      letterSpacing: .5,
-                                      fontWeight: FontWeight.w900)),
+                            child: Card(
+                              color: Colors.purple,
+                              child: Text(
+                                'Now the user  ${item.Cust_name} has accepted your offer, when you finish the work ask for the OTP to confirm that the work is done.',
+                                style: GoogleFonts.actor(
+                                    textStyle: TextStyle(
+                                        color: Color.fromARGB(238, 22, 1, 1),
+                                        fontSize: 20,
+                                        letterSpacing: .5,
+                                        fontWeight: FontWeight.w900)),
+                              ),
                             ),
                           ),
                         )),
@@ -102,9 +102,6 @@ class _accept_trackerState extends State<accept_tracker> {
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'[0-9]')),
                                   ],
-                                  // onChanged: (value) => setState(() {
-                                  //       this._OTP = int.parse(value);
-                                  //     }),
                                   decoration: InputDecoration(
                                       fillColor:
                                           Color.fromARGB(255, 255, 255, 255),
@@ -117,14 +114,17 @@ class _accept_trackerState extends State<accept_tracker> {
                               Center(
                                 child: TextButton(
                                   style: TextButton.styleFrom(
-                                      shadowColor: Colors.red,
+                                      shadowColor:
+                                          Color.fromARGB(255, 241, 241, 241),
                                       elevation: 10,
                                       padding: const EdgeInsets.all(16.0),
-                                      primary: Color.fromARGB(255, 155, 34, 34),
+                                      primary:
+                                          Color.fromARGB(255, 255, 255, 255),
                                       textStyle: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
-                                      backgroundColor: Colors.amber[200]),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 113, 5, 146)),
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
                                       for (var item in acceptedrequests) {
@@ -149,15 +149,18 @@ class _accept_trackerState extends State<accept_tracker> {
                         Text(
                           'Here is the location of the Customer',
                           style: TextStyle(
-                              fontSize: 19, fontWeight: FontWeight.bold),
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
-                        ElevatedButton(
+                        IconButton(
+                          icon: Icon(Icons.location_on),
+                          iconSize: 50,
+                          color: Colors.blue,
                           onPressed: () {
                             Navigator.pushNamed(context, '/mini_Map',
                                 arguments: item);
                           },
-                          child:
-                              Text('See the location of the customer on map'),
                         ),
                         Text(
                           'To be able to see directions please do the following steps:',
@@ -167,7 +170,7 @@ class _accept_trackerState extends State<accept_tracker> {
                               color: Colors.white),
                         ),
                         Text(
-                          '1. Click on the button above to open the map',
+                          '1. Click on the icon above to open the map',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
@@ -197,8 +200,9 @@ class _accept_trackerState extends State<accept_tracker> {
         }
         if (item.Status == 0) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Hello'),
+            appBar: MyCustomAppBar(
+              name: 'Waiting for Customer Acceptance',
+              widget: [],
             ),
             backgroundColor: Colors.grey,
             body: Container(
@@ -225,7 +229,7 @@ class _accept_trackerState extends State<accept_tracker> {
                             'Waiting for  ${item.Cust_name}To accepts...',
                             style: GoogleFonts.actor(
                                 textStyle: TextStyle(
-                                    color: Colors.black38,
+                                    color: Color.fromARGB(193, 255, 255, 255),
                                     fontSize: 20,
                                     letterSpacing: .5,
                                     fontWeight: FontWeight.w900)),

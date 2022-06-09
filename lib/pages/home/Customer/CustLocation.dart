@@ -38,7 +38,6 @@ class setLocationCustomer extends StatelessWidget {
         Navigator.pushNamed(context, '/cust_home');
       }
       if (_permissionGranted == PermissionStatus.denied) {
-        print(_permissionGranted);
         _permissionGranted = await location.requestPermission();
         if (_permissionGranted == PermissionStatus.granted) {
           Navigator.pushNamed(context, '/cust_home');

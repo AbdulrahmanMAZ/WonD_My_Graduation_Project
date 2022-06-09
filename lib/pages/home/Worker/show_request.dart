@@ -6,6 +6,7 @@ import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
+import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/shared/constant.dart';
 
 import 'package:coffre_app/shared/loading.dart';
@@ -16,8 +17,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ShowRequest extends StatefulWidget {
-  // static const _initialCameraPosition =
-  //     CameraPosition(target: LatLng(40, -120), zoom: 12);
+
 
   const ShowRequest({Key? key}) : super(key: key);
 
@@ -27,6 +27,9 @@ class ShowRequest extends StatefulWidget {
 
 class _ShowRequestState extends State<ShowRequest>
     with SingleTickerProviderStateMixin {
+  String? firebaseURL =
+      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/Orders_Images%2F';
+
   late AnimationController _controller;
   List<Marker> _markers = [];
 
@@ -50,15 +53,19 @@ class _ShowRequestState extends State<ShowRequest>
     final args = ModalRoute.of(context)!.settings.arguments as Request;
     final user = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: user?.uid);
-    //Double later
+  
     _markers.add(Marker(
         markerId: MarkerId(args.name),
         position: LatLng(args.latitude, args.longitude),
         infoWindow: InfoWindow(title: args.name)));
     final Storage storage = Storage();
+    print(args.imageName);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(title: Text("${args.name}'s Location")),
+      appBar: MyCustomAppBar(
+        name: "${args.name} Request",
+        widget: [],
+      ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(),
@@ -70,7 +77,7 @@ class _ShowRequestState extends State<ShowRequest>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //DetailHeader(title: args.name),
+                 
                   const SizedBox(height: 15),
                   Expanded(
                     child: Padding(
@@ -145,32 +152,14 @@ class _ShowRequestState extends State<ShowRequest>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: FutureBuilder(
-                                    future: storage.downloadURL(args.imageName),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<String> snapshot) {
-                                      if (snapshot.connectionState ==
-                                              ConnectionState.done &&
-                                          snapshot.hasData) {
-                                        return Container(
-                                          child: Image.network(
-                                            snapshot.data!,
-                                            fit: BoxFit.cover,
-                                            color: Colors.grey,
-                                            colorBlendMode: BlendMode.multiply,
-                                          ),
-                                        );
-                                      }
-                                      return Loading();
-                                    },
-                                  ),
-
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.center,
-                                  //   children: imagePreviews,
-                                  // ),
+                                  child: Image(
+                                          image: NetworkImage(firebaseURL! +
+                                              args.imageName +
+                                              '?alt=media&token=')) ??
+                                      Loading(),
+                                
                                 ),
-                                // const SizedBox(height: 18),
+                               
                               ],
                             ),
                           ),
@@ -201,6 +190,14 @@ class _ShowRequestState extends State<ShowRequest>
                                   ),
                                 )
                               : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size.fromHeight(10),
+                                    padding: EdgeInsets.all(5),
+                                    primary: Color.fromARGB(108, 240, 177, 240),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     setState(() {
                                       showLocation = true;
@@ -227,7 +224,7 @@ class _ShowRequestState extends State<ShowRequest>
                                     this.price = value;
                                   }),
                               decoration: InputDecoration(
-                                  fillColor: Colors.amber,
+                                  fillColor: Color.fromARGB(106, 78, 3, 122),
                                   filled: true,
                                   alignLabelWithHint: true,
                                   hintText: 'Name you price here')),
@@ -256,14 +253,16 @@ class _ShowRequestState extends State<ShowRequest>
                             context,
                             MaterialPageRoute(
                                 builder: (context) => accept_tracker()));
-                        // Navigator.pushNamed(context, '/Show_Request',
-                        //     arguments: args);
+                  
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      // minimumSize: Size(200, 100),
+                      minimumSize: Size.fromHeight(50),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      primary: Color.fromARGB(255, 78, 2, 78),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(

@@ -6,27 +6,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthSrrvice {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // create a user objext based on Firebaseuser
-  // UserO? _userFromFirebaseUser(User? user) {
-  //   return user != null ? UserO(uid: user.uid) : null;
-  // }
-
   // auth change user stream
   Stream<User?> get user {
     return _auth.authStateChanges();
-    // .map((User? user) => _userFromFirebaseUser(user));
-    // .map(_userFromFirebaseUser);
-  }
-
-  Future signINAnon() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return user?.uid;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
   }
 
   // sign in wiht e-mail and password.
@@ -59,18 +41,12 @@ class AuthSrrvice {
           email: email, password: password);
       User? user = result.user;
 
-      user!.updateDisplayName(name);
-      // if (isWorker) {
-      //   DatabaseService()
-      //       .WorkersCollection
-      //       .doc()
-      //       .set({'Worker_ID': user.uid, 'Worker_email': email});
-      // }
+      await user!.updateDisplayName(name);
+
       await DatabaseService(uid: user.uid)
           .updateUserData(name, isWorker, email, profession, phone_number);
       return user;
     } catch (e) {
-      // print(e.toString());
       return null;
     }
   }

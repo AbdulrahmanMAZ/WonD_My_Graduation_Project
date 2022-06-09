@@ -52,12 +52,6 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
   @override
   Widget build(BuildContext context) {
     final Storage storage = Storage();
-    // void _showRequestStatus() {
-    //   Scaffold(
-    //       body: Container(
-    //     child: workingpage(),
-    //   ));
-    // }
 
     final _myAcceptedRequests =
         Provider.of<List<AcceptedRequest>?>(context) ?? [];
@@ -92,7 +86,7 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                           if (item.Cust_ID == userStream.uid) {
                             if (item.worker_ID !=
                                 widget.acceptedRequest.worker_ID) {
-                              // acc_list.add(item);
+                              //DELETE REQUEST FROM OTHER USERS WHO ACCEPTED REQUESTS
                               DatabaseService()
                                   .AcceptenceCollection
                                   .doc(item.worker_ID)
@@ -103,8 +97,10 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                             }
                             if (item.worker_ID ==
                                 widget.acceptedRequest.worker_ID) {
+                              //UPDATE CURRENT STATUS TO ACCEPTED
                               DatabaseService(uid: item.worker_ID)
                                   .updateRequestStatus(1);
+                              //DELETE REQUEST FROM CURRENT USER Requests
                               DatabaseService()
                                   .RequestsCollection
                                   .doc(userStream.uid)
@@ -112,19 +108,6 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                                   .then((_) => print('Deleted'))
                                   .catchError((error) =>
                                       print('Delete failed: $error'));
-
-                              // DatabaseService().WorkingOnIt(
-                              //     item.Cust_name,
-                              //     item.Cust_ID,
-                              //     item.worker_name,
-                              //     item.worker_ID,
-                              //     DateTime.now().millisecondsSinceEpoch,
-                              //     item.price,
-                              //     1);
-                              // .then((value) => DatabaseService()
-                              //     .AcceptenceCollection
-                              //     .doc(item.worker_ID)
-                              //     .delete());
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -155,33 +138,6 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                         backgroundImage:
                             NetworkImage(firebaseURL! + currentUser!.uid!),
                       ),
-
-                      // FutureBuilder(
-                      //   future: storage.downloadProfileImageURL(
-                      //       currentUser!.profileImage as String),
-                      //   builder: (BuildContext context,
-                      //       AsyncSnapshot<String> snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //             ConnectionState.done &&
-                      //         snapshot.hasData) {
-                      //       // print(currentUser!.uid);
-
-                      //       return Container(
-                      //         child: Image.network(
-                      //           snapshot.data!,
-                      //           fit: BoxFit.cover,
-                      //           color: Colors.grey,
-                      //           colorBlendMode: BlendMode.multiply,
-                      //         ),
-                      //       );
-                      //     } else if (snapshot.connectionState ==
-                      //             ConnectionState.none &&
-                      //         snapshot.hasError) {
-                      //       print('ff');
-                      //     }
-                      //     return Loading();
-                      //   },
-                      // )
                     ),
                   ),
                 ),

@@ -40,7 +40,7 @@ class DatabaseService {
       'latitude': 0.1,
       'longitude': 0.1,
       'phone_number': phone_number,
-      'profile_image': "",
+      'profile_image': "No_photo_found.png",
     });
   }
 
@@ -200,7 +200,6 @@ class DatabaseService {
   List<AcceptedRequest> _AcceptedrequestsListFromSnapshot(
       QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //print(doc.data);
       return AcceptedRequest(
           Cust_ID: doc.get('Cust_ID'),
           Cust_name: doc.get('Cust_name'),
@@ -339,7 +338,6 @@ class DatabaseService {
   }
 
   Stream<List<AcceptedRequest>> get Acceptedrequets {
-    //Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
     return AcceptenceCollection.snapshots()
         .map(_AcceptedrequestsListFromSnapshot);
   }

@@ -82,7 +82,6 @@ class _MakeOrderState extends State<MakeOrder> {
                                   SizedBox(
                                     height: 20,
                                   ),
-
                                   Center(
                                     child: Text(
                                       " ${widget.profession}",
@@ -95,20 +94,6 @@ class _MakeOrderState extends State<MakeOrder> {
                                   SizedBox(
                                     height: 30,
                                   ),
-
-                                  // TextField(
-                                  //   enabled: false,
-                                  //   style: TextStyle(fontSize: 12),
-                                  //   decoration: InputDecoration(
-                                  //       filled: true,
-                                  //       fillColor: Colors.white,
-                                  //       border: InputBorder.none,
-                                  //       labelText: 'Your image name',
-                                  //       hintText: ''),
-                                  //   onChanged: (val) => setState(() {
-                                  //     Description = val;
-                                  //   }),
-                                  // ),
                                   Text(
                                     "Write a Description of the problem",
                                     style: TextStyle(
@@ -208,54 +193,11 @@ class _MakeOrderState extends State<MakeOrder> {
                                                     255, 74, 243, 7),
                                                 fontSize: 15),
                                           ),
-
-                                          // FutureBuilder(
-                                          //   future: storage.downloadURL(FileName),
-                                          //   builder: (BuildContext context,
-                                          //       AsyncSnapshot<String> snapshot) {
-                                          //     if (snapshot.connectionState ==
-                                          //             ConnectionState.done &&
-                                          //         snapshot.hasData) {
-                                          //       return Container(
-                                          //         child: Image.network(
-                                          //           snapshot.data!,
-                                          //           fit: BoxFit.cover,
-                                          //           color: Colors.grey,
-                                          //           colorBlendMode:
-                                          //               BlendMode.multiply,
-                                          //         ),
-                                          //       );
-                                          //     }
-                                          //     return Loading();
-                                          //   },
-                                          // ),
-
-                                          // Row(
-                                          //   mainAxisAlignment: MainAxisAlignment.center,
-                                          //   children: imagePreviews,
-                                          // ),
                                         ],
                                       )),
-                                  //Slider
-                                  // Slider(
-                                  //     min: 100,
-                                  //     max: 900,
-                                  //     divisions: 8,
-                                  //     value:
-                                  //         (_currentStrength ?? userData.strngth)!.toDouble(),
-                                  //     activeColor: Colors
-                                  //         .brown[_currentStrength ?? userData.strngth as int],
-                                  //     inactiveColor: Colors
-                                  //         .brown[_currentStrength ?? userData.strngth as int],
-                                  //     onChanged: (e) {
-                                  //       setState(() {
-                                  //         _currentStrength = e.round();
-                                  //       });
-                                  //     }),
                                   SizedBox(
                                     height: 20,
                                   ),
-
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       minimumSize: Size.fromHeight(50),

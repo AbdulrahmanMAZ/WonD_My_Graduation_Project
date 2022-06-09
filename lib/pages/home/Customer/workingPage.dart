@@ -178,7 +178,7 @@ class _workingpageState extends State<workingpage>
                       'Waiting for  ${item.worker_name} To finsh the job',
                       style: GoogleFonts.actor(
                           textStyle: TextStyle(
-                              color: Colors.black38,
+                              color: Color.fromARGB(209, 255, 255, 255),
                               fontSize: 20,
                               letterSpacing: .5,
                               fontWeight: FontWeight.w900)),

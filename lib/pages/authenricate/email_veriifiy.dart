@@ -39,7 +39,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   void initState() {
     // TODO: implement initState
 
-    this.userDATA = GiveMETHEFUCKINGUSER();
+    this.userDATA = GiveMETHEGUSER();
     super.initState();
 
     isEmailVertfied = FirebaseAuth.instance.currentUser!.emailVerified;
@@ -80,7 +80,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
     }
   }
 
-  Future<DocumentSnapshot<Object?>> GiveMETHEFUCKINGUSER() {
+  Future<DocumentSnapshot<Object?>> GiveMETHEGUSER() {
     final CollectionReference workers =
         FirebaseFirestore.instance.collection('coffes');
     Future<DocumentSnapshot<Object?>> a = workers.doc(widget.user).get();
@@ -164,7 +164,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromRadius(20)),
                   icon: Icon(Icons.email_outlined),
-                  label: Text('Resenf email'),
+                  label: Text('Resend email'),
                 ),
                 TextButton(
                   onPressed: () => FirebaseAuth.instance.signOut(),

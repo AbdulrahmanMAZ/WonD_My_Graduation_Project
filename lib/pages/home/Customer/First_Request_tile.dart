@@ -50,21 +50,9 @@ class requestTile extends StatelessWidget {
                 '',
                 style: TextStyle(fontSize: 1),
               )),
-          leading: CircleAvatar(
-            backgroundColor: Colors.brown[200],
-            radius: 25,
-          ),
-          title: Text(userRequest.profession),
+          title: Text(userRequest.profession,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           subtitle: Text(h24),
-          onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => UserProfile(
-            //             req: userRequest,
-            //           )),
-            // );
-          },
         ),
       ),
     );

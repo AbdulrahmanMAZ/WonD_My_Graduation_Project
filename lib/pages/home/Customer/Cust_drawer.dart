@@ -53,7 +53,7 @@ class _CustDrawerState extends State<CustDrawer> {
     Widget choose() {
       if (youHaveRequest) {
         return TextButton.icon(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.open_in_new),
           label: Text('On-going Requests'),
           onPressed: () {
             Navigator.push(context,
@@ -64,71 +64,67 @@ class _CustDrawerState extends State<CustDrawer> {
       return SizedBox();
     }
 
-    final CollectionReference aaa =
-        FirebaseFirestore.instance.collection('coffes');
+    // final CollectionReference aaa =
+    //     FirebaseFirestore.instance.collection('coffes');
     // final usera = Provider.of<User?>(context);
 
-    return StreamProvider<User?>.value(
-      initialData: null,
-      value: AuthSrrvice().user,
-      child: Drawer(
-        backgroundColor: Color.fromARGB(201, 39, 1, 56),
-        child: ListView(
-          children: [
-            Container(
-              height: 50,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Color.fromARGB(255, 175, 2, 209),
-                ),
-                child: Text('Welcome, ${widget.username}'),
+    return Drawer(
+      backgroundColor: Color.fromARGB(201, 39, 1, 56),
+      child: ListView(
+        children: [
+          Container(
+            height: 50,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Color.fromARGB(255, 175, 2, 209),
               ),
+              child: Text('Welcome, ${widget.username}'),
             ),
-            TextButton.icon(
-              icon: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              label: Text(
-                'Home Page',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Cust_Home()));
-              },
+          ),
+          TextButton.icon(
+            icon: Icon(
+              Icons.person,
+              color: Colors.white,
             ),
-            TextButton.icon(
-              icon: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              label: Text('My orders', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Cust_Order()));
-              },
+            label: Text(
+              'Home Page',
+              style: TextStyle(color: Colors.white),
             ),
-            TextButton.icon(
-              icon: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              label: Text('Workers accepts',
-                  style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Accepted_Orders()));
-              },
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Cust_Home()));
+            },
+          ),
+          TextButton.icon(
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
             ),
-            choose(),
-            widget.logout,
-          ],
-        ),
+            label: Text('My orders', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Cust_Order()));
+            },
+          ),
+          TextButton.icon(
+            icon: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            label:
+                Text('Workers accepts', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Accepted_Orders()));
+            },
+          ),
+          choose(),
+          widget.logout,
+        ],
       ),
     );
   }

@@ -21,7 +21,7 @@ class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: Colors.transparent,
       elevation: 12.0,
-      shadowColor: Color.fromARGB(45, 179, 8, 231),
+      shadowColor: Color.fromARGB(129, 179, 8, 231),
       actions: widget,
       toolbarTextStyle: TextTheme(
         headline6: TextStyle(

@@ -7,6 +7,7 @@ import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Worker/worker_feedback_tile.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
+import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +18,7 @@ import 'package:uuid/uuid.dart';
 class UserProfile extends StatefulWidget {
   final AcceptedRequest? req;
 
-  UserProfile({this.req});
+  UserProfile({required this.req});
 
   //const UserProfile({Key? key}) : super(key: key);
 
@@ -82,7 +83,7 @@ class _UserProfileState extends State<UserProfile> {
     } catch (e) {}
     final user = Provider.of<User?>(context);
     return Scaffold(
-        appBar: AppBar(),
+        appBar: MyCustomAppBar(name: 'Accepted Requests', widget: []),
         body: Scrollbar(
           child: SingleChildScrollView(
             child: Column(children: [
@@ -96,8 +97,8 @@ class _UserProfileState extends State<UserProfile> {
                         child: Material(
                           color: Colors.transparent,
                           child: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(firebaseURL! + usera!.uid),
+                            backgroundImage: NetworkImage(
+                                firebaseURL! + widget.req!.worker_ID),
                           ),
                         ),
                       ),
@@ -139,7 +140,7 @@ class _UserProfileState extends State<UserProfile> {
                   stream: DatabaseService(uid: widget.req?.worker_ID).ratee,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      double avregeRating = 1;
+                      double avregeRating = 0;
                       List<Rate>? userRate = snapshot.data;
                       if (userRate != null) {
                         for (var item in userRate) {
@@ -147,9 +148,9 @@ class _UserProfileState extends State<UserProfile> {
                         }
                       }
 
-                      int Number_of_ratings = userRate!.length;
+                      dynamic Number_of_ratings = userRate!.length;
                       if (Number_of_ratings <= 0) {
-                        Number_of_ratings = 1;
+                        Number_of_ratings = '0';
                       }
 
                       if (userRate.isEmpty) {
@@ -175,12 +176,19 @@ class _UserProfileState extends State<UserProfile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                          '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 24,
-                                          )),
+                                      if (Number_of_ratings == '0')
+                                        Text('0',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                            )),
+                                      if (Number_of_ratings != '0')
+                                        Text(
+                                            '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24,
+                                            )),
                                       Text('(${userRate.length})',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,

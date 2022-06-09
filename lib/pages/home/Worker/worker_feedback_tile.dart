@@ -24,23 +24,23 @@ class worker_feedback_tile extends StatelessWidget {
     double price;
     return Center(
       child: Card(
-        color: Color.fromARGB(255, 51, 1, 59),
+        color: Color.fromARGB(158, 68, 2, 78),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.album),
               title: Row(
                 children: [
                   Text("${name as String} "),
-                  Text(rate.toString()),
+                  Text(rate.toString(), style: TextStyle(color: Colors.amber)),
                   Icon(
                     Icons.star_rate_sharp,
+                    color: Colors.amber,
                     size: 15,
                   )
                 ],
               ),
-              subtitle: Text(feedback as String),
+              subtitle: Card(child: Text(feedback as String)),
             ),
             SizedBox()
           ],

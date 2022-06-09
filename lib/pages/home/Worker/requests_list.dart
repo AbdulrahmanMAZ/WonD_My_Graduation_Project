@@ -29,13 +29,12 @@ class _RequestsListState extends State<RequestsList> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    //UserData? userData = user as UserData;
+
     final requests = Provider.of<List<Request>?>(context) ?? [];
     final _acceptedRequest = Provider.of<List<AcceptedRequest>?>(context) ?? [];
     final user = Provider.of<User?>(context);
-
-    //GETTING THE DATA OF THE WORKER
     bool noRequests = true;
+
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user?.uid).userData,
         builder: ((context, snapshot) {
@@ -61,42 +60,11 @@ class _RequestsListState extends State<RequestsList> {
                   RealComingRequests.add(item);
                 }
               }
-
             RealComingRequests.sort((a, b) => distance(userData!.latitude,
                     a.latitude, userData.longitude, a.longitude)
                 .compareTo(distance(userData.latitude, b.latitude,
                     userData.longitude, b.longitude)));
-
-            //while (noRequests) {
             if (RealComingRequests.length >= 1) {
-              // print(a.length);
-              for (Request item in RealComingRequests) {
-                // for (int i = 0; i >= a.length; i++)
-
-                // if (userData!.profession == item.profession &&
-                //     distance(userData.latitude, item.latitude,
-                //             userData.longitude, item.longitude) <
-                //         30) {
-                //   print(distance(userData.latitude, item.latitude,
-                //       userData.longitude, item.longitude));
-                //   _markers.add(Marker(
-                //     markerId: MarkerId('SomeId'),
-                //     position: LatLng(item.latitude, item.longitude),
-                //     infoWindow: InfoWindow(title: item.Description),
-                //     onTap: () {
-                //       print('');
-                //     },
-
-                //     // Navigator.pushNamed(context, '/Show_Request',
-                //     //     arguments: item);
-                //   ));
-                //   // print(item.latitude);
-                // }
-              }
-              // List<Request> a = requests;
-              //print(a.length);
-              //while (noRequests) {
-              // for (var item in RealComingRequests) {
               return ListView.builder(
                   itemCount: RealComingRequests.length,
                   itemBuilder: (context, index) {
@@ -145,8 +113,6 @@ class _RequestsListState extends State<RequestsList> {
                 ),
               );
             }
-            //}
-
           }
           return Loading();
         }));

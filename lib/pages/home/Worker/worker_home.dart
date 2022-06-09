@@ -9,7 +9,8 @@ import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/workerLocation.dart';
 import 'package:coffre_app/pages/home/Worker/worker_drawer.dart';
-
+import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart' as geoCoding;
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/auth.dart';
 import 'package:coffre_app/services/database.dart';
@@ -36,45 +37,72 @@ class worker_home extends StatefulWidget {
 
 class _worker_homeState extends State<worker_home> {
   late Stream<UserData> userDATA;
-
+  String? _currentAddress;
   Location location = new Location();
 
   PermissionStatus _permissionGranted = PermissionStatus.denied;
   bool? _isServiceEnabled;
   final user = FirebaseAuth.instance.currentUser!.uid;
-  //  PermissionStatus? _permissionGranted;
+
   LocationData? _locationData;
   final AuthSrrvice _auth = AuthSrrvice();
   List<Marker> _markers = [];
+
+  int counter = 0;
+
   @override
   void initState() {
     super.initState();
     final DatabaseService _db = DatabaseService(uid: user);
     final _userData = DatabaseService(uid: user).userData;
     this.userDATA = _userData;
+    if (counter == 0) {
+      setState(() {
+        counter++;
+      });
+    }
   }
 
+  int RefreshCounter = 0;
   @override
   Widget build(BuildContext context) {
-    double _radius = 30000.0;
-    //UserData? userData = user as UserData;
-    final requests = Provider.of<List<Request>?>(context) ?? [];
     final user = Provider.of<User?>(context);
     final DatabaseService _db = DatabaseService(uid: user?.uid);
-    // final _userData = DatabaseService(uid: user?.uid).userData;
-    //GETTING THE DATA OF THE WORKER
+    void locatepostion() async {
+      //GET THE CURRENT USER DATA
+      final users = Provider.of<List<UserData>?>(context) ?? [];
+      List<UserData>? a = users;
+      if (user?.uid != null) {
+        UserData? wattinguser = await _db.getUser();
+
+        if (RefreshCounter < 1)
+          setState(() {
+            RefreshCounter++;
+          });
+        UserData currentUser = wattinguser;
+
+        try {
+          List<geoCoding.Placemark> placemarks =
+              await geoCoding.placemarkFromCoordinates(
+                  currentUser.latitude as double,
+                  currentUser.longitude as double);
+
+          geoCoding.Placemark place1 = placemarks[0];
+          geoCoding.Placemark place2 = placemarks[1];
+
+          _currentAddress =
+              "${place2.locality}  ${place2.country} ${place1.street}  ";
+        } catch (e) {
+          print(e.toString());
+        }
+      }
+    }
+
+    double _radius = 30000.0;
+
+    final requests = Provider.of<List<Request>?>(context) ?? [];
 
     bool noRequests = true;
-
-    // void _showAppSettingss() {
-    //   showModalBottomSheet(
-    //       context: context,
-    //       builder: (context) {
-    //         return Container(
-    //           child: setLocationWorker(),
-    //         );
-    //       });
-    // }
 
     Future SetLocation() async {
       _isServiceEnabled = await location.serviceEnabled();
@@ -96,41 +124,18 @@ class _worker_homeState extends State<worker_home> {
       } catch (e) {
         print(e.toString());
       }
-      // if (_permissionGranted == PermissionStatus.denied) {
       if (await PermssionHandler.Permission.location.isDenied) {
         Navigator.pushNamed(context, '/SetWorkerLocation');
       }
-      // }
-      //Navigator.pop(context);
-      // if (_permissionGranted == PermissionStatus.denied) {}
-      //_showAppSettingss();
 
-      //return PermssionHandler.openAppSettings();
-      // if (_permissionGranted == PermissionStatus.granted) {}
-      // }
-      // if (_permissionGranted == PermissionStatus.denied) {
-      //   // _permissionGranted = await location.requestPermission();
-      //   // if (_permissionGranted == PermissionStatus.denied) {
-      //   Navigator.pushNamed(context, '/SetWorkerLocation');
-      //   // }
-      //   //_showAppSettingss();
-
-      //   //return PermssionHandler.openAppSettings();
-      //   // if (_permissionGranted == PermissionStatus.granted) {}
-      // }
       if (_permissionGranted == PermissionStatus.granted) {
         return;
       }
-
-      // if (_permissionGranted == PermissionStatus.denied) {
-      //   setState(() {
-
-      //   });
-      // }
     }
 
     SetLocation();
-    final AsyncMemoizer _memoizer = AsyncMemoizer();
+    locatepostion();
+
     String firebaseURL =
         'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
     return Scaffold(
@@ -139,12 +144,12 @@ class _worker_homeState extends State<worker_home> {
         drawer: worker_drawer(
           username: user?.displayName,
           logout: TextButton.icon(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.logout),
             label: Text('logout'),
             onPressed: () async {
               Navigator.of(context).pop();
               await _auth.SignOut();
-              // Navigator.of(context).pop();
+
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => Wrapper()),
                   (Route<dynamic> route) => false);
@@ -152,15 +157,13 @@ class _worker_homeState extends State<worker_home> {
           ),
         ),
         appBar: MyCustomAppBar(
-          name: "${user?.displayName}'s Home Page",
+          name: _currentAddress ?? '',
           widget: [
             IconButton(
                 onPressed: () {
                   setState(() {
                     SetLocation();
                   });
-                  //Future.delayed(Duration(seconds: 5));
-                  // setState(() {});
                 },
                 icon: Icon(Icons.location_pin))
           ],
@@ -174,110 +177,3 @@ class _worker_homeState extends State<worker_home> {
         ));
   }
 }
-          // if (!snapshot.hasData) {
-          //   // while data is loading:
-
-          //   return Center(
-          //     child: CircularProgressIndicator(),
-          //   );
-          // }
-
-          // if (snapshot.hasData) {
-          //   UserData? userData = snapshot.data;
-          //   // _markers.add(Marker(
-          //   //     markerId: MarkerId('SomeId'),
-          //   //     position: LatLng(userData?.latitude as double,
-          //   //         userData?.longitude as double),
-          //   //     infoWindow: InfoWindow(title: userData?.name)));
-          //   List<Request> a = requests;
-          //   for (Request item in a) {
-          //     // for (int i = 0; i >= a.length; i++)
-
-          //     if (userData!.profession == item.profession &&
-          //         distance(userData.latitude, item.latitude, userData.longitude,
-          //                 item.longitude) <
-          //             30) {
-          //       _markers.add(Marker(
-          //         markerId: MarkerId('${item.name}'),
-          //         position: LatLng(item.latitude, item.longitude),
-          //         infoWindow: InfoWindow(title: item.Description),
-          //         onTap: () {
-          //           // print('${item.name}');
-          //           Navigator.pushNamed(context, '/Show_Request',
-          //               arguments: item);
-          //         },
-          //       ));
-          //       // print(item.latitude);
-          //     }
-          //   }
-          //   _markers.add(Marker(
-          //       markerId: MarkerId(userData?.name as String),
-          //       position: LatLng(userData?.latitude as double,
-          //           userData?.longitude as double),
-          //       icon: BitmapDescriptor.defaultMarkerWithHue(180)));
-          //   // print('${a.length}  kkkkkkkkkkkkkkkkkkkkkkkkkk');
-          //   //while (noRequests) {
-          //   return Scaffold(
-          //     resizeToAvoidBottomInset: false,
-          //     backgroundColor: AppColors.Allbackgroundcolor,
-          //     drawer: worker_drawer(
-          //       username: user?.displayName,
-          //       logout: TextButton.icon(
-          //         icon: Icon(Icons.person),
-          //         label: Text('logout'),
-          //         onPressed: () async {
-          //           Navigator.of(context).pop();
-          //           await _auth.SignOut();
-          //         },
-          //       ),
-          //     ),
-          //     appBar: MyCustomAppBar(
-          //       name: 'Nearby Customers',
-          //       widget: [
-          //         IconButton(
-          //             onPressed: () {
-          //               setState(() {
-          //                 SetLocation();
-          //               });
-          //               //Future.delayed(Duration(seconds: 5));
-          //               // setState(() {});
-          //             },
-          //             icon: Icon(Icons.location_pin))
-          //       ],
-          //     ),
-          //     body: Scaffold(
-          //       body: GoogleMap(
-          //         //liteModeEnabled: true,
-          //         mapType: MapType.normal,
-          //         markers: Set<Marker>.of(_markers),
-          //         myLocationButtonEnabled: false,
-          //         zoomControlsEnabled: true,
-          //         zoomGesturesEnabled: true,
-          //         scrollGesturesEnabled: true,
-          //         gestureRecognizers: Set()
-          //           ..add(Factory<PanGestureRecognizer>(
-          //               () => PanGestureRecognizer())),
-          //         initialCameraPosition: CameraPosition(
-          //             target: LatLng(userData?.latitude as double,
-          //                 userData?.longitude as double),
-          //             zoom: 9.5),
-
-          //         minMaxZoomPreference: MinMaxZoomPreference(13, 17),
-          //         circles: {
-          //           Circle(
-          //               circleId: CircleId(userData!.name as String),
-          //               center: LatLng(userData.latitude as double,
-          //                   userData.longitude as double),
-          //               radius: _radius,
-          //               strokeWidth: 2,
-          //               strokeColor: Colors.red)
-          //         },
-          //       ),
-          //     ),
-          //   );
-          //   //}
-
-          // }
-          
-       
-  

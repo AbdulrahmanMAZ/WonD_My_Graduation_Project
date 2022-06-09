@@ -5,6 +5,7 @@ import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Worker/worker_feedback_tile.dart';
+import 'package:coffre_app/pages/home/Worker/worker_home.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/services/storage.dart';
 import 'package:coffre_app/shared/appbar.dart';
@@ -13,6 +14,7 @@ import 'package:coffre_app/shared/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,7 +32,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     // 1. Using Timer
-    Timer(Duration(seconds: 0), () {
+    Timer(Duration(seconds: 2), () {
       setState(() {
         _isLoading = true;
       });
@@ -46,7 +48,7 @@ class _ProfileState extends State<Profile> {
   var Path;
   var FileName = "no_image_in_firebase.png";
   String? firebaseURL =
-      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
+      'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2F';
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +57,7 @@ class _ProfileState extends State<Profile> {
     final Storage storage = Storage();
     final _formKey = GlobalKey<FormState>();
     final usera = Provider.of<User?>(context);
-    // final _myrates = Provider.of<List<Rate>?>(context) ?? [];
 
-    // List<Rate> Rates = _myrates;
-
-    // for (Rate item in Rates) {
-    //   // Rates.add(item);
-    // }
-    // for (var item in Rates) {
-    //   //   {
-    //   //     a
-    //   //   }
-    //   //   ;
-    // }
     UserData? currentUser;
     final users = Provider.of<List<UserData>?>(context) ?? [];
     List<UserData>? a = users;
@@ -100,11 +90,31 @@ class _ProfileState extends State<Profile> {
                               child: ClipOval(
                                 child: Material(
                                   color: Colors.transparent,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    backgroundImage:
-                                        NetworkImage(firebaseURL! + usera.uid),
-                                  ),
+                                  child: _isLoading
+                                      ? FutureBuilder(
+                                          future:
+                                              storage.downloadProfileImageURL(
+                                                  currentUser?.profileImage
+                                                      as String),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<String> snapshot) {
+                                            if (snapshot.connectionState ==
+                                                    ConnectionState.done &&
+                                                snapshot.hasData) {
+                                              return Container(
+                                                child: Image.network(
+                                                  snapshot.data!,
+                                                  fit: BoxFit.cover,
+                                                  color: Colors.grey,
+                                                  colorBlendMode:
+                                                      BlendMode.multiply,
+                                                ),
+                                              );
+                                            }
+                                            return Loading();
+                                          },
+                                        )
+                                      : Loading(),
                                 ),
                               ),
                             ),
@@ -149,6 +159,15 @@ class _ProfileState extends State<Profile> {
                                       storage
                                           .uploudProfileImage(Path, UUID)
                                           .then((value) => print('Uplouded'));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  worker_home()));
+                                      showSimpleNotification(
+                                          Text('Your image has been updated'),
+                                          background:
+                                              Color.fromARGB(255, 6, 240, 103));
                                     }
                                   },
                                   icon: Icon(Icons.edit,

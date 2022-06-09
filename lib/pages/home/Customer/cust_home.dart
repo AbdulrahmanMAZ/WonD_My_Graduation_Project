@@ -12,7 +12,7 @@ import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/MakeOrder.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/settings_forms.dart';
-import 'package:coffre_app/pages/home/Customer/Users_List.dart';
+import 'package:coffre_app/pages/home/Customer/Users_requests_List.dart';
 import 'package:coffre_app/shared/appbar.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_drawer.dart';
 import 'package:coffre_app/shared/loading.dart';
@@ -155,6 +155,223 @@ class _Cust_HomeState extends State<Cust_Home> {
     // SetLocation();
     int timestamp = DateTime.now().millisecondsSinceEpoch;
     locatepostion();
+    Padding Electrician = Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: () async {
+          hasInternet = await InternetConnectionChecker().hasConnection;
+          if (hasInternet) {
+            if (Workers_Who_Accepted.isEmpty) {
+              if (await PermissionHandler.Permission.location.isGranted)
+                return _showAppSettings("Electrician");
+              else {
+                return setState(() {
+                  SetLocation("Electrician");
+                });
+              }
+            } else {
+              showSimpleNotification(Text('You have an On-going request!'),
+                  background: Colors.red);
+            }
+          } else {
+            showSimpleNotification(Text('You have no connection!'),
+                background: Colors.red);
+          }
+        },
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "images/fix fesh.jpg",
+                color: Color.fromARGB(255, 136, 135, 135),
+                colorBlendMode: BlendMode.darken,
+                //alignment: ,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Electrion",
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    Padding plumber = Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: () async {
+          hasInternet = await InternetConnectionChecker().hasConnection;
+          if (hasInternet) {
+            if (Workers_Who_Accepted.isEmpty) {
+              if (await PermissionHandler.Permission.location.isGranted)
+                return _showAppSettings("plumber");
+              else {
+                return setState(() {
+                  SetLocation('plumber');
+                });
+              }
+            } else {
+              showSimpleNotification(Text('You have an On-going request!'),
+                  background: Colors.red);
+            }
+          } else {
+            showSimpleNotification(Text('You have no connection!'),
+                background: Colors.red);
+          }
+        },
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "images/brken sink.jpg",
+                color: Color.fromARGB(255, 211, 210, 210),
+                colorBlendMode: BlendMode.darken,
+                //alignment: ,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "plumbing",
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    Padding Hairdresser = Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: () async {
+          hasInternet = await InternetConnectionChecker().hasConnection;
+          if (hasInternet) {
+            if (Workers_Who_Accepted.isEmpty) {
+              if (await PermissionHandler.Permission.location.isGranted)
+                return _showAppSettings("Hairdresser");
+              else {
+                return setState(() {
+                  SetLocation("Hairdresser");
+                });
+              }
+            } else {
+              showSimpleNotification(Text('You have an On-going request!'),
+                  background: Colors.red);
+            }
+          } else {
+            showSimpleNotification(Text('You have no connection!'),
+                background: Colors.red);
+          }
+        },
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "images/cut hair.jpg",
+                color: Color.fromARGB(255, 136, 135, 135),
+                colorBlendMode: BlendMode.darken,
+                //alignment: ,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Hair Dresser",
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    Padding Mechanic = Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: () async {
+          hasInternet = await InternetConnectionChecker().hasConnection;
+          if (hasInternet) {
+            if (Workers_Who_Accepted.isEmpty) {
+              if (await PermissionHandler.Permission.location.isGranted)
+                return _showAppSettings("Mechanic");
+              else {
+                return setState(() {
+                  SetLocation("Mechanic");
+                });
+              }
+            } else {
+              showSimpleNotification(Text('You have an On-going request!'),
+                  background: Colors.red);
+            }
+          } else {
+            showSimpleNotification(Text('You have no connection!'),
+                background: Colors.red);
+          }
+        },
+        child: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                "images/mechinc.jpeg",
+                color: Color.fromARGB(255, 136, 135, 135),
+                colorBlendMode: BlendMode.darken,
+                //alignment: ,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Mechanic",
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    SizedBox CustomSizedBox = SizedBox(
+      height: 10,
+      width: 10,
+    );
     return StreamProvider<User?>.value(
       initialData: null,
       value: AuthSrrvice().user,
@@ -165,7 +382,7 @@ class _Cust_HomeState extends State<Cust_Home> {
         drawer: CustDrawer(
           username: usera?.displayName as String?,
           logout: TextButton.icon(
-            icon: Icon(Icons.person, color: Colors.white),
+            icon: Icon(Icons.logout, color: Colors.white),
             label: Text('logout', style: TextStyle(color: Colors.white)),
             onPressed: () async {
               // setState(() {});
@@ -307,130 +524,13 @@ class _Cust_HomeState extends State<Cust_Home> {
               Container(
                 child: SingleChildScrollView(
                   child: Wrap(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () async {
-                          hasInternet =
-                              await InternetConnectionChecker().hasConnection;
-                          if (hasInternet) {
-                            if (Workers_Who_Accepted.isEmpty) {
-                              if (await PermissionHandler
-                                  .Permission.location.isGranted)
-                                return _showAppSettings("Electrician");
-                              else {
-                                return setState(() {
-                                  SetLocation("Electrician");
-                                });
-                              }
-                            } else {
-                              showSimpleNotification(
-                                  Text('You have an On-going request!'),
-                                  background: Colors.red);
-                            }
-                          } else {
-                            showSimpleNotification(
-                                Text('You have no connection!'),
-                                background: Colors.red);
-                          }
-                        },
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.asset(
-                                "images/fix fesh.jpg",
-                                color: Color.fromARGB(255, 136, 135, 135),
-                                colorBlendMode: BlendMode.darken,
-                                //alignment: ,
-                                fit: BoxFit.cover,
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Electrion",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: InkWell(
-                        onTap: () async {
-                          hasInternet =
-                              await InternetConnectionChecker().hasConnection;
-                          if (hasInternet) {
-                            if (Workers_Who_Accepted.isEmpty) {
-                              if (await PermissionHandler
-                                  .Permission.location.isGranted)
-                                return _showAppSettings("plumber");
-                              else {
-                                return setState(() {
-                                  SetLocation('plumber');
-                                });
-                              }
-                            } else {
-                              showSimpleNotification(
-                                  Text('You have an On-going request!'),
-                                  background: Colors.red);
-                            }
-                          } else {
-                            showSimpleNotification(
-                                Text('You have no connection!'),
-                                background: Colors.red);
-                          }
-                        },
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.asset(
-                                "images/brken sink.jpg",
-                                color: Color.fromARGB(255, 211, 210, 210),
-                                colorBlendMode: BlendMode.darken,
-                                //alignment: ,
-                                fit: BoxFit.cover,
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "plumbing",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    Electrician,
+                    CustomSizedBox,
+                    plumber,
+                    CustomSizedBox,
+                    Hairdresser,
+                    CustomSizedBox,
+                    Mechanic
                   ]),
                 ),
               ),

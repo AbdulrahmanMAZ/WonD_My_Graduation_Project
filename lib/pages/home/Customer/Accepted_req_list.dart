@@ -13,7 +13,6 @@ class AcceptedRequestsList extends StatefulWidget {
 class _AcceptedRequestsListState extends State<AcceptedRequestsList> {
   @override
   Widget build(BuildContext context) {
-    //List<Widget> widgets = <Widget>[];
     final usera = Provider.of<User?>(context);
     final _myAcceptedRequests =
         Provider.of<List<AcceptedRequest>?>(context) ?? [];
@@ -22,7 +21,6 @@ class _AcceptedRequestsListState extends State<AcceptedRequestsList> {
       if (item.Cust_ID == usera?.uid) {
         if (item.Status == 0) Workers_Who_Accepted.add(item);
       }
-      ;
     }
 
     Workers_Who_Accepted.sort(
@@ -39,26 +37,3 @@ class _AcceptedRequestsListState extends State<AcceptedRequestsList> {
         });
   }
 }
-
-
-
-
-    // if (brews != null) {
-    //   for (var User in brews.docs) {
-    //     if (User.get('name') == 'Abdulrahman') {
-    //       print(User.get('name'));
-    //       print(User.get('sugars'));
-    //       print(User.get('strentgh'));
-         
-    //     }
-    //   }
-    // }
-    
-    // counter + 1;
-    // for (var brew in brews!.docs) {
-    //   //print("=================${counter}=====================");
-    //   if (brew != null) {
-    //     widgets.add(Text(brew.get('name')));
-    //   }}
-    // return widgets[1];
-  
