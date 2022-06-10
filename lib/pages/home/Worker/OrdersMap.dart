@@ -31,7 +31,7 @@ class _OrdersMapState extends State<OrdersMap> {
 
   LocationData? _locationData;
   final AuthSrrvice _auth = AuthSrrvice();
-  List<Marker> _markers = [];
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +42,7 @@ class _OrdersMapState extends State<OrdersMap> {
 
   @override
   Widget build(BuildContext context) {
+    List<Marker> _markers = [];
     double _radius = 30000.0;
     final requests = Provider.of<List<Request>?>(context) ?? [];
     final _acceptedRequest = Provider.of<List<AcceptedRequest>?>(context) ?? [];

@@ -105,7 +105,7 @@
         "description": "Enter a Value"
     
     },
-     "asWorker": "Do you want to sign a worker?",
+     "asWorker": "What is your profession?",
     "@grettingParagrath":{
         "description": "Do you want to sign a worker?"
     

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffre_app/pages/authenricate/authenticate.dart';
 import 'package:coffre_app/pages/authenricate/email_veriifiy.dart';
+import 'package:coffre_app/pages/home/LandingPage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class Wrapper extends StatelessWidget {
 
     // print(user?.displayName);
     if (user == null) {
-      return Autheticate();
+      return LandingPage();
     } else {
       return VerifyEmail();
     }

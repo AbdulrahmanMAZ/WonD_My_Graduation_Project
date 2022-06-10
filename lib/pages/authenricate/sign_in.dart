@@ -14,8 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
 
-  final Function? toggleVeiw;
-  SignIn({this.toggleVeiw});
+  SignIn();
 
   @override
   _SignInState createState() => _SignInState();
@@ -43,7 +42,7 @@ class _SignInState extends State<SignIn> {
   Widget _createAccountLabel() {
     return InkWell(
       onTap: () {
-        widget.toggleVeiw!();
+        Navigator.pushReplacementNamed(context, '/LandingPage');
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -63,7 +62,7 @@ class _SignInState extends State<SignIn> {
               width: 10,
             ),
             Text(
-              AppLocalizations.of(context)!.register,
+              AppLocalizations.of(context)!.homepage,
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,

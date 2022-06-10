@@ -2,12 +2,15 @@ import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
 import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/Wrapper.dart';
+import 'package:coffre_app/pages/authenricate/register%20worker.dart';
+import 'package:coffre_app/pages/authenricate/register.dart';
 import 'package:coffre_app/pages/authenricate/sign_in.dart';
 import 'package:coffre_app/pages/home/Customer/Accepted_req_list.dart';
 import 'package:coffre_app/pages/home/Customer/Cust_orders.dart';
 import 'package:coffre_app/pages/home/Customer/accepted_reqs.dart';
 import 'package:coffre_app/pages/home/Customer/cust_home.dart';
 import 'package:coffre_app/pages/home/Customer/orderPage.dart';
+import 'package:coffre_app/pages/home/LandingPage.dart';
 import 'package:coffre_app/pages/home/Shop/shopHomePage.dart';
 import 'package:coffre_app/pages/home/Worker/OrdersMap.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
@@ -82,6 +85,8 @@ class MyApp extends StatelessWidget {
             '/cust_orders': (context) => Cust_Order(),
             '/cust_home': (context) => Cust_Home(),
             '/login': (context) => SignIn(),
+            '/Register': (context) => Register(),
+            '/RegisterWorker': (context) => RegisterWorker(),
             '/worker_home': (context) => worker_home(),
             '/worker_requests': (context) => worker_requests(),
             '/cust_ordering': (context) => OrderPage(),
@@ -94,6 +99,7 @@ class MyApp extends StatelessWidget {
             '/mini_Map': (context) => miniMap(),
             '/FeedBack': (context) => FeedBack(),
             '/FeedBack2': (context) => FeedBack2(),
+            '/LandingPage': (context) => LandingPage(),
           },
           home: Wrapper(),
         ),

@@ -236,7 +236,30 @@ class _accept_trackerState extends State<accept_tracker> {
                           ),
                         ),
                       )),
-                      Loading()
+                      Loading(),
+                      //BUTTON FOR CANCELING THE REQUEST
+                      ElevatedButton(
+                        style: TextButton.styleFrom(
+                            shadowColor: Color.fromARGB(255, 241, 241, 241),
+                            elevation: 10,
+                            padding: const EdgeInsets.all(16.0),
+                            primary: Color.fromARGB(255, 255, 255, 255),
+                            textStyle: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            backgroundColor: Color.fromARGB(255, 113, 5, 146)),
+                        onPressed: () {
+                          //CALLING DELETE FIREBASE DELETE FUNCTION
+                          DatabaseService()
+                              .AcceptenceCollection
+                              .doc(item.worker_ID)
+                              .delete()
+                              .catchError(
+                                  (error) => print('Delete failed: $error'));
+                        }
+                        // Child TEXT widget
+                        ,
+                        child: const Text('Press this to cancel the request'),
+                      )
                     ],
                   ),
                 ],

@@ -11,10 +11,10 @@ import '../../services/auth.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Register extends StatefulWidget {
+class RegisterWorker extends StatefulWidget {
 //  const Register({Key? key}) : super(key: key);
 
-  Register();
+  RegisterWorker();
   // final List<String> professions = [
   //   'Hairdresser',
   //   'Mechanic',
@@ -40,15 +40,15 @@ class Register extends StatefulWidget {
   //   'plumber'
   // ];
   @override
-  _RegisterState createState() => _RegisterState();
+  _RegisterWorkerState createState() => _RegisterWorkerState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterWorkerState extends State<RegisterWorker> {
   AuthSrrvice _auth = AuthSrrvice();
   bool _passwordVisible = true;
   bool _RepasswordVisible = true;
   final _formKey = GlobalKey<FormState>();
-  String? _currentProfession = 'Customer';
+  String? _currentProfession = 'Electrician';
   String email = '';
   String password = '';
   String Re_password = '';
@@ -561,6 +561,44 @@ class _RegisterState extends State<Register> {
                                       ),
                                       const SizedBox(
                                         height: 20,
+                                      ),
+                                      Theme(
+                                        data: ThemeData(
+                                            unselectedWidgetColor:
+                                                Colors.white),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .asWorker,
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+
+                                      DropdownButtonFormField(
+                                        dropdownColor:
+                                            Color.fromARGB(255, 89, 25, 97),
+                                        value: professions[0],
+                                        //  icon: Icon(Icons.arrow_downward),
+                                        items: professions.map((String e) {
+                                          return DropdownMenuItem(
+                                              value: e,
+                                              child: Text(
+                                                '$e ',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        207, 255, 255, 255)),
+                                              ));
+                                        }).toList(),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            _currentProfession =
+                                                widget.proffessionsIdentifier[
+                                                    newValue] as String;
+                                          });
+                                        },
                                       ),
 
                                       const SizedBox(

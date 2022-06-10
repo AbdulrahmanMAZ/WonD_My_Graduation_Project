@@ -77,57 +77,80 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
             child: Card(
               margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
               child: ListTile(
-                trailing: TextButton.icon(
-                    onPressed: () async {
-                      hasInternet =
-                          await InternetConnectionChecker().hasConnection;
-                      if (hasInternet) {
-                        for (var item in _myAcceptedRequests) {
-                          if (item.Cust_ID == userStream.uid) {
-                            if (item.worker_ID !=
-                                widget.acceptedRequest.worker_ID) {
-                              //DELETE REQUEST FROM OTHER USERS WHO ACCEPTED REQUESTS
-                              DatabaseService()
-                                  .AcceptenceCollection
-                                  .doc(item.worker_ID)
-                                  .delete() // <-- Delete
-                                  .then((_) => print('Accepted'))
-                                  .catchError((error) =>
-                                      print('Delete failed: $error'));
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Color.fromARGB(255, 175, 76, 76),
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          DatabaseService()
+                              .AcceptenceCollection
+                              .doc(widget.acceptedRequest.worker_ID)
+                              .delete() // <-- Delete
+                              .then((_) => print('Deleted other offers'))
+                              .catchError(
+                                  (error) => print('Delete failed: $error'));
+                        }),
+                    TextButton.icon(
+                        onPressed: () async {
+                          hasInternet =
+                              await InternetConnectionChecker().hasConnection;
+                          if (hasInternet) {
+                            for (var item in _myAcceptedRequests) {
+                              if (item.Cust_ID == userStream.uid) {
+                                if (item.worker_ID !=
+                                    widget.acceptedRequest.worker_ID) {
+                                  //DELETE REQUEST FROM OTHER USERS WHO ACCEPTED REQUESTS
+                                  DatabaseService()
+                                      .AcceptenceCollection
+                                      .doc(item.worker_ID)
+                                      .delete() // <-- Delete
+                                      .then(
+                                          (_) => print('Deleted other offers'))
+                                      .catchError((error) =>
+                                          print('Delete failed: $error'));
+                                }
+                                if (item.worker_ID ==
+                                    widget.acceptedRequest.worker_ID) {
+                                  //UPDATE CURRENT STATUS TO ACCEPTED
+                                  DatabaseService(uid: item.worker_ID)
+                                      .updateRequestStatus(1);
+                                  //DELETE REQUEST FROM CURRENT USER Requests
+                                  DatabaseService()
+                                      .RequestsCollection
+                                      .doc(userStream.uid)
+                                      .delete() // <-- Delete
+                                      .then((_) => print('Deleted'))
+                                      .catchError((error) =>
+                                          print('Delete failed: $error'));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              workingpage(item)));
+                                }
+                              }
                             }
-                            if (item.worker_ID ==
-                                widget.acceptedRequest.worker_ID) {
-                              //UPDATE CURRENT STATUS TO ACCEPTED
-                              DatabaseService(uid: item.worker_ID)
-                                  .updateRequestStatus(1);
-                              //DELETE REQUEST FROM CURRENT USER Requests
-                              DatabaseService()
-                                  .RequestsCollection
-                                  .doc(userStream.uid)
-                                  .delete() // <-- Delete
-                                  .then((_) => print('Deleted'))
-                                  .catchError((error) =>
-                                      print('Delete failed: $error'));
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => workingpage(item)));
-                            }
+                          } else {
+                            showSimpleNotification(
+                                Text('You have no connection!'),
+                                background: Colors.red);
                           }
-                        }
-                      } else {
-                        showSimpleNotification(Text('You have no connection!'),
-                            background: Colors.red);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      size: 20,
-                    ),
-                    label: Text(
-                      '',
-                      style: TextStyle(fontSize: 1),
-                    )),
+                        },
+                        icon: Icon(
+                          Icons.handshake,
+                          size: 20,
+                        ),
+                        label: Text(
+                          '',
+                          style: TextStyle(fontSize: 1),
+                        )),
+                  ],
+                ),
                 leading: SizedBox(
                   height: 50,
                   width: 50,

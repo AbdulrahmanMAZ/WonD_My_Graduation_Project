@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> {
   var FileName = "no_image_in_firebase.png";
   String? firebaseURL =
       'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2F';
-
+  int ListLeangth = 0;
   @override
   Widget build(BuildContext context) {
     List<Rate> UserRate = Provider.of<List<Rate>>(context);
@@ -213,21 +213,16 @@ class _ProfileState extends State<Profile> {
                         stream: DatabaseService(uid: usera?.uid).ratee,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            double avregeRating = 1;
+                            double avregeRating = 0;
                             List<Rate>? userRate = snapshot.data;
                             if (userRate != null) {
                               for (var item in userRate) {
                                 avregeRating += item.rate;
-                                UserRate?.add(item);
-                                print(item.rate);
                               }
                             }
-                            for (var i = 0; i < UserRate.length; i++) {
-                              print(UserRate[i]);
-                            }
-                            int Number_of_ratings = userRate!.length;
+                            dynamic Number_of_ratings = userRate!.length;
                             if (Number_of_ratings <= 0) {
-                              Number_of_ratings = 1;
+                              Number_of_ratings = '0';
                             }
 
                             if (userRate.isEmpty) {
@@ -240,6 +235,7 @@ class _ProfileState extends State<Profile> {
                             if (userRate.length > 3) {
                               itreation = 3;
                             }
+                            ListLeangth = userRate.length;
                             return Column(
                               children: [
                                 Padding(
@@ -255,12 +251,19 @@ class _ProfileState extends State<Profile> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                                '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 24,
-                                                )),
+                                            if (Number_of_ratings == '0')
+                                              Text('0',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 24,
+                                                  )),
+                                            if (Number_of_ratings != '0')
+                                              Text(
+                                                  '${(avregeRating / Number_of_ratings).toStringAsFixed(1)}',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 24,
+                                                  )),
                                             Text('(${userRate.length})',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
