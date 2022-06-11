@@ -136,6 +136,7 @@ class DatabaseService {
       Worker_ID,
       int t,
       Price,
+      double workerRate,
       Status,
       lat,
       long,
@@ -148,6 +149,7 @@ class DatabaseService {
       'time': t,
       'Price': Price,
       'Status': Status,
+      'workerRate': workerRate,
       'latitude': lat,
       'longitude': long,
       'OTP': OTP
@@ -206,6 +208,7 @@ class DatabaseService {
           worker_ID: doc.get('Worker_ID'),
           worker_name: doc.get('Worker_Name'),
           t: doc.get('time'),
+          workerRate: doc.get('workerRate'),
           price: doc.get('Price'),
           Status: doc.get('Status'),
           latitude: doc.get('latitude'),

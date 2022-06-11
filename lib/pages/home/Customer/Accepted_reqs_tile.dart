@@ -80,6 +80,16 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Row(
+                      children: [
+                        Text(
+                          widget.acceptedRequest.workerRate == null
+                              ? '0'
+                              : widget.acceptedRequest.workerRate.toString(),
+                          style: TextStyle(fontSize: 15, color: Colors.red),
+                        ),
+                      ],
+                    ),
                     IconButton(
                         icon: Icon(
                           Icons.delete_forever,
@@ -172,7 +182,7 @@ class _acceppted_Req_TileState extends State<acceppted_Req_Tile> {
                             color: Color.fromARGB(255, 255, 0, 0)),
                         children: [
                       TextSpan(
-                          text: "Accepted your order for ",
+                          text: "Offers",
                           style: TextStyle(
                               fontSize: 16,
                               color: Color.fromARGB(255, 0, 0, 0))),
