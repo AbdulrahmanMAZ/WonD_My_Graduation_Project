@@ -220,7 +220,7 @@ class _MakeOrderState extends State<MakeOrder> {
                                               "no_image_in_firebase.png") {
                                             await DatabaseService()
                                                 .RaiseRequest(
-                                                    user.displayName.toString(),
+                                                    userData!.name as String,
                                                     user.uid,
                                                     DateTime.now()
                                                         .millisecondsSinceEpoch,
@@ -235,7 +235,7 @@ class _MakeOrderState extends State<MakeOrder> {
                                               "no_image_in_firebase.png") {
                                             await DatabaseService()
                                                 .RaiseRequest(
-                                                    user.displayName.toString(),
+                                                    userData!.name as String,
                                                     user.uid,
                                                     DateTime.now()
                                                         .millisecondsSinceEpoch,
@@ -248,6 +248,12 @@ class _MakeOrderState extends State<MakeOrder> {
                                                 (value) => print('Uplouded'));
                                           }
                                         }
+                                        showSimpleNotification(
+                                            Text(
+                                                'Request has been sent successfully'),
+                                            background: Color.fromARGB(
+                                                255, 76, 244, 54));
+
                                         Navigator.pop(context);
                                       } else {
                                         showSimpleNotification(

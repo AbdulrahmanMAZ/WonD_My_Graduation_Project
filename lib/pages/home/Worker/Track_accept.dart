@@ -1,4 +1,5 @@
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Worker/miniMap.dart';
 import 'package:coffre_app/services/database.dart';
 import 'package:coffre_app/shared/appbar.dart';
@@ -161,6 +162,43 @@ class _accept_trackerState extends State<accept_tracker> {
                             Navigator.pushNamed(context, '/mini_Map',
                                 arguments: item);
                           },
+                        ),
+                        Text(
+                          'Here is the Phone number of the Customer',
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        StreamBuilder<UserData>(
+                            //Fetching data from the documentId specified of the student
+                            stream:
+                                DatabaseService(uid: item.Cust_ID).userData3,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text("Something went wrong");
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Loading();
+                              }
+                              double avregeRating = 0;
+                              double Rating = 0;
+                              UserData? userDataVar = snapshot.data;
+                              if (userDataVar != null && snapshot.hasData) {
+                                return Text(
+                                  userDataVar.phoneNumber!,
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.normal,
+                                      color:
+                                          Color.fromARGB(255, 231, 224, 230)),
+                                );
+                              }
+                              return Loading();
+                            }),
+                        SizedBox(
+                          height: 30,
                         ),
                         Text(
                           'To be able to see directions please do the following steps:',

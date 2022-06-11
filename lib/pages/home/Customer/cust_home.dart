@@ -372,195 +372,209 @@ class _Cust_HomeState extends State<Cust_Home> {
       height: 10,
       width: 10,
     );
-    return StreamProvider<User?>.value(
-      initialData: null,
-      value: AuthSrrvice().user,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.Allbackgroundcolor,
+    return StreamBuilder<UserData>(
+        //Fetching data from the documentId specified of the student
+        stream: DatabaseService(uid: usera?.uid).userData3,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
 
-        drawer: CustDrawer(
-          username: usera?.displayName as String?,
-          logout: TextButton.icon(
-            icon: Icon(Icons.logout, color: Colors.white),
-            label: Text('logout', style: TextStyle(color: Colors.white)),
-            onPressed: () async {
-              // setState(() {});
-              // Navigator.pushReplacement(context,
-              //     MaterialPageRoute(builder: (context) => Cust_Home()));
-              await _auth.SignOut();
-              await Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Wrapper()),
-                  (Route<dynamic> route) => false);
+          UserData? userDataVar = snapshot.data;
+          if (userDataVar != null && snapshot.hasData) {
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: AppColors.Allbackgroundcolor,
 
-              // Navigator.pushReplacement(
-              //     context, MaterialPageRoute(builder: (context) => SignIn()));
-              // Navigator.of(context).pop();
-              // Navigator.pushReplacementNamed(context, '/login');
+              drawer: CustDrawer(
+                username: userDataVar.name,
+                logout: TextButton.icon(
+                  icon: Icon(Icons.logout, color: Colors.white),
+                  label: Text('logout', style: TextStyle(color: Colors.white)),
+                  onPressed: () async {
+                    // setState(() {});
+                    // Navigator.pushReplacement(context,
+                    //     MaterialPageRoute(builder: (context) => Cust_Home()));
+                    await _auth.SignOut();
+                    await Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Wrapper()),
+                        (Route<dynamic> route) => false);
 
-              // Navigator.pushReplacement(
-              //     context, MaterialPageRoute(builder: (context) => SignIn()));
-            },
-          ),
-        ),
+                    // Navigator.pushReplacement(
+                    //     context, MaterialPageRoute(builder: (context) => SignIn()));
+                    // Navigator.of(context).pop();
+                    // Navigator.pushReplacementNamed(context, '/login');
 
-        appBar: MyCustomAppBar(name: _currentAddress ?? '', widget: [
-          IconButton(
-              onPressed: () async {
-                if (await PermissionHandler.Permission.location.isDenied)
-                  setState(() {
-                    PermissionHandler.openAppSettings();
-                  });
-                else {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AdressPage()));
-                }
-              },
-              icon: Icon(Icons.location_pin)),
-          IconButton(
-              icon: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const Icon(
-                    Icons.handyman,
-                  ),
-                  if (Workers_Who_Accepted.isNotEmpty &&
-                      Workers_Who_Accepted[0].Status == 0)
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        height: 16,
-                        width: 16,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).primaryColor,
+                    // Navigator.pushReplacement(
+                    //     context, MaterialPageRoute(builder: (context) => SignIn()));
+                  },
+                ),
+              ),
+
+              appBar: MyCustomAppBar(name: _currentAddress ?? '', widget: [
+                IconButton(
+                    onPressed: () async {
+                      if (await PermissionHandler.Permission.location.isDenied)
+                        setState(() {
+                          PermissionHandler.openAppSettings();
+                        });
+                      else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdressPage()));
+                      }
+                    },
+                    icon: Icon(Icons.location_pin)),
+                IconButton(
+                    icon: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const Icon(
+                          Icons.handyman,
                         ),
-                        child: Center(
-                          child: Container(
-                            height: 15,
-                            width: 15,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.red,
-                            ),
-                            child: Center(
-                              child: Text(
-                                Workers_Who_Accepted.length.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
+                        if (Workers_Who_Accepted.isNotEmpty &&
+                            Workers_Who_Accepted[0].Status == 0)
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              height: 16,
+                              width: 16,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              child: Center(
+                                child: Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      Workers_Who_Accepted.length.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                      ],
+                    ),
+                    onPressed: () async => {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Accepted_Orders()))
+                        })
+
+                // TextButton.icon(
+
+                //   onPressed: () async {
+                // _isServiceEnabled = await location.serviceEnabled();
+                // if (!_isServiceEnabled!) {
+                //   _isServiceEnabled = await location.requestService();
+                //   if (_isServiceEnabled!) return;
+                // }
+
+                // _permissionGranted = await location.hasPermission();
+                // if (_permissionGranted == PermissionStatus.granted) {
+                // _locationData = await location.getLocation();
+                // _db.updateUserLocation(
+                //     _locationData!.latitude, _locationData!.longitude);
+                //   return _showAppSettings();
+                // }
+                // if (_permissionGranted == PermissionStatus.denied) {
+                //   print(_permissionGranted);
+                //   _permissionGranted = await location.requestPermission();
+                //   if (_permissionGranted == PermissionStatus.granted) {
+                //     return _showAppSettings();
+                //   }
+                // }
+                //   },
+                //   icon: Icon(Icons.handyman),
+                //   label: Text('Rquests'),
+                // ),
+              ]),
+
+              //  AppBar(
+              //   title: Text('Your requests'),
+              //   backgroundColor: Colors.brown[400],
+              //   elevation: 0.0,
+              //   shadowColor: Colors.black,
+              //   actions: <Widget>[
+              //     TextButton.icon(
+              //         onPressed: () {
+              //           _showAppSettings();
+              //         },
+              //         icon: Icon(Icons.front_hand),
+              //         label: Text('Rquest Service'))
+              //   ],
+              // ),
+              body: Container(
+                height: height,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      Color.fromARGB(255, 73, 3, 105),
+                      Color.fromARGB(255, 15, 7, 1)
+                    ])),
+                child: Stack(
+                  children: [
+                    PositionedBackground(context),
+                    Container(
+                      child: SingleChildScrollView(
+                        child: Wrap(children: [
+                          Electrician,
+                          CustomSizedBox,
+                          plumber,
+                          CustomSizedBox,
+                          Hairdresser,
+                          CustomSizedBox,
+                          Mechanic
+                        ]),
                       ),
                     ),
-                ],
-              ),
-              onPressed: () async => {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Accepted_Orders()))
-                  })
-
-          // TextButton.icon(
-
-          //   onPressed: () async {
-          // _isServiceEnabled = await location.serviceEnabled();
-          // if (!_isServiceEnabled!) {
-          //   _isServiceEnabled = await location.requestService();
-          //   if (_isServiceEnabled!) return;
-          // }
-
-          // _permissionGranted = await location.hasPermission();
-          // if (_permissionGranted == PermissionStatus.granted) {
-          // _locationData = await location.getLocation();
-          // _db.updateUserLocation(
-          //     _locationData!.latitude, _locationData!.longitude);
-          //   return _showAppSettings();
-          // }
-          // if (_permissionGranted == PermissionStatus.denied) {
-          //   print(_permissionGranted);
-          //   _permissionGranted = await location.requestPermission();
-          //   if (_permissionGranted == PermissionStatus.granted) {
-          //     return _showAppSettings();
-          //   }
-          // }
-          //   },
-          //   icon: Icon(Icons.handyman),
-          //   label: Text('Rquests'),
-          // ),
-        ]),
-
-        //  AppBar(
-        //   title: Text('Your requests'),
-        //   backgroundColor: Colors.brown[400],
-        //   elevation: 0.0,
-        //   shadowColor: Colors.black,
-        //   actions: <Widget>[
-        //     TextButton.icon(
-        //         onPressed: () {
-        //           _showAppSettings();
-        //         },
-        //         icon: Icon(Icons.front_hand),
-        //         label: Text('Rquest Service'))
-        //   ],
-        // ),
-        body: Container(
-          height: height,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color.fromARGB(255, 73, 3, 105),
-                Color.fromARGB(255, 15, 7, 1)
-              ])),
-          child: Stack(
-            children: [
-              PositionedBackground(context),
-              Container(
-                child: SingleChildScrollView(
-                  child: Wrap(children: [
-                    Electrician,
-                    CustomSizedBox,
-                    plumber,
-                    CustomSizedBox,
-                    Hairdresser,
-                    CustomSizedBox,
-                    Mechanic
-                  ]),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.settings),
-        //   onPressed: () {},
-        // )
-        //  FutureBuilder<DocumentSnapshot>(
-        //     future: coffes.doc(_auth.inputData()).get(),
-        //     builder:
-        //         (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        //       if (snapshot.hasError) {
-        //         return Text("Something went wrong");
-        //       }
+              // floatingActionButton: FloatingActionButton(
+              //   child: Icon(Icons.settings),
+              //   onPressed: () {},
+              // )
+              //  FutureBuilder<DocumentSnapshot>(
+              //     future: coffes.doc(_auth.inputData()).get(),
+              //     builder:
+              //         (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              //       if (snapshot.hasError) {
+              //         return Text("Something went wrong");
+              //       }
 
-        //       if (snapshot.hasData && !snapshot.data!.exists) {
-        //         return Text("Document does not exist");
-        //       }
+              //       if (snapshot.hasData && !snapshot.data!.exists) {
+              //         return Text("Document does not exist");
+              //       }
 
-        //       if (snapshot.connectionState == ConnectionState.done) {
-        //         Map<String, dynamic> data =
-        //             snapshot.data!.data() as Map<String, dynamic>;
-        //         return Text(data['name']);
-        //       }
-        //       return Loading();
-        //     })
-      ),
-    );
+              //       if (snapshot.connectionState == ConnectionState.done) {
+              //         Map<String, dynamic> data =
+              //             snapshot.data!.data() as Map<String, dynamic>;
+              //         return Text(data['name']);
+              //       }
+              //       return Loading();
+              //     })
+            );
+          }
+          return Loading();
+        });
   }
 }

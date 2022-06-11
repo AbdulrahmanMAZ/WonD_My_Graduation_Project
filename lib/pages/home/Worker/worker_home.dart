@@ -138,42 +138,58 @@ class _worker_homeState extends State<worker_home> {
 
     String firebaseURL =
         'https://firebasestorage.googleapis.com/v0/b/coffe-app-a36f3.appspot.com/o/profile_images%2Ffd4f9e70-d099-11ec-8fcf-e11cc2ef35a3?alt=media&token=';
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.Allbackgroundcolor,
-        drawer: worker_drawer(
-          username: user?.displayName,
-          logout: TextButton.icon(
-            icon: Icon(Icons.logout),
-            label: Text('logout'),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _auth.SignOut();
+    return StreamBuilder<UserData>(
+        //Fetching data from the documentId specified of the student
+        stream: DatabaseService(uid: user?.uid).userData3,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
 
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Wrapper()),
-                  (Route<dynamic> route) => false);
-            },
-          ),
-        ),
-        appBar: MyCustomAppBar(
-          name: _currentAddress ?? '',
-          widget: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    SetLocation();
-                  });
-                },
-                icon: Icon(Icons.location_pin))
-          ],
-        ),
-        body: Center(
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/OrdersMap');
-              },
-              child: Text('Open a Map of the nearby Orders')),
-        ));
+          UserData? userDataVar = snapshot.data;
+          if (userDataVar != null && snapshot.hasData) {
+            return Scaffold(
+                resizeToAvoidBottomInset: false,
+                backgroundColor: AppColors.Allbackgroundcolor,
+                drawer: worker_drawer(
+                  username: userDataVar.name,
+                  logout: TextButton.icon(
+                    icon: Icon(Icons.logout),
+                    label: Text('logout'),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await _auth.SignOut();
+
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => Wrapper()),
+                          (Route<dynamic> route) => false);
+                    },
+                  ),
+                ),
+                appBar: MyCustomAppBar(
+                  name: _currentAddress ?? '',
+                  widget: [
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            SetLocation();
+                          });
+                        },
+                        icon: Icon(Icons.location_pin))
+                  ],
+                ),
+                body: Center(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/OrdersMap');
+                      },
+                      child: Text('Open a Map of the nearby Orders')),
+                ));
+          }
+          return Loading();
+        });
   }
 }

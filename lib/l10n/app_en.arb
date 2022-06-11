@@ -44,10 +44,16 @@
     "@grettingParagrath":{
         "description": "Short password"
     },
-     "incorrectInfo": "Incorrect information",
+     "incorrectInfo": "Email is used",
     "@grettingParagrath":{
         "description": "Incorrect information"
-    },
+    }
+    ,
+     "incorrectInfo2": "Not a valid E-mail",
+    "@grettingParagrath":{
+        "description": "Incorrect information"
+    }
+    ,
      "loginButton": "Login",
     "@grettingParagrath":{
         "description": "Login Button"
@@ -129,10 +135,19 @@
     "@grettingParagrath":{
         "description": "Plumber"
     
-    },
+    }
+    ,
      "enterName": "Enter Your Name",
     "@grettingParagrath":{
         "description": "Enter Your Name"
+    },
+     "registerAsWorker": "Sign up as a worker",
+    "@grettingParagrath":{
+        "description": "Sign up as a worker"
+    },
+     "registerAsCustomer": "Sign up as a customer",
+    "@grettingParagrath":{
+        "description": "Sign up as a customer"
     }
 
 }

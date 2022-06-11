@@ -161,6 +161,11 @@ class _SignInState extends State<SignIn> {
                                               email = val;
                                             });
                                           }),
+                                      Text(
+                                        '    ' + error,
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 12),
+                                      ),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -236,7 +241,7 @@ class _SignInState extends State<SignIn> {
                                                 setState(() {
                                                   error = AppLocalizations.of(
                                                           context)!
-                                                      .incorrectInfo;
+                                                      .incorrectInfo2;
                                                   loading = false;
                                                 });
                                               }
@@ -260,7 +265,6 @@ class _SignInState extends State<SignIn> {
                                         ),
                                       ),
                                       _createAccountLabel(),
-                                      Text(error)
                                     ],
                                   )),
 

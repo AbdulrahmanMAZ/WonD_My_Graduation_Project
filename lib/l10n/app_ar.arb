@@ -1,6 +1,8 @@
 {
     "language":"العربية",
     "homepage":"الصفحة الرئيسية",
+    "registerAsCustomer":"التسجيل كمستخدم",
+    "registerAsWorker":"التسجيل كعامل",
     "welcome":"اهلا و سهلا",
     "register":"التسجيل",
     "gotoregisterNOAccount":"لا تملك حساب بالفعل ؟",
@@ -9,7 +11,8 @@
     "enterPass":"ادخل كلمة المرور",
     "enterName":"ادخل اسمك الكامل",
     "shorPass":"يجب على الرقم السري ان يتجاوز 8 خانات",
-    "incorrectInfo":"البيانات المدخلة غير صحيحة",
+    "incorrectInfo":"البريد المدخل مستخدم",
+    "incorrectInfo2":"البريد المدخل غير صالح",
     "loginButton":"تسجيل الدخول" ,
     "haveAccount":"هل تمتلك حساب بالفعل؟" ,
     "registerWelcomeParagraph":"مرحبا بك زائرنا الكريم من هنا تستطيع انشاء حساب جديد", 

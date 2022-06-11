@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:coffre_app/pages/authenricate/authenticate.dart';
+import 'package:coffre_app/pages/authenricate/email_veriifiy.dart';
 import 'package:coffre_app/shared/constant.dart';
 import 'package:coffre_app/shared/loading.dart';
 import 'package:email_validator/email_validator.dart';
@@ -89,7 +90,7 @@ class _RegisterState extends State<Register> {
   Widget _loginAccountLabel() {
     return InkWell(
       onTap: () {
-        Navigator.pushReplacementNamed(context, '/LandingPage');
+        Navigator.pushReplacementNamed(context, '/login');
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -109,7 +110,7 @@ class _RegisterState extends State<Register> {
               width: 10,
             ),
             Text(
-              AppLocalizations.of(context)!.homepage,
+              AppLocalizations.of(context)!.login,
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,
@@ -595,10 +596,17 @@ class _RegisterState extends State<Register> {
                                                       username,
                                                       email,
                                                       password,
-                                                      isWorker,
-                                                      _currentProfession
-                                                          as String,
+                                                      false,
+                                                      'Customer',
                                                       '+966' + Phone_Number);
+                                              if (result != null) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          VerifyEmail()),
+                                                );
+                                              }
                                               print(result);
                                               if (result == null) {
                                                 setState(() {

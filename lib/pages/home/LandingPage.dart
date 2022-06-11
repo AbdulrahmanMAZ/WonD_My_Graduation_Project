@@ -1,6 +1,7 @@
 import 'package:coffre_app/pages/Wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class LandingPage extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: const TextSpan(
-          text: 'Worker ',
+          text: 'W',
           style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
@@ -20,7 +21,7 @@ class LandingPage extends StatelessWidget {
                   color: Color.fromARGB(255, 187, 174, 174), fontSize: 30),
             ),
             TextSpan(
-              text: ' Duty',
+              text: 'D',
               style: TextStyle(
                   color: Color.fromARGB(212, 208, 197, 221), fontSize: 30),
             ),
@@ -75,7 +76,8 @@ class LandingPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, '/RegisterWorker');
                         },
-                        child: Text('Register as  Worker')),
+                        child: Text(
+                            AppLocalizations.of(context)!.registerAsWorker)),
                     SizedBox(height: 20),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -90,7 +92,8 @@ class LandingPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, '/Register');
                         },
-                        child: Text('Register as Customer')),
+                        child: Text(
+                            AppLocalizations.of(context)!.registerAsCustomer)),
                     SizedBox(height: 20),
                     ElevatedButton(
                         onPressed: () {
@@ -106,7 +109,7 @@ class LandingPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: Text('Login')),
+                        child: Text(AppLocalizations.of(context)!.login)),
                     SizedBox(height: 20.0)
                   ])),
             ));

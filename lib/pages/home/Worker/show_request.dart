@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:coffre_app/modules/rating.dart';
 import 'package:coffre_app/modules/requests.dart';
+import 'package:coffre_app/modules/users.dart';
 import 'package:coffre_app/pages/home/Worker/Track_accept.dart';
 import 'package:coffre_app/pages/home/worker/worker_requests_tile.dart';
 import 'package:coffre_app/services/database.dart';
@@ -58,7 +59,7 @@ class _ShowRequestState extends State<ShowRequest>
         position: LatLng(args.latitude, args.longitude),
         infoWindow: InfoWindow(title: args.name)));
     final Storage storage = Storage();
-    print(args.imageName);
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: MyCustomAppBar(
@@ -256,52 +257,70 @@ class _ShowRequestState extends State<ShowRequest>
                                               Color.fromARGB(106, 78, 3, 122),
                                           filled: true,
                                           alignLabelWithHint: true,
-                                          hintText: 'Name you price here')),
+                                          hintText: 'Namer you price here')),
                                 ],
                               ),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              var rng = new Random();
-                              var OTP = rng.nextInt(900000) + 100000;
-                              if (_formKey.currentState!.validate()) {
-                                _db.AcceptRequest(
-                                    args.name,
-                                    args.Cust_ID,
-                                    user?.displayName as String,
-                                    user?.uid,
-                                    DateTime.now().millisecondsSinceEpoch,
-                                    price,
-                                    Rating,
-                                    0,
-                                    args.latitude,
-                                    args.longitude,
-                                    OTP);
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            accept_tracker()));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size.fromHeight(50),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              primary: Color.fromARGB(255, 78, 2, 78),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              "Accept Request",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
+                          StreamBuilder<UserData>(
+                              //Fetching data from the documentId specified of the student
+                              stream: DatabaseService(uid: user?.uid).userData3,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text("Something went wrong");
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Loading();
+                                }
+
+                                UserData? userDataVar = snapshot.data;
+                                if (userDataVar != null && snapshot.hasData) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      var rng = new Random();
+                                      var OTP = rng.nextInt(900000) + 100000;
+                                      if (_formKey.currentState!.validate()) {
+                                        _db.AcceptRequest(
+                                            args.name,
+                                            args.Cust_ID,
+                                            userDataVar.name as String,
+                                            user?.uid,
+                                            DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            price,
+                                            Rating,
+                                            0,
+                                            args.latitude,
+                                            args.longitude,
+                                            OTP);
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    accept_tracker()));
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.fromHeight(50),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      primary: Color.fromARGB(255, 78, 2, 78),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Accept Request",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return Loading();
+                              }),
                         ],
                       ),
                     ),

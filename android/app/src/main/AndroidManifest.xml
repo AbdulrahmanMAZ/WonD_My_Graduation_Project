@@ -9,7 +9,7 @@
 
  
    <application
-        android:label="Worker on Duty"
+        android:label="WonD"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
