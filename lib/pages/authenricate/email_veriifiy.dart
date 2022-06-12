@@ -160,14 +160,21 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => canResend ? sendVerificationEmail : null,
+                  onPressed: () {
+                    setState(() {
+                      sendVerificationEmail();
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromRadius(20)),
                   icon: Icon(Icons.email_outlined),
                   label: Text('Resend email'),
                 ),
                 TextButton(
-                  onPressed: () => FirebaseAuth.instance.signOut(),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pop();
+                  },
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromRadius(20)),
                   child: Text('Cancel'),

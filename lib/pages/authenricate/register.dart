@@ -110,7 +110,7 @@ class _RegisterState extends State<Register> {
               width: 10,
             ),
             Text(
-              AppLocalizations.of(context)!.login,
+              AppLocalizations.of(context)!.loginButton,
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,

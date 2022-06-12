@@ -109,7 +109,7 @@ class LandingPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: Text(AppLocalizations.of(context)!.login)),
+                        child: Text(AppLocalizations.of(context)!.loginButton)),
                     SizedBox(height: 20.0)
                   ])),
             ));

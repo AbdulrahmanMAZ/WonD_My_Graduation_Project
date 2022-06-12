@@ -59,14 +59,21 @@ class _Accepted_OrdersState extends State<Accepted_Orders> {
                   sortingMethod = 'price';
                 });
               }),
-              child: Text('Price')),
+              child: sortingMethod == "price"
+                  ? Text(
+                      'Price',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Text('Price', style: TextStyle(color: Colors.white))),
           TextButton(
               onPressed: (() {
                 setState(() {
                   sortingMethod = 'rate';
                 });
               }),
-              child: Text('Rate'))
+              child: sortingMethod == "rate"
+                  ? Text('Rate', style: TextStyle(color: Colors.red))
+                  : Text("Rate", style: TextStyle(color: Colors.white)))
         ]),
         body: Container(
           decoration: BoxDecoration(
