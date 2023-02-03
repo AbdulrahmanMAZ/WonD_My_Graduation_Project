@@ -1,16 +1,2 @@
 # WonD
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+No more need to have a workshop or a place to work from to gain moeny, this app will enable any man or woman with a hoppy or skill to gain money with it by offering his/her services to other people. Same goes to the person who needs a worker, by a single click all the nearby worker with the same asked profession will be notified.
